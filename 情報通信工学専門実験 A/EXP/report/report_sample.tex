@@ -1,0 +1,66 @@
+\documentclass{report}
+
+% 印刷位置調整 %
+% 必要に応じて値を変更してください．
+\hoffset -10mm % <-- 左に 10mm 移動
+\voffset -10mm % <-- 上に 10mm 移動
+
+\newcommand{\AmSLaTeX}{%
+ $\mathcal A$\lower.4ex\hbox{$\!\mathcal M\!$}$\mathcal S$-\LaTeX}
+\newcommand{\PS}{{\scshape Post\-Script}}
+\def\BibTeX{{\rmfamily B\kern-.05em{\scshape i\kern-.025em b}\kern-.08em
+ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125em X}}
+\papernumber{姓 名  学籍番号}
+
+\jtitle{レポートタイトル}
+%\jsubtitle{サブタイトル} <- サブタイトルを付けたいときはこの行の先頭の % を取る
+\authorlist{%
+ \authorentry[youremailaddress@osaka-u.ac.jp]{姓 名}{your name}{osaka}% 
+}
+\affiliate[osaka]{学籍番号}
+ {  Osaka University\\
+}
+
+%\MailAddress{$\dagger$hanako@deim.ac.jp,
+% $\dagger\dagger$\{taro,jiro\}@jforum.co.jp}
+
+\begin{document}
+
+\pagestyle{empty}
+\begin{jabstract}
+今回の演習に関しての概要を書いてください．
+\end{jabstract}
+
+\maketitle
+
+\section{はじめに}
+
+\section{実装}
+
+実装に関して適当に説明してください（配布資料に書いていることを写さないように）．
+
+\subsection{K-means}
+
+\subsection{LOF}
+
+\section{課題}
+
+引用文献を参照する場合は，\cite{test1}で引用できます．
+
+\subsection{課題番号X}
+
+\subsection{課題番号Y}
+
+\subsection{課題番号Z}
+
+\section{おわりに}
+なんか授業の感想や，不明な点，改善点とか書いてくれると有難いです．
+
+\begin{thebibliography}{99}
+\bibitem{test1} 引用文献１.
+\bibitem{test2}引用文献2.
+\end{thebibliography}
+
+
+
+\end{document}
