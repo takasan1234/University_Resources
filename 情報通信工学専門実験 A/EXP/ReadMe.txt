@@ -8,3 +8,12 @@ report ディレクトリ : レポート用のファイル群
 - report.cls : コンパイル用のクラスファイル
 
 visualization.txt : OpenOffice Calcの使い方
+
+
+
+実行コマンド
+cd "/Users/takayatsuji/Desktop/University_Resources/情報通信工学専門実験 A/EXP/code" && mcs class1.cs && mono class1.exe data/crater.csv output/crater_output.csv
+
+
+ログ出力例
+Console.WriteLine("hello world");

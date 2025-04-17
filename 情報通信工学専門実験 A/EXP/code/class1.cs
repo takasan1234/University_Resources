@@ -16,6 +16,8 @@ class Program
         int[]    label = new int[200];         // ラベル (未使用。元コードと同じく初期化のみ)
         int count = 0;
 
+        
+
         /* -------- Input -------- */
         try
         {
