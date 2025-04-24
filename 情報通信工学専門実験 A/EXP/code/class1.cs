@@ -68,8 +68,7 @@ class Program
             }
         }
 
-        // int k = int.Parse(args[2]);
-        int k = 3;
+        int k = int.Parse(args[2]);
         double[,] centroid = new double[k, 2];
 
         // 重心の初期化
@@ -89,6 +88,7 @@ class Program
             Console.WriteLine($"重心 {i}: ({centroid[i, 0]}, {centroid[i, 1]})");
         }
 
+        Console.WriteLine("==========クラスタリング開始==========");
         // クラスタリング
         for(int iteration = 0; iteration < 1000; iteration++) {
             for (int i = 0; i < 200; i++)
@@ -112,11 +112,21 @@ class Program
                 label[i] = min_cluster;
             }
 
+            Console.WriteLine("クラスタリング" + iteration + "回目");
+
+            double centroid_diff = 0;
+            
             // 重心の更新
             for (int j = 0; j < k; j++)
             {
+                centroid_diff += Math.Sqrt(Math.Pow(centroid[j, 0] - calc_centroid(data, label, j)[0], 2) +
+                                            Math.Pow(centroid[j, 1] - calc_centroid(data, label, j)[1], 2));
                 centroid[j, 0] = calc_centroid(data, label, j)[0];
                 centroid[j, 1] = calc_centroid(data, label, j)[1];
+            }
+            if (centroid_diff < 0.00000001){
+                Console.WriteLine("Early stopping(iteration: " + iteration + ")");
+                break;
             }
         }
 
