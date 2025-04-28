@@ -8,7 +8,7 @@ class Program
     {
         if (args.Length < 2)
         {
-            Console.WriteLine("使い方: Program <input-file> <output-file>");
+            Console.WriteLine("使い方: Program <input-file> <output-file> [k]");
             return;
         }
 
@@ -58,17 +58,19 @@ class Program
         }
 
         // LOFの値に基づいて外れ値を判定する閾値（例）
-        double threshold = 1.5;
+        double threshold = 1.2;
         Console.WriteLine("\n外れ値判定結果:");
+        bool[] is_outlier = new bool[count];
         for (int i = 0; i < count; i++)
         {
-            if (lof_values[i] > threshold)
+            is_outlier[i] = lof_values[i] > threshold;
+            if (is_outlier[i])
             {
                 Console.WriteLine($"データポイント ({data[i, 0]}, {data[i, 1]}) は外れ値です。LOF値: {lof_values[i]}");
             }
         }
 
-        int k = int.Parse(args[2]);
+        int k = args.Length > 2 ? int.Parse(args[2]) : 3; // デフォルト値として3を使用
         double[,] centroid = new double[k, 2];
 
         // 重心の初期化
@@ -138,7 +140,7 @@ class Program
             {
                 for (int i = 0; i < 200; i++)
                 {
-                    fp_out.WriteLine($"{data[i,0]},{data[i,1]},{label[i]}");
+                    fp_out.WriteLine($"{data[i,0]},{data[i,1]},{label[i]},{(i < count && is_outlier[i] ? 1 : 0)}");
                 }
             }
         }

@@ -4,17 +4,24 @@ import sys
 
 def visualize_clustering(filename):
     # データの読み込み
-    df = pd.read_csv(filename, header=None, names=['x', 'y', 'cluster'])
+    df = pd.read_csv(filename, header=None, names=['x', 'y', 'cluster', 'is_outlier'])
     
     # プロットの設定
     plt.figure(figsize=(10, 8))
     
     # 各クラスタのデータをプロット
     for cluster in df['cluster'].unique():
-        cluster_data = df[df['cluster'] == cluster]
-        plt.scatter(cluster_data['x'], cluster_data['y'], label=f'Cluster {cluster}')
+        # 外れ値ではないデータ
+        normal_data = df[(df['cluster'] == cluster) & (df['is_outlier'] == 0)]
+        plt.scatter(normal_data['x'], normal_data['y'], label=f'Cluster {cluster}')
     
-    plt.title('K-means Clustering Results')
+    # 外れ値を別の形状でプロット
+    outliers = df[df['is_outlier'] == 1]
+    if not outliers.empty:
+        plt.scatter(outliers['x'], outliers['y'], color='red', marker='*', 
+                   s=200, label='Outliers', edgecolors='black')
+    
+    plt.title('K-means Clustering Results with Outliers')
     plt.xlabel('X')
     plt.ylabel('Y')
     plt.legend()
