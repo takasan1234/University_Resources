@@ -21,7 +21,7 @@ DBSCANの特徴は，\emph{クラスタ数を事前に与える必要がない}�
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\textwidth]{trends_comparison.pdf}
+  \includegraphics[width=0.7\textwidth]{trends_comparison.pdf}
   \caption{k\,\-means と DBSCAN の検索数比較}
   \label{fig:trends}
 \end{figure}
@@ -60,13 +60,14 @@ DBSCANは，半径$\varepsilon$の近傍と最小点数$\text{MinPts}$という2
 
 $\varepsilon$が小さすぎるとノイズが増え，大きすぎると異なるクラスタを誤って結合する．適切な値はデータに依存するため，\emph{k\,\-距離プロット}でエルボー点を探す方法がよく用いられる．MinPtsは次元数$D$に対して$D+1$以上を目安とするのが経験則である．
 
+\clearpage
 \section{k\,\-means との比較}
 
 k\,\-meansはクラスタを凸形状（球状）と仮定し，クラスタ数を事前に指定する必要がある．非凸形状や異なる密度のクラスタが混在する場合，k\,\-means は適切に分割できないことが多い．これに対しDBSCANは形状の仮定を置かず，密度の差を利用して図\ref{fig:dbscan}のような複雑なクラスタも検出できる．
 
 \begin{figure}[htbp]
   \centering
-  \fbox{DBSCAN の結果画像を挿入}
+  \includegraphics[width=0.3\textwidth]{31d42bec-0995-4e7d-9d96-cb806a43999e.png}
   \caption{DBSCAN による非凸クラスタの抽出例}
   \label{fig:dbscan}
 \end{figure}
