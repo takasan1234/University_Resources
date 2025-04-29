@@ -42,7 +42,7 @@ class Program
 
 
     // DBSCANに必要なパラメータ
-    public static double epsilon = 1.0;   // 半径   
+    public static double epsilon = 0.3;   // 半径   
     public static int min_points = 2;   // 最小点数
     public static Point[] points = new Point[200];   // 点群
     public static int cluster_id = 1;   // クラスタID
@@ -92,11 +92,15 @@ class Program
         Console.WriteLine("==========クラスタリング開始==========");
         for (int i = 0; i < 200; i++){
             if (points[i].is_visited) continue;
-            if (expandCluster(points[i])){
+            if (checkAndExpandCluster(points[i])){
                 cluster_id++;
             }
         }
 
+        // cluster_idをlabel配列にコピー
+        for (int i = 0; i < 200; i++) {
+            label[i] = points[i].cluster_id;
+        }
 
         // 出力ファイルの作成
         try
@@ -122,7 +126,7 @@ class Program
                          Math.Pow(A[0,1] - B[0,1], 2));
     }
 
-    private static bool expandCluster(Point point){
+    private static bool checkAndExpandCluster(Point point){
         if (point.is_visited) return false;
         point.is_visited = true;
         Point[] neighbors = epsilonNeighborhood(point);
@@ -134,7 +138,7 @@ class Program
                 if (neighbors[j] != null) {
                     neighbors[j].cluster_id = cluster_id;
                     neighbors[j].type = PointType.Border;
-                    expandCluster(neighbors[j]);
+                    checkAndExpandCluster(neighbors[j]);
                 }
             }
             return true;
@@ -148,7 +152,6 @@ class Program
         int neighbor_count = 0;
 
         for (int i = 0; i < points.Length; i++){
-            if (points[i] == null || points[i].is_visited) continue;
             if (calc_distance(point.data, points[i].data) <= epsilon){
                 neighbors[neighbor_count] = points[i];
                 neighbor_count++;
