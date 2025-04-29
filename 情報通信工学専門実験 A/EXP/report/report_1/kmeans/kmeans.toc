@@ -12,4 +12,4 @@
 \contentsline {subsection}{\numberline {5.2}k-means 収束状況}{3}{}%
 \contentsline {subsection}{\numberline {5.3}可視化結果}{4}{}%
 \contentsline {section}{\numberline {6}考察}{5}{}%
-\contentsline {section}{\numberline {7}まとめ}{5}{}%
+\contentsline {section}{\numberline {7}まとめ}{6}{}%
