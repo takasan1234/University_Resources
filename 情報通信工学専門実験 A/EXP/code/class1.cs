@@ -4,6 +4,7 @@ using System.IO;
 
 class Program
 {
+    private static bool[] is_outlier = new bool[200];
     static void Main(string[] args)
     {
         if (args.Length < 2)
@@ -57,10 +58,9 @@ class Program
             Console.WriteLine($"データポイント ({data[i, 0]}, {data[i, 1]}) の LOF値: {lof_values[i]}");
         }
 
-        // LOFの値に基づいて外れ値を判定する閾値（例）
-        double threshold = 1.2;
+        // LOFの値に基づいて外れ値を判定する閾値
+        double threshold = 1.5;
         Console.WriteLine("\n外れ値判定結果:");
-        bool[] is_outlier = new bool[count];
         for (int i = 0; i < count; i++)
         {
             is_outlier[i] = lof_values[i] > threshold;
@@ -70,7 +70,7 @@ class Program
             }
         }
 
-        int k = args.Length > 2 ? int.Parse(args[2]) : 3; // デフォルト値として3を使用
+        int k = args.Length > 2 ? int.Parse(args[2]) : 3; 
         double[,] centroid = new double[k, 2];
 
         // 重心の初期化
@@ -121,10 +121,11 @@ class Program
             // 重心の更新
             for (int j = 0; j < k; j++)
             {
-                centroid_diff += Math.Sqrt(Math.Pow(centroid[j, 0] - calc_centroid(data, label, j)[0], 2) +
-                                            Math.Pow(centroid[j, 1] - calc_centroid(data, label, j)[1], 2));
-                centroid[j, 0] = calc_centroid(data, label, j)[0];
-                centroid[j, 1] = calc_centroid(data, label, j)[1];
+                double[] centroid_new = calc_centroid(data, label, j);
+                centroid_diff += Math.Sqrt(Math.Pow(centroid[j, 0] - centroid_new[0], 2) +
+                                            Math.Pow(centroid[j, 1] - centroid_new[1], 2));
+                centroid[j, 0] = centroid_new[0];
+                centroid[j, 1] = centroid_new[1];
             }
             if (centroid_diff < 0.00000001){
                 Console.WriteLine("Early stopping(iteration: " + iteration + ")");
@@ -159,11 +160,13 @@ class Program
         int valid_count = 0;
 
         for (int i = 0; i < 200; i++)
-        {
-            if (label[i] == k){
+        {   
+            if (label[i] == k && is_outlier[i] == false){
                 sum[0] += data[i, 0];
                 sum[1] += data[i, 1];
                 valid_count++;
+            }else if (label[i] == k && is_outlier[i] == true){
+                Console.WriteLine("外れ値なので、重心計算から除外します。{0},{1}", data[i, 0], data[i, 1]);
             }
         }
         centroid[0] = sum[0] / valid_count;
