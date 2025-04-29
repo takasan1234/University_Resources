@@ -59,7 +59,7 @@ CSV 形式で与えられた最大 200 点の二次元データに対し，Local
 \begin{equation}
   \operatorname{LOF}_k(A)
   :=
-  \frac{\displaystyle\sum_{B\in N_k(A)} \operatorname{lrd}_k(B) \,/\, |N_k(A)|}
+  \frac{\sum_{B\in N_k(A)} \operatorname{lrd}_k(B) \,/\, |N_k(A)|}
        {\operatorname{lrd}_k(A)}\,.
   \label{eq:lof}
 \end{equation}
@@ -154,15 +154,34 @@ LOF は $k=10$，閾値 1.2，k-means はクラスタ数 $k=3$ とし，最大 1
 
 %--------------------------------------------------
 \section{考察}
-\begin{enumerate}
-  \item 式~\eqref{eq:lof} に基づき外れ値を除外しながら計算した重心 $\mathbf{c}_j$ により，クラスタリングの安定性が向上した。
-  \item moon データセットのような非線形境界に対しては k-means の線形判別面が不利であり，今後は DBSCAN などの導入を検討する必要がある。
-\end{enumerate}
+
+\subsection*{外れ値除去の効果}
+LOF で外れ値を先に取り除くことで，各クラスタの重心が極端な点に引っ張られず，分割が安定した。  
+特に \texttt{square} や \texttt{three\_island} のような単純形状では，クラスタの境界が滑らかになり，再現性が向上した。
+
+\subsection*{k-means がうまく働く場合}
+境界がおおむね直線的なデータ（\texttt{square} など）では，k-means が高速かつ正確にクラスタを分けられた。  
+実装が簡単で計算量も小さいため，データ数が多いときは依然として有力な選択肢になる。
+
+\subsection*{k-means が苦手な場合}
+\texttt{moon} や \texttt{crater} のように，点が曲線状に並ぶデータでは精度が落ちた。  
+これは，重心計算がユークリッド距離の平均だけに依存し，曲線をまたぐ点を同じクラスタに入れてしまうためである。
+
+\subsection*{手法選択基準の提案}
+\begin{itemize}
+  \item \textbf{データの形が直感的に分かる} ⇒ k-means が手軽で速い。  
+  \item \textbf{形が複雑／非線形} ⇒ DBSCAN など密度ベース手法が安全。  
+  \item 外れ値が多い場合は，どの手法でも事前に LOF などで除去しておくと結果が安定する。
+\end{itemize}
+
+\subsection*{今後の改善点}
+曲線形状への対策としては，k-means++ による初期値改良や，距離関数をユークリッド以外に変える方法がある。  
+また，DBSCAN と k-means を組み合わせたハイブリッド法なども検討すると面白いのではないかと思う。
 
 %--------------------------------------------------
 \section{まとめ}
 本稿で示した C\# プログラムは，LOF による外れ値検出と k-means クラスタリングを連続実行し，200 点のデータに対して 13 反復で収束したことを確認した。外れ値除去付き重心計算（変数 	exttt{centroid[j,*]} が対応）がクラスタ分割の安定化に寄与することを示した。
 
-今後は LOF 閾値の最適化，自動初期化手法（k-means++），および非線形クラスタリング手法の比較実装を課題とする。
+今後は LOF 閾値の最適化，自動初期化手法（k-means++），および非線形クラスタリング手法(DBSCAN)の比較実装などを課題とする。
 
 \end{document}
