@@ -5,24 +5,38 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Local Outlier Factor (LOF)}{2}{}\protected@file@percent }
 \newlabel{eq:lof}{{1}{2}{}{equation.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}k-means クラスタリング}{2}{}\protected@file@percent }
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces 外れ値除外付き重心計算 (抜粋)}}{3}{}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces 外れ値除外付き重心計算（抜粋）}}{3}{}\protected@file@percent }
 \newlabel{lst:centroid}{{1}{3}{}{algorithm.1}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}実装要点 (C\#)}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4}実験設定}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}データセット}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}パラメータ}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {5}結果}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}外れ値検出結果 (moon データセット)}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}k-means 収束状況}{3}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 外れ値一覧 (LOF $>1.2$)}}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}外れ値検出（moon データセット）}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}k-means の収束状況}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}可視化結果}{3}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 外れ値一覧（LOF $>1.2$）}}{4}{}\protected@file@percent }
 \newlabel{tab:outliers}{{1}{4}{}{table.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}可視化結果}{4}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces moon（左）と crater（右）のクラスタリング結果}}{4}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \texttt  {moon}（左）と \texttt  {crater}（右）のクラスタリング結果}}{4}{}\protected@file@percent }
 \newlabel{fig:moon-crater}{{1}{4}{}{figure.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces square（左）と three\_island（右）のクラスタリング結果}}{4}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \texttt  {square}（左）と \texttt  {three\_island}（右）のクラスタリング結果}}{4}{}\protected@file@percent }
 \newlabel{fig:square-three}{{2}{4}{}{figure.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces two\_island データセットのクラスタリング結果}}{5}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \texttt  {two\_island} データセットのクラスタリング結果}}{5}{}\protected@file@percent }
 \newlabel{fig:two-island}{{3}{5}{}{figure.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}考察}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7}まとめ}{6}{}\protected@file@percent }
-\gdef \@abspage@last{6}
+\newlabel{sec:discussion}{{6}{5}{}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}外れ値除去の効果}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.1}結論}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.2}効果の検証}{5}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces 外れ値を除外しない場合の \texttt  {two\_island} クラスタリング例（2 パターン）}}{5}{}\protected@file@percent }
+\newlabel{fig:two-island-with-outlier}{{4}{5}{}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 外れ値を除外した場合の \texttt  {two\_island} クラスタリング結果}}{6}{}\protected@file@percent }
+\newlabel{fig:two-island-with-outlier_right}{{5}{6}{}{figure.5}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.3}結果が分岐した要因}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}k-means の性質と適用範囲}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.1}k-means が適する場合}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.2}k-means が苦手な場合}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.3}手法選択の指針}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}今後の改善点}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}まとめ}{7}{}\protected@file@percent }
+\gdef \@abspage@last{7}
