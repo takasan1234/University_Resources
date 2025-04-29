@@ -1,5 +1,5 @@
 % =============================================
-% LOF & centroid 補足説明追加版
+% LOF & centroid 補足説明追加版（リファイン）
 % =============================================
 
 \documentclass[a4j,dvipdfmx]{jsarticle}
@@ -31,57 +31,54 @@
 
 %--------------------------------------------------
 \begin{abstract}
-CSV 形式で与えられた最大 200 点の二次元データに対し，Local Outlier Factor (LOF) による外れ値検出と k-means クラスタリングを単一の C\# プログラムで逐次実行した手順と結果を報告する．本稿では実装の要点，入力・出力仕様，および実験ログの要約を整理し，将来の改善方針を示す．
+最大 200 点の二次元データを入力とし，Local Outlier Factor (LOF) で外れ値を検出した後に k-means クラスタリングを連続実行する C\# プログラムを作成した。本稿ではその実装要点と実験結果を報告する。加えて，入出力仕様，実行ログの要約，将来の改良方針を示す。
 \end{abstract}
 
 %--------------------------------------------------
 \section{背景と目的}
-外れ値検出とクラスタリングはデータ解析の根幹であり，両者は相互に影響を及ぼす．本プログラムは LOF によって外れ値を除いた後に k-means を適用することで，クラスタリング結果の安定化を図ることを目的としている．
+外れ値検出とクラスタリングはデータ解析の基盤技術であり，相互に強く影響しあう。本プログラムは，まず LOF で外れ値を排除し，その後 k-means を適用することでクラスタリング結果の安定性を高めることを目的とする。
 
 %--------------------------------------------------
 \section{手法}
 \subsection{処理フロー}
 \begin{description}
-  \item[入力] 二次元座標を格納した CSV（形式：\texttt{x,y}）
+  \item[入力] 二次元座標を格納した CSV ファイル（書式：\texttt{x,y}）。
   \item[処理手順]
     \begin{enumerate}
-      \item CSV 読み込み
-      \item LOF の計算 ($k=10$)
-      \item 閾値 1.2 を超える点を外れ値とフラグ付け
-      \item k-means クラスタリング（クラスタ数 $k$ はコマンドライン引数，既定値 3）
-      \item 結果を CSV へ出力
+      \item CSV の読み込み
+      \item LOF の計算（近傍数 $k=10$）
+      \item LOF 値が 1.2 を超えた点を外れ値としてフラグ付け
+      \item k-means クラスタリング（クラスタ数はコマンドライン引数，既定値 3）
+      \item 結果を CSV に出力
     \end{enumerate}
   \item[出力] \texttt{x, y, cluster\_id, is\_outlier}
 \end{description}
 
 \subsection{Local Outlier Factor (LOF)}
-スクリーンショットで示された定義に合わせ，点 $A$ の LOF は次式で与えられる：
+点 $A$ の LOF は次式で定義される：
 \begin{equation}
-  \operatorname{LOF}_k(A)
-  :=
-  \frac{\sum_{B\in N_k(A)} \operatorname{lrd}_k(B) \,/\, |N_k(A)|}
-       {\operatorname{lrd}_k(A)}\,.
+  \operatorname{LOF}_k(A)=\frac{\displaystyle\frac{1}{|N_k(A)|}\sum_{B\in N_k(A)} \operatorname{lrd}_k(B)}{\operatorname{lrd}_k(A)}\, ,
   \label{eq:lof}
 \end{equation}
 ここで $N_k(A)$ は $A$ の $k$ 近傍集合，$|N_k(A)|=k$，$\operatorname{lrd}_k(\cdot)$ は局所到達可能密度 (Local Reachability Density) である。
 
 \subsection{k-means クラスタリング}
-初期重心はランダムに抽出し，ユークリッド距離による割り当てと重心再計算を繰り返す．収束判定は
+初期重心はランダムに選択し，ユークリッド距離で各点を割り当て，重心を再計算する。この更新を
 \[
-  \max_{j} \bigl\| \mathbf{c}_{j}^{(t+1)} - \mathbf{c}_{j}^{(t)} \bigr\| < 10^{-8}
+  \max_{j} \bigl\| \mathbf{c}_{j}^{(t+1)}-\mathbf{c}_{j}^{(t)} \bigr\| < 10^{-8}
 \]
-または 1000 反復に達した時点とした．ここで $\mathbf{c}_{j}^{(t)}$ は時刻 $t$ におけるクラスタ $j$ の重心 (centroid) であり，プログラム中の変数 \texttt{centroid[j, *]} に対応する。外れ値は重心計算から除外する．
+が成り立つか，または 1000 反復に到達するまで繰り返す。$\mathbf{c}_{j}^{(t)}$ は時刻 $t$ におけるクラスタ $j$ の重心であり，実装では配列 \texttt{centroid[j,*]} に対応する。\textbf{外れ値フラグが立った点は重心計算に含めない。}
 
 %--------------------------------------------------
 \section{実装要点 (C\#)}
 \begin{itemize}
-  \item 2 次元データは \texttt{double[,]} 配列で保持．最大 200 行を想定．
-  \item LOF 計算と k-means は同一ファイルで実装し，外部依存ライブラリは使用していない．
-  \item 外れ値を除外して重心を計算する際のコード片をアルゴリズム~\ref{lst:centroid} に示す．
+  \item 2 次元データは \texttt{double[,]} 配列で保持し，最大 200 行を想定。
+  \item LOF と k-means は同一ソースファイルに実装し，外部ライブラリは不使用。
+  \item 外れ値を除外して重心を再計算するコード断片をアルゴリズム~\ref{lst:centroid} に示す。
 \end{itemize}
 
 \begin{algorithm}[tbp]
-\caption{外れ値除外付き重心計算 (抜粋)}
+\caption{外れ値除外付き重心計算（抜粋）}
 \label{lst:centroid}
 \begin{algorithmic}[1]
 \FOR{$i \gets 0$ \TO $N-1$}
@@ -97,19 +94,19 @@ CSV 形式で与えられた最大 200 点の二次元データに対し，Local
 %--------------------------------------------------
 \section{実験設定}
 \subsection{データセット}
-5 種の人工データ (各 200 点) を使用した：moon，crater，square，three\_island，two\_island．
+5 種の人工データセット（各 200 点）を使用した：\texttt{moon}，\texttt{crater}，\texttt{square}，\texttt{three\_island}，\texttt{two\_island}。
 
 \subsection{パラメータ}
-LOF は $k=10$，閾値 1.2，k-means はクラスタ数 $k=3$ とし，最大 1000 反復で収束を判定した．
+LOF の近傍数は $k=10$，閾値は 1.2。k-means のクラスタ数は 3（任意の正の数: コマンドライン引数で指定）とし，収束判定の上限を 1000 反復に設定した。
 
 %--------------------------------------------------
 \section{結果}
-\subsection{外れ値検出結果 (moon データセット)}
-式~\eqref{eq:lof} に従い計算した LOF が 1.2 を超えた点は 7 個であり，表~\ref{tab:outliers} に示す．
+\subsection{外れ値検出（moon データセット）}
+式~\eqref{eq:lof} に基づき LOF を計算した結果，値が 1.2 を超えた点は 7 つであった（表~\ref{tab:outliers}）。
 
 \begin{table}[tbp]
   \centering
-  \caption{外れ値一覧 (LOF $>1.2$)}
+  \caption{外れ値一覧（LOF $>1.2$）}
   \label{tab:outliers}
   \begin{tabular}{ccc}
     \toprule
@@ -125,63 +122,87 @@ LOF は $k=10$，閾値 1.2，k-means はクラスタ数 $k=3$ とし，最大 1
     \bottomrule
   \end{tabular}
 \end{table}
-\subsection{k-means 収束状況}
-初期重心をランダムに選択した場合，moon データセットでは 13 反復で収束した．各反復で外れ値 7 点は重心計算から除外された．
+
+\subsection{k-means の収束状況}
+\texttt{moon} データセットでは，初期重心をランダムに設定した結果，13 反復で収束した。各反復で前述の 7 点は重心計算から除外された。
 
 \subsection{可視化結果}
-\begin{figure}[H] % H オプションで厳密に位置を固定
+図~\ref{fig:moon-crater}, ~\ref{fig:square-three}, ~\ref{fig:two-island} は人工データセットのクラスタリング結果である。これに関する考察は~\ref{sec:discussion} 節で行う。
+\begin{figure}[H]
   \centering
   \includegraphics[width=.4\textwidth]{moon_output_plot.pdf}
   \includegraphics[width=.4\textwidth]{crater_output_plot.pdf}
-  \caption{moon（左）と crater（右）のクラスタリング結果}
+  \caption{\texttt{moon}（左）と \texttt{crater}（右）のクラスタリング結果}
   \label{fig:moon-crater}
 \end{figure}
 
-\begin{figure}[H] % H オプションで厳密に位置を固定
+\begin{figure}[H]
   \centering
   \includegraphics[width=.4\textwidth]{square_output_plot.pdf}
   \includegraphics[width=.4\textwidth]{three_island_output_plot.pdf}
-  \caption{square（左）と three\_island（右）のクラスタリング結果}
+  \caption{\texttt{square}（左）と \texttt{three\_island}（右）のクラスタリング結果}
   \label{fig:square-three}
 \end{figure}
 
-\begin{figure}[H] % H オプションで厳密に位置を固定
+\begin{figure}[H]
   \centering
   \includegraphics[width=.4\textwidth]{two_island_output_plot.pdf}
-  \caption{two\_island データセットのクラスタリング結果}
+  \caption{\texttt{two\_island} データセットのクラスタリング結果}
   \label{fig:two-island}
 \end{figure}
 
 %--------------------------------------------------
 \section{考察}
+\label{sec:discussion}
+\subsection{外れ値除去の効果}
+\subsubsection{結論}
+LOF により外れ値を事前に取り除くことで，各クラスタの重心が極端な点に引きずられず，分割が安定した。特に \texttt{square}, \texttt{three\_island}, \texttt{two\_island} のような単純形状に対しては，再現性の高いクラスタリングが得られた。
 
-\subsection*{外れ値除去の効果}
-LOF で外れ値を先に取り除くことで，各クラスタの重心が極端な点に引っ張られず，分割が安定した。  
-特に \texttt{square} や \texttt{three\_island} のような単純形状では，クラスタの境界が滑らかになり，再現性が向上した。
+\subsubsection{効果の検証}
+外れ値除去の有無による差を確認するため，\texttt{two\_island} データに人工外れ値を追加した。外れ値を除外せずにクラスタリングした結果を図~\ref{fig:two-island-with-outlier} に示す。初期重心の選択により 2 通りの分割結果が生じ，いずれも正しいクラスタ構造を再現できていない。
 
-\subsection*{k-means がうまく働く場合}
-境界がおおむね直線的なデータ（\texttt{square} など）では，k-means が高速かつ正確にクラスタを分けられた。  
-実装が簡単で計算量も小さいため，データ数が多いときは依然として有力な選択肢になる。
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.4\textwidth]{two_island_with_outlier_output_plot_special.pdf}
+  \includegraphics[width=.4\textwidth]{two_island_with_outlier_output_plot.pdf}
+  \caption{外れ値を除外しない場合の \texttt{two\_island} クラスタリング例（2 パターン）}
+  \label{fig:two-island-with-outlier}
+\end{figure}
 
-\subsection*{k-means が苦手な場合}
-\texttt{moon} や \texttt{crater} のように，点が曲線状に並ぶデータでは精度が落ちた。  
-これは，重心計算がユークリッド距離の平均だけに依存し，曲線をまたぐ点を同じクラスタに入れてしまうためである。
+一方，外れ値を除外してからクラスタリングした結果を図~\ref{fig:two-island-with-outlier_right} に示す。こちらでは 2 島構造が正確に分離されており，LOF による前処理の有効性が視覚的に確認できる。
 
-\subsection*{手法選択基準の提案}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.4\textwidth]{two_island_with_outlier_output_plot_right.pdf}
+  \caption{外れ値を除外した場合の \texttt{two\_island} クラスタリング結果}
+  \label{fig:two-island-with-outlier_right}
+\end{figure}
+
+\subsubsection{結果が分岐した要因}
+外れ値を除去しない場合に 2 通りの結果が生じたのは，初期重心が外れ値に設定されるか否かによる。ログを解析したところ，外れ値 3 点のいずれかが初期重心に選ばれたケースでは誤った分割が生じることが判明した。
+
+\subsection{k-means の性質と適用範囲}
+\subsubsection{k-means が適する場合}
+境界がほぼ直線的なデータ（例：\texttt{square}）では，k-means は高速かつ高精度にクラスタを分割できる。実装が簡易で計算コストも低いため，大規模データにおいて依然有力な選択肢である。
+
+\subsubsection{k-means が苦手な場合}
+曲線状に点が分布するデータ（例：\texttt{moon}，\texttt{crater}）では精度が低下する。重心計算がユークリッド距離の平均に依存し，曲線をまたぐ点が同一クラスタに取り込まれるためである。
+
+\subsubsection{手法選択の指針}
 \begin{itemize}
-  \item \textbf{データの形が直感的に分かる} ⇒ k-means が手軽で速い。  
-  \item \textbf{形が複雑／非線形} ⇒ DBSCAN など密度ベース手法が安全。  
-  \item 外れ値が多い場合は，どの手法でも事前に LOF などで除去しておくと結果が安定する。
+  \item \textbf{形状が単純で直感的}: k-means を優先。
+  \item \textbf{形状が複雑または非線形}: DBSCAN など密度ベース手法を検討。
+  \item 外れ値が多い場合は，どの手法でも LOF などで事前に除去すると結果が安定する。
 \end{itemize}
 
-\subsection*{今後の改善点}
-曲線形状への対策としては，k-means++ による初期値改良や，距離関数をユークリッド以外に変える方法がある。  
-また，DBSCAN と k-means を組み合わせたハイブリッド法なども検討すると面白いのではないかと思う。
+\subsection{今後の改善点}
+曲線形状への対策として k-means++ による初期値改良や，ユークリッド以外の距離関数の採用が考えられる。また，DBSCAN と k-means を組み合わせたハイブリッド手法の検討も一案である。
 
 %--------------------------------------------------
 \section{まとめ}
-本稿で示した C\# プログラムは，LOF による外れ値検出と k-means クラスタリングを連続実行し，200 点のデータに対して 13 反復で収束したことを確認した。外れ値除去付き重心計算（変数 	exttt{centroid[j,*]} が対応）がクラスタ分割の安定化に寄与することを示した。
+本稿で示した C\# プログラムは，LOF による外れ値検出と k-means クラスタリングを連続実行し，200 点のデータに対して 13 反復で収束した。外れ値除去付き重心計算（配列 \texttt{centroid[j,*]}）がクラスタ分割の安定化に寄与することを確認した。
 
-今後は LOF 閾値の最適化，自動初期化手法（k-means++），および非線形クラスタリング手法(DBSCAN)の比較実装などを課題とする。
+今後の課題として，LOF 閾値の最適化，自動初期化手法（k-means++），および非線形クラスタリング手法（DBSCAN）の比較実装を挙げる。
 
 \end{document}
+

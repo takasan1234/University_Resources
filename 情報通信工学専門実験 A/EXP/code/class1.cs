@@ -59,7 +59,7 @@ class Program
         }
 
         // LOFの値に基づいて外れ値を判定する閾値
-        double threshold = 1.5;
+        double threshold = 3;
         Console.WriteLine("\n外れ値判定結果:");
         for (int i = 0; i < count; i++)
         {
