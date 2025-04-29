@@ -4,7 +4,14 @@ import sys
 
 def visualize_clustering(filename):
     # データの読み込み
-    df = pd.read_csv(filename, header=None, names=['x', 'y', 'cluster', 'is_outlier'])
+    df = pd.read_csv(filename, header=None)
+    
+    # カラム名の設定（列数に応じて動的に設定）
+    if len(df.columns) == 3:
+        df.columns = ['x', 'y', 'cluster']
+        df['is_outlier'] = 0  # 外れ値フラグがない場合は全て0とする
+    else:
+        df.columns = ['x', 'y', 'cluster', 'is_outlier']
     
     # プロットの設定
     plt.figure(figsize=(10, 8))
@@ -35,7 +42,12 @@ def visualize_clustering(filename):
                    edgecolors='black',
                    linewidth=1.5)
     
-    plt.title('K-means Clustering Results with Outliers')
+    # タイトルをファイル名に基づいて設定
+    if 'DBSCAN' in filename:
+        plt.title('DBSCAN Clustering Results')
+    else:
+        plt.title('K-means Clustering Results')
+    
     plt.xlabel('X')
     plt.ylabel('Y')
     plt.legend(frameon=True, fancybox=True, shadow=True)
