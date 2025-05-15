@@ -1,0 +1,159 @@
+\documentclass[a4paper,11pt]{article}
+
+% 日本語設定
+\usepackage{plautopatch}
+\usepackage[utf8]{inputenc}
+\usepackage{CJKutf8}
+\usepackage{otf}
+
+% 必要なパッケージ
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{url}
+
+% 丸数字のための定義
+\newcommand{\circled}[1]{\textcircled{\scriptsize #1}}
+
+% タイトル設定
+\title{COMPASデータセットを用いた再犯予測モデルの精度向上}
+\author{工学部 電子情報学科\\学籍番号：08D23091\\辻 孝弥}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{はじめに}
+本課題では，COMPASデータセットを用いて再犯予測モデルの精度向上を目的とした。XGBoostとMLPの２種類のモデルを構築・改善し，さらに両者をスタッキングする手法を適用した。
+
+\section{実験方法}
+\subsection{XGBoostモデルの導入とハイパーパラメータ調整}
+使用モデル: XGBClassifier
+
+\subsubsection{Optunaによる事前探索と二段階学習}
+Optuna を用いて最適なハイパーパラメータを事前に調査し，その結果を \texttt{best\_params} に設定して一次学習を実施した。\par
+続いて一次学習済みモデルで派生特徴量を生成し，クラス不均衡補正などを加えた新たなパラメータセット \texttt{new\_params} で再度全データを用いた二次学習を行った。
+
+\subsubsection{主なハイパーパラメータ設定}
+\begin{itemize}[nosep]
+  \item 学習率 (\texttt{learning\_rate})：0.05 $\rightarrow$ 0.08
+  \item 木の深さ (\texttt{max\_depth})：3
+  \item サブサンプリング率 (\texttt{subsample})：0.90
+  \item 特徴量サンプリング率 (\texttt{colsample\_bytree})：0.78
+  \item 最小子ノード重量 (\texttt{min\_child\_weight})：5
+  \item 正則化パラメータ (\texttt{gamma})：0.50
+  \item L1正則化 (\texttt{reg\_alpha})：$5.4 \times 10^{-6}$
+  \item L2正則化 (\texttt{reg\_lambda})：5.88
+  \item 木数 (\texttt{n\_estimators})：200
+  \item 早期停止 (\texttt{early\_stopping\_rounds})：10
+  \item クラス不均衡補正 (\texttt{scale\_pos\_weight})：訓練データのクラス比に基づき自動設定
+\end{itemize}
+
+\subsection{特徴量エンジニアリング}
+\subsubsection{不要特徴量の削減}
+重要度上位80\%を残し，下位20\%を削除（\texttt{priors\_count}・\texttt{age} は保護）
+
+\subsubsection{ChatGPTによる特徴量選択}
+全てのCSVカラムを逐次試すのは非効率なため，ChatGPT を用いて平均的に効果が見込める無難な派生特徴量案を取得し，それを見ながら実装した。
+
+\subsubsection{主な派生特徴量}
+\begin{itemize}[nosep]
+  \item \texttt{priors\_per\_year}（前科数／(年齢＋1)）
+  \item \texttt{sum\_priors\_and\_age}（前科数＋年齢）
+  \item \texttt{age\_squared}（年齢$^2$）
+  \item \texttt{log\_priors\_p1}（$\log$(前科数＋1)）
+  \item \texttt{age\_times\_priors}（年齢×前科数）
+  \item \texttt{total\_juv\_cnt}（少年期犯罪合計）
+  \item \texttt{juv\_ratio}（少年期犯罪合計／(前科数＋1)）
+  \item \texttt{log\_len\_stay}（拘束期間の対数化）
+\end{itemize}
+
+\subsubsection{\texttt{dob}（生年月日）の扱い}
+\begin{itemize}[nosep]
+  \item 初期には再犯率と無関係と判断し除外したが，除外時のAccuracyが0.688$\rightarrow$0.679に低下
+  \item 最終的には \texttt{dob} を含める実装とし，Accuracyを0.699$\rightarrow$0.710へ改善
+\end{itemize}
+
+\subsection{MLPモデルの構造・学習戦略改善}
+\subsubsection{ネットワーク構造}
+隠れ層：256→128，ReLU＋BatchNorm＋Dropout(0.3/0.2)
+
+\subsubsection{学習戦略}
+\begin{itemize}[nosep]
+  \item Optimizer：Adam(lr=1e-3, weight\_decay=1e-5)
+  \item Scheduler：CosineAnnealingLR
+  \item 損失関数：クラス重み付きCrossEntropy
+  \item EarlyStopping：patience=15
+\end{itemize}
+
+\subsection{モデルスタッキング}
+\begin{itemize}[nosep]
+  \item メタ学習器：LogisticRegression (L2, C=1.0)
+  \item 入力特徴：XGBoost/MLP の検証データ予測確率
+  \item 閾値決定：Youden's J による最適閾値
+\end{itemize}
+
+\section{結果}
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{lc}
+    \toprule
+    モデル & Accuracy \\
+    \midrule
+    \circled{1} MLP 単体 & 0.675 \\
+    \circled{2} XGBoost 単体＋特徴量変更 & 0.688 \\
+    \circled{3} \circled{2}モデル（dob除外） & 0.679 \\
+    \circled{4} 今回実装モデル（dob除外） & 0.699 \\
+    \circled{5} 完全実装モデル（dob含む） & 0.710 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{\circled{5}の詳細ログ}
+\subsubsection{混同行列}
+\begin{verbatim}
+[[1591  421]
+ [ 627  968]]
+\end{verbatim}
+
+\subsubsection{分類レポート}
+\begin{verbatim}
+              precision    recall  f1-score   support
+           0      0.717     0.791     0.752      2012
+           1      0.697     0.607     0.649      1595
+
+    accuracy                          0.710      3607
+   macro avg      0.707     0.699     0.701      3607
+weighted avg      0.708     0.710     0.706      3607
+\end{verbatim}
+
+Accuracy: 0.710\\
+ROC-AUC : 0.767\\
+LogLoss : 0.576
+
+\section{考察}
+\subsection{Optunaによるハイパラ最適化}
+一次学習で得られたパラメータをもとに，二次学習時にはクラス不均衡補正などを加えた \texttt{new\_params} を適用し，性能向上に寄与した。
+
+\subsection{ChatGPT活用の特徴量設計}
+無難で効果の期待できる特徴量案を迅速に取得でき，実装工数を大幅に削減できた。
+
+\subsection{\texttt{dob}除外の効果検証}
+当初「再犯率に関係がない」と判断して \texttt{dob} を除外したが，Accuracyが0.688$\rightarrow$0.679に低下した。\par
+\texttt{dob} を含めることで0.699$\rightarrow$0.710へ改善し，生年月日情報が有用であることを確認した。
+
+\subsection{スタッキング効果}
+異なるモデルの補完性により，最終的にAccuracy:0.710／ROC–AUC:0.767／LogLoss:0.576を達成した。
+
+\section{結論}
+Optunaによる二段階ハイパラ最適化とChatGPT提案の特徴量エンジニアリングを組み合わせ，実装に忠実に \texttt{dob} 情報の有効性を再検証した結果，再犯予測タスクにおいて高い汎化性能を実現できた。今後はさらに異なる情報源やモデル統合手法を探索し，性能向上を図る余地がある。
+
+\section*{参考文献}
+\begin{itemize}
+  \item スタッキングの実装と効果について \\
+  \url{https://potesara-tips.com/ensemble-stacking/#toc13}
+\end{itemize}
+
+\end{document}

@@ -42,8 +42,8 @@ class Program
 
 
     // DBSCANに必要なパラメータ
-    public static double epsilon = 0.3;   // 半径   
-    public static int min_points = 2;   // 最小点数
+    public static double epsilon = 0.2;   // 半径   
+    public static int min_points = 3;   // 最小点数
     public static Point[] points = new Point[200];   // 点群
     public static int cluster_id = 1;   // クラスタID
 

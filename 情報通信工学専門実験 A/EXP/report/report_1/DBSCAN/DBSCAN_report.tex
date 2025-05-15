@@ -3,7 +3,7 @@
 \usepackage{amsmath}
 \usepackage{url}
 
-\title{DBSCANの概要}
+\title{DBSCANの概要と実装結果}
 \author{大阪大学 工学部 電子情報学科 3年\\情報システム工学コース\\08D23091\,辻\,孝弥}
 \date{\today}
 
@@ -71,6 +71,28 @@ k\,\-meansはクラスタを凸形状（球状）と仮定し，クラスタ数�
   \caption{DBSCAN による非凸クラスタの抽出例}
   \label{fig:dbscan}
 \end{figure}
+
+\clearpage
+\subsection{実装結果}
+図\ref{fig:dbscan_moon}はDBSCANによる非線形形状のクラスタリングの結果である。k-means法ではクラスタリング困難だった非線形データセットに対してのクラスタリングが可能となっているのが視覚的にわかる。また, DBSCANの実装では, 外れ値検出/除外を明示的に別で実装しているわけではなかったが, 図\ref{fig:dbscan_two_island}のように孤立点がノイズとして扱われているのがわかる。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.3\textwidth]{moon_output_plot.pdf}
+  \caption{DBSCANによる非線形形状のクラスタリング}
+  \label{fig:dbscan_moon}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.3\textwidth]{two_island_output_plot.pdf}
+  \caption{DBSCANによる孤立点の検出}
+  \label{fig:dbscan_two_island}
+\end{figure}
+
+
+
+
 
 \section{おわりに}
 
