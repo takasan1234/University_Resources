@@ -1,0 +1,91 @@
+\documentclass[a4j]{jsarticle}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{amsmath}
+\usepackage{url}
+
+\title{相関ルールマイニングの概要}
+\author{大阪大学 工学部 電子情報学科 3年\\情報システム工学コース\\08D23091\,辻\,孝弥}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{はじめに}
+
+相関ルールマイニング（Association Rule Mining）は，大量の取引データ（トランザクション）から「あるアイテムの組み合わせが同時に出現しやすい」というパターンを発見する手法である．小売業におけるバスケット分析に端を発し，マーケティング施策やレコメンデーションの基盤として広く用いられている．
+
+\section{基本概念}
+
+\subsection{トランザクションとアイテム集合}
+
+\begin{description}
+  \item[トランザクション：] 顧客の購買履歴など，アイテムの集合を表す（例：\{ビール, おむつ, パン\}）．
+  \item[アイテム集合（Itemset）：] 複数のアイテムをまとめた集合．サイズ$k$のアイテム集合を$k$-アイテム集合と呼ぶ．
+\end{description}
+
+\subsection{指標定義}
+
+\begin{description}
+  \item[支持度 (Support):] 項目集合$X$が出現する頻度を表す．
+        \[
+          P(X)=\frac{|\{T \mid X \subseteq T\}|}{\text{全トランザクション数}}
+        \]
+  \item[信頼度 (Confidence):] $X$を含むトランザクションのうち$Y$も含む割合．
+        \[
+          P(Y|X)=\frac{P(X \cup Y)}{P(X)}
+        \]
+  \item[リフト (Lift):] 期待値以上に同時出現する強さ．1以上で正の相関．
+        \[
+          \frac{P(Y|X)}{P(Y)}
+        \]
+\end{description}
+
+\section{アルゴリズム概要}
+
+\subsection{Aprioriアルゴリズム}
+
+\begin{enumerate}
+  \item L1: すべての1-アイテム集合の支持度を計算し，最小支持度(minsup)以上の集合を抽出．
+  \item 候補生成 (Ck): 頻出(k--1)-アイテム集合同士を結合し，k-アイテム集合候補を作成．
+  \item プルーニング: 候補の部分集合がすべて頻出でないものは除去．
+  \item 支持度計算: トランザクションを再スキャンし，Ckの支持度を数えてLkを得る．
+  \item kを増やし，Lkが空になるまで繰り返す．
+\end{enumerate}
+
+\subsection{ルール生成}
+
+各頻出アイテム集合$\ell$をその非空部分集合$s$と$\ell-s$に分割し，ルール候補 $s \Rightarrow (\ell-s)$ を作成．
+信頼度を計算し，最小信頼度(minconf)以上のルールを採択．
+
+\section{応用例と利点・課題}
+
+\subsection{応用例}
+\begin{itemize}
+  \item 小売業のバスケット分析による陳列最適化
+  \item Webログ解析でのページ遷移パターン抽出
+  \item レコメンデーションシステムの基盤
+\end{itemize}
+
+\subsection{利点}
+\begin{itemize}
+  \item 手軽に意思決定ルールを発見できる
+  \item 可視化しやすくビジネス部門との連携に適す
+\end{itemize}
+
+\subsection{課題}
+\begin{itemize}
+  \item ルール数の爆発的増加に対処が必要
+  \item 当たり前のルール（例：パン$\Rightarrow$牛乳）が大量に出力される
+  \item 意外性の高いルールを見つけるにはリフトなどの指標でフィルタリングが必須
+\end{itemize}
+
+\section{おわりに}
+
+相関ルールマイニングは，シンプルな指標と反復的探索によりデータ内の潜在的パターンを発見する有力手法である．一方，候補数の爆発や自明なルールの多発といった課題もあるため，その他の手法と組み合わせることで，実用的な知見を抽出できる．
+
+\begin{thebibliography}{99}
+  \bibitem{keio} DM08-04: Association Rules, Keio University (2008)\\
+        \url{https://web.sfc.keio.ac.jp/~maunz/DM08/DM08-04.pdf}
+\end{thebibliography}
+
+\end{document} 

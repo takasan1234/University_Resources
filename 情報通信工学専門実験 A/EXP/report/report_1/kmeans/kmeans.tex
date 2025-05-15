@@ -156,7 +156,7 @@ LOF の近傍数は $k=10$，閾値は 1.2。k-means のクラスタ数は 3（�
 \label{sec:discussion}
 \subsection{外れ値除去の効果}
 \subsubsection{結論}
-LOF により外れ値を事前に取り除くことで，各クラスタの重心が極端な点に引きずられず，分割が安定した。特に \texttt{square}, \texttt{three\_island}, \texttt{two\_island} のような単純形状に対しては，再現性の高いクラスタリングが得られた。
+LOF により外れ値を事前に取り除くことで，各クラスタの重心が極端な点に引きずられず，分割が安定した。特に \texttt{square},\texttt{three\_island}, \texttt{two\_island} のような単純形状に対しては，再現性の高いクラスタリングが得られた。
 
 \subsubsection{効果の検証}
 外れ値除去の有無による差を確認するため，\texttt{two\_island} データに人工外れ値を追加した。外れ値を除外せずにクラスタリングした結果を図~\ref{fig:two-island-with-outlier} に示す。初期重心の選択により 2 通りの分割結果が生じ，いずれも正しいクラスタ構造を再現できていない。

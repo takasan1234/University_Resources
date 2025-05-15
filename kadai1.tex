@@ -1,0 +1,114 @@
+\documentclass[a4paper,11pt]{article}
+
+% 日本語設定
+\usepackage{plautopatch}
+\usepackage[utf8]{inputenc}
+\usepackage{CJKutf8}
+\usepackage{otf}
+
+% 必要なパッケージ
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% コードスタイル設定
+\lstset{
+  basicstyle=\ttfamily\small,
+  frame=single,
+  breaklines=true,
+  commentstyle=\color{green!50!black},
+  keywordstyle=\color{blue},
+  stringstyle=\color{red},
+  showstringspaces=false
+}
+
+% タイトル設定
+\title{機械学習に関する基礎知識}
+\author{工学部 電子情報学科\\学籍番号：08D23091\\辻 孝弥}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Accuracy, Precision, Recall, F1-score の計算式}
+
+混同行列（Confusion Matrix）の要素：
+\begin{itemize}
+    \item TP (True Positive): 真陽性 - 正しく正と予測された数
+    \item TN (True Negative): 真陰性 - 正しく負と予測された数
+    \item FP (False Positive): 偽陽性 - 誤って正と予測された数
+    \item FN (False Negative): 偽陰性 - 誤って負と予測された数
+\end{itemize}
+
+\subsection{Accuracy（正解率）}
+\begin{equation}
+    \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+\end{equation}
+
+説明：全体のデータの中で、正しく予測できた割合を表す。
+
+\subsection{Precision（適合率）}
+\begin{equation}
+    \text{Precision} = \frac{TP}{TP + FP}
+\end{equation}
+
+説明：正と予測したデータの中で、実際に正であった割合を表す。
+
+\subsection{Recall（再現率）}
+\begin{equation}
+    \text{Recall} = \frac{TP}{TP + FN}
+\end{equation}
+
+説明：実際に正であるデータの中で、正と予測できた割合を表す。
+
+\subsection{F1-score（F1値）}
+\begin{equation}
+    \text{F1-score} = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+\end{equation}
+
+説明：Precision と Recall の調和平均である。両者のバランスを考慮した指標で、どちらか一方だけが極端に高い場合に低い値になる。クラスの偏りが大きいデータセットでAccuracyよりも有用である。
+
+\section{deepcopy と copy 関数の違い}
+
+\begin{itemize}
+    \item \textbf{copy}: オブジェクトの参照をコピーする。元のオブジェクトとコピーされたオブジェクトは、同じデータを参照するため、一方を変更するともう一方も変更される。
+    
+    \item \textbf{deepcopy}: オブジェクトとその内部のオブジェクトも含めて、すべてを新たにコピーする。元のオブジェクトとコピーされたオブジェクトは完全に独立しており、一方を変更してももう一方に影響はない。
+\end{itemize}
+
+\section{optimizer.zero\_grad() の有無による動作の違い}
+
+\texttt{optimizer.zero\_grad()} は、モデルのパラメータの勾配を0にリセットする関数である。
+
+\subsection{optimizer.zero\_grad() がある場合}
+各 iteration（バッチ）の前に勾配が0にリセットされるため、勾配が累積されずに、現在のバッチのデータに基づいてパラメータが更新される。
+
+\subsection{optimizer.zero\_grad() がない場合}
+\begin{itemize}
+    \item 勾配が iteration 毎に累積されていく。
+    \item 過去の勾配情報が現在の更新に影響を与えるため、学習が不安定になったり、意図した方向に学習が進まなかったりする可能性がある。
+\end{itemize}
+
+\subsection{影響}
+\texttt{optimizer.zero\_grad()} を実行しないと、以下のような問題が生じる可能性がある：
+\begin{itemize}
+    \item loss が発散しやすくなる
+    \item モデルの学習速度が遅くなる
+    \item モデルが収束しなくなる
+\end{itemize}
+
+\subsection{結論}
+\texttt{optimizer.zero\_grad()} は、各 iteration の前に勾配をリセットすることで、安定した学習を保証するために必要な処理である。
+
+\section*{参考文献}
+\begin{itemize}
+  \item Google Developers: Machine Learning Crash Course - Classification: Accuracy, Precision, Recall \\
+  \url{https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall?hl=ja}
+\end{itemize}
+
+\end{document}
