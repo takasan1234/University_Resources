@@ -7,7 +7,7 @@ public class dijkstra {
     /* 定数定義 */
     static final int NODE_NUM = 10;   /* 総ノード数 */
     static final int MAX = 9999;      /* 無限大に相当する数 */
-    static final int FLAG = 0;        /* Dijkstraのテストの場合は0に、シミュレーション評価を行う場合は1にする */
+    static final int FLAG = 1;        /* Dijkstraのテストの場合は0に、シミュレーション評価を行う場合は1にする */
 
     public static void main(String[] args) {
         /* Dijkstraのアルゴリズム部分で必要な変数 */
@@ -128,7 +128,31 @@ public class dijkstra {
 
                 while (fin == 0) { /* finフラグが立つまで繰り返す */
                     /* 4. 更新処理 */
+                    for (i = 0; i < NODE_NUM; i++) {
+                        if (graph[tmp_node][i] < MAX && chk[i] == 0) {
+                            /* 未確定ノードへの距離を更新 */
+                            if (dist[i] > dist[tmp_node] + graph[tmp_node][i]) {
+                                dist[i] = dist[tmp_node] + graph[tmp_node][i];
+                                path[i] = tmp_node;  /* 前ノードを記録 */
+                            }
+                        }
+                    }
+
                     /* 5. 次の最短距離ノードを確定 */
+                    tmp_dist = MAX;
+                    for (i = 0; i < NODE_NUM; i++) {
+                        if (chk[i] == 0 && dist[i] < tmp_dist) {
+                            tmp_dist = dist[i];
+                            tmp_node = i;
+                        }
+                    }
+
+                    // 未確定ノードが存在しない、または到達不能な場合 ループを抜ける！！
+                    if (tmp_dist == MAX) {
+                        fin = 1;
+                    } else {
+                        chk[tmp_node] = 1;  /* 最短距離ノードを確定 */
+                    }
 
                     if (chk[dest] == 1) fin = 1; /* 終点ノードへの最短距離が確定したら終了 */
                 }
@@ -161,6 +185,30 @@ public class dijkstra {
                  * 2-(a) 空き容量がある場合の処理
                  * 2-(b) 呼損が発生した場合の処理
                  */
+                int miss_flag = 0;
+                for (i = 0 ; i < path.length - 1; i++) {
+
+                }
+
+                i = dest;
+                int temp = dest;
+                for (i = path[i]; i != src; i = path[i]) { /* 前ノード表を辿る */
+                    if (!(link[temp][i] >= 1)) {
+                        miss_flag = 1;
+                    }
+                    temp = i;
+                }
+                System.out.printf("%d\n", src);
+
+
+
+                if (miss_flag == 1) {
+                    miss++;
+                } else {
+                    success++;
+                }
+                System.out.printf("success = %d, miss = %d\n", success, miss);
+                return;
             }
         }
 
