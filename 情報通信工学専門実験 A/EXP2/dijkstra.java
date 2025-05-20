@@ -10,9 +10,15 @@ public class dijkstra {
     static final int NODE_NUM = 10;   /* 総ノード数 */
     static final int MAX = 9999;      /* 無限大に相当する数 */
     static final int FLAG = 1;        /* Dijkstraのテストの場合は0に、シミュレーション評価を行う場合は1にする */
-    static final int ROUTE_TYPE = 0;  /* 経路選択方法：0=最短路、1=最大路 */
+    static final int ROUTE_TYPE = 0;  /* 経路選択方法：0=最短路、1=最大路、2=要求時最短路、3=要求時最大路 */
     static final int SIM_COUNT = 10000; /* シミュレーション回数 */
     static final int[] PARAM_N = {5, 10, 20, 50, 100}; /* テストするパラメータnの値 */
+    static final String[] ROUTE_TYPE_NAMES = {
+        "最小ホップ経路を用いた固定経路",
+        "最大路を用いた固定経路",
+        "最小ホップを用いた要求時経路",
+        "最大路を用いた要求時経路"
+    };
 
     /* 通信履歴を管理するクラス */
     static class Communication {
@@ -34,8 +40,13 @@ public class dijkstra {
             int current = this.dest;
             this.path.add(current);
             
-            while (current != this.src) {
+            while (current != this.src && current < NODE_NUM) {
                 current = nodePath[current];
+                if (current >= NODE_NUM) {
+                    // 経路が見つからなかった場合
+                    this.path.clear();
+                    break;
+                }
                 this.path.add(current);
             }
         }
@@ -156,6 +167,125 @@ public class dijkstra {
         }
     }
 
+    /* 最小ホップを用いた要求時経路（空き容量のないリンクをグラフから取り除く） */
+    public static void findOnDemandShortestPath(int[][] graph, int[][] bandwidth, int[] path, int[] dist, int[] chk, int src, int dest) {
+        int i, j, tmp_node, tmp_dist, fin;
+        int[][] availableGraph = new int[NODE_NUM][NODE_NUM]; // 利用可能なリンクのみのグラフ
+        
+        /* 利用可能なリンクのみのグラフを作成 */
+        for (i = 0; i < NODE_NUM; i++) {
+            for (j = 0; j < NODE_NUM; j++) {
+                if (graph[i][j] < MAX && bandwidth[i][j] >= 1) {
+                    // 空き容量が1Mbps以上あるリンクのみを使用
+                    availableGraph[i][j] = graph[i][j];
+                } else {
+                    availableGraph[i][j] = MAX;
+                }
+            }
+        }
+        
+        /* 最短路の計算（利用可能なリンクのみ） */
+        for (i = 0; i < NODE_NUM; i++) {
+            dist[i] = MAX;
+            chk[i] = 0;
+            path[i] = NODE_NUM;
+        }
+        
+        path[src] = src;
+        dist[src] = 0;
+        chk[src] = 1;
+        tmp_node = src;
+        fin = 0;
+        
+        while (fin == 0) {
+            for (i = 0; i < NODE_NUM; i++) {
+                if (availableGraph[tmp_node][i] < MAX && chk[i] == 0) {
+                    if (dist[i] > dist[tmp_node] + availableGraph[tmp_node][i]) {
+                        dist[i] = dist[tmp_node] + availableGraph[tmp_node][i];
+                        path[i] = tmp_node;
+                    }
+                }
+            }
+            
+            tmp_dist = MAX;
+            for (i = 0; i < NODE_NUM; i++) {
+                if (chk[i] == 0 && dist[i] < tmp_dist) {
+                    tmp_dist = dist[i];
+                    tmp_node = i;
+                }
+            }
+            
+            if (tmp_dist == MAX) {
+                fin = 1;
+            } else {
+                chk[tmp_node] = 1;
+            }
+            
+            if (chk[dest] == 1) fin = 1;
+        }
+    }
+    
+    /* 最大路を用いた要求時経路（経路選択時点での空き容量をリンクの重みとする） */
+    public static void findOnDemandMaximumPath(int[][] graph, int[][] bandwidth, int[] path, int[] bottleneck, int[] chk, int src, int dest) {
+        int i, j, tmp_node, tmp_bottleneck, fin;
+        int[][] availableGraph = new int[NODE_NUM][NODE_NUM]; // 利用可能なリンクのみのグラフ
+        
+        /* 利用可能なリンクのみのグラフを作成（空き容量を重みとする） */
+        for (i = 0; i < NODE_NUM; i++) {
+            for (j = 0; j < NODE_NUM; j++) {
+                if (graph[i][j] < MAX && bandwidth[i][j] >= 1) {
+                    // 空き容量が1Mbps以上あるリンクのみを使用
+                    availableGraph[i][j] = bandwidth[i][j]; // 空き容量をリンクの重みとする
+                } else {
+                    availableGraph[i][j] = 0;
+                }
+            }
+        }
+        
+        /* 初期化 */
+        for (i = 0; i < NODE_NUM; i++) {
+            bottleneck[i] = 0;
+            chk[i] = 0;
+            path[i] = NODE_NUM;
+        }
+        
+        path[src] = src;
+        bottleneck[src] = MAX;
+        chk[src] = 1;
+        tmp_node = src;
+        fin = 0;
+        
+        while (fin == 0) {
+            for (i = 0; i < NODE_NUM; i++) {
+                if (availableGraph[tmp_node][i] > 0 && chk[i] == 0) {
+                    int newBottleneck = Math.min(bottleneck[tmp_node], availableGraph[tmp_node][i]);
+                    
+                    if (bottleneck[i] < newBottleneck) {
+                        bottleneck[i] = newBottleneck;
+                        path[i] = tmp_node;
+                    }
+                }
+            }
+            
+            tmp_bottleneck = 0;
+            tmp_node = -1;
+            for (i = 0; i < NODE_NUM; i++) {
+                if (chk[i] == 0 && bottleneck[i] > tmp_bottleneck) {
+                    tmp_bottleneck = bottleneck[i];
+                    tmp_node = i;
+                }
+            }
+            
+            if (tmp_node == -1) {
+                fin = 1;
+            } else {
+                chk[tmp_node] = 1;
+            }
+            
+            if (chk[dest] == 1) fin = 1;
+        }
+    }
+
     public static void main(String[] args) {
         /* Dijkstraのアルゴリズム部分で必要な変数 */
         int[][] graph = new int[NODE_NUM][NODE_NUM];    /* 距離行列 */
@@ -226,85 +356,107 @@ public class dijkstra {
         if (FLAG == 1) {
             Random rand = new Random(System.currentTimeMillis()); /* 乱数の初期化 */
             
-            // パラメータnごとに実験を実施
-            for (int param_n : PARAM_N) {
-                System.out.printf("\n===== パラメータn = %d の実験結果 =====\n", param_n);
+            // 各経路選択方法でシミュレーションを実行
+            for (int route_type = 0; route_type < 4; route_type++) {
+                System.out.printf("\n=======================================\n");
+                System.out.printf("経路選択方法: %s\n", ROUTE_TYPE_NAMES[route_type]);
+                System.out.printf("=======================================\n");
                 
-                success = 0;
-                sum_success = 0; /* 評価指標を初期化 */
-                history.clear(); /* 通信履歴をクリア */
-                
-                // 初期化
-                for (i = 0; i < NODE_NUM; i++) {
-                    for (j = 0; j < NODE_NUM; j++) {
-                        bandwidth[i][j] = link[i][j];  // リンク容量を初期状態にコピー
-                    }
-                }
-                
-                // SIM_COUNT回のシミュレーション
-                for (sim_time = 0; sim_time < SIM_COUNT; sim_time++) {
-                    // ランダムに送受信ノードを決定
-                    do {
-                        src = rand.nextInt(NODE_NUM);
-                        dest = rand.nextInt(NODE_NUM);
-                    } while (src == dest);
+                // パラメータnごとに実験を実施
+                for (int param_n : PARAM_N) {
+                    System.out.printf("\n===== パラメータn = %d の実験結果 =====\n", param_n);
                     
-                    // 経路の計算
-                    if (ROUTE_TYPE == 0) {
-                        findShortestPath(graph, path, dist, chk, src, dest);
-                    } else {
-                        findMaximumPath(graph, link, path, bottleneck, chk, src, dest);
-                    }
+                    success = 0;
+                    sum_success = 0; /* 評価指標を初期化 */
+                    history.clear(); /* 通信履歴をクリア */
                     
-                    // 通信オブジェクトを作成
-                    Communication comm = new Communication(src, dest);
-                    comm.setPath(path); // 経路情報を設定
-                    
-                    // 経路上のリンク容量をチェック
-                    boolean canEstablish = true;
-                    for (int idx = 0; idx < comm.path.size() - 1; idx++) {
-                        int node1 = comm.path.get(idx);
-                        int node2 = comm.path.get(idx + 1);
-                        if (bandwidth[node1][node2] < 1) {
-                            canEstablish = false;
-                            break;
+                    // 初期化
+                    for (i = 0; i < NODE_NUM; i++) {
+                        for (j = 0; j < NODE_NUM; j++) {
+                            bandwidth[i][j] = link[i][j];  // リンク容量を初期状態にコピー
                         }
                     }
                     
-                    if (canEstablish) {
-                        // 通信を確立できる場合、経路上のリンク容量を1Mbps減少
+                    // SIM_COUNT回のシミュレーション
+                    for (sim_time = 0; sim_time < SIM_COUNT; sim_time++) {
+                        // ランダムに送受信ノードを決定
+                        do {
+                            src = rand.nextInt(NODE_NUM);
+                            dest = rand.nextInt(NODE_NUM);
+                        } while (src == dest);
+                        
+                        // 経路選択方法に応じた経路計算
+                        switch (route_type) {
+                            case 0: // 最小ホップ経路を用いた固定経路
+                                findShortestPath(graph, path, dist, chk, src, dest);
+                                break;
+                            case 1: // 最大路を用いた固定経路
+                                findMaximumPath(graph, link, path, bottleneck, chk, src, dest);
+                                break;
+                            case 2: // 最小ホップを用いた要求時経路
+                                findOnDemandShortestPath(graph, bandwidth, path, dist, chk, src, dest);
+                                break;
+                            case 3: // 最大路を用いた要求時経路
+                                findOnDemandMaximumPath(graph, bandwidth, path, bottleneck, chk, src, dest);
+                                break;
+                        }
+                        
+                        // 通信オブジェクトを作成
+                        Communication comm = new Communication(src, dest);
+                        comm.setPath(path); // 経路情報を設定
+                        
+                        // 経路が見つからなかった場合はスキップ
+                        if (comm.path.isEmpty()) {
+                            history.add(comm);
+                            continue;
+                        }
+                        
+                        // 経路上のリンク容量をチェック
+                        boolean canEstablish = true;
                         for (int idx = 0; idx < comm.path.size() - 1; idx++) {
                             int node1 = comm.path.get(idx);
                             int node2 = comm.path.get(idx + 1);
-                            bandwidth[node1][node2]--;
-                            bandwidth[node2][node1]--;
+                            if (bandwidth[node1][node2] < 1) {
+                                canEstablish = false;
+                                break;
+                            }
                         }
-                        comm.established = true;
-                        success++;
-                    }
-                    
-                    // 通信履歴に追加
-                    history.add(comm);
-                    
-                    // n回前の通信が終了した場合、リンク容量を増加
-                    if (history.size() > param_n) {
-                        Communication oldComm = history.get(history.size() - param_n - 1);
-                        if (oldComm.established) {
-                            // 経路上のリンク容量を1Mbps増加
-                            for (int idx = 0; idx < oldComm.path.size() - 1; idx++) {
-                                int node1 = oldComm.path.get(idx);
-                                int node2 = oldComm.path.get(idx + 1);
-                                bandwidth[node1][node2]++;
-                                bandwidth[node2][node1]++;
+                        
+                        if (canEstablish) {
+                            // 通信を確立できる場合、経路上のリンク容量を1Mbps減少
+                            for (int idx = 0; idx < comm.path.size() - 1; idx++) {
+                                int node1 = comm.path.get(idx);
+                                int node2 = comm.path.get(idx + 1);
+                                bandwidth[node1][node2]--;
+                                bandwidth[node2][node1]--;
+                            }
+                            comm.established = true;
+                            success++;
+                        }
+                        
+                        // 通信履歴に追加
+                        history.add(comm);
+                        
+                        // n回前の通信が終了した場合、リンク容量を増加
+                        if (history.size() > param_n) {
+                            Communication oldComm = history.get(history.size() - param_n - 1);
+                            if (oldComm.established) {
+                                // 経路上のリンク容量を1Mbps増加
+                                for (int idx = 0; idx < oldComm.path.size() - 1; idx++) {
+                                    int node1 = oldComm.path.get(idx);
+                                    int node2 = oldComm.path.get(idx + 1);
+                                    bandwidth[node1][node2]++;
+                                    bandwidth[node2][node1]++;
+                                }
                             }
                         }
                     }
+                    
+                    // 呼損率を計算
+                    double blockingRate = (double)(SIM_COUNT - success) / SIM_COUNT;
+                    System.out.printf("確立できた通信数: %d / %d\n", success, SIM_COUNT);
+                    System.out.printf("呼損率: %.4f\n", blockingRate);
                 }
-                
-                // 呼損率を計算
-                double blockingRate = (double)(SIM_COUNT - success) / SIM_COUNT;
-                System.out.printf("確立できた通信数: %d / %d\n", success, SIM_COUNT);
-                System.out.printf("呼損率: %.4f\n", blockingRate);
             }
             
             return; // シミュレーション終了
