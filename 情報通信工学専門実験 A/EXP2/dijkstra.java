@@ -2,13 +2,44 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class dijkstra {
     /* 定数定義 */
     static final int NODE_NUM = 10;   /* 総ノード数 */
     static final int MAX = 9999;      /* 無限大に相当する数 */
-    static final int FLAG = 0;        /* Dijkstraのテストの場合は0に、シミュレーション評価を行う場合は1にする */
-    static final int ROUTE_TYPE = 1;  /* 経路選択方法：0=最短路、1=最大路 */
+    static final int FLAG = 1;        /* Dijkstraのテストの場合は0に、シミュレーション評価を行う場合は1にする */
+    static final int ROUTE_TYPE = 0;  /* 経路選択方法：0=最短路、1=最大路 */
+    static final int SIM_COUNT = 10000; /* シミュレーション回数 */
+    static final int[] PARAM_N = {5, 10, 20, 50, 100}; /* テストするパラメータnの値 */
+
+    /* 通信履歴を管理するクラス */
+    static class Communication {
+        int src;           // 送信元ノード
+        int dest;          // 宛先ノード
+        List<Integer> path; // 経路上のノード
+        boolean established; // 通信が確立したかどうか
+
+        public Communication(int src, int dest) {
+            this.src = src;
+            this.dest = dest;
+            this.path = new ArrayList<>();
+            this.established = false;
+        }
+
+        // 経路情報を設定
+        public void setPath(int[] nodePath) {
+            this.path.clear();
+            int current = this.dest;
+            this.path.add(current);
+            
+            while (current != this.src) {
+                current = nodePath[current];
+                this.path.add(current);
+            }
+        }
+    }
 
     /* Dijkstraアルゴリズムによる最短路の計算 */
     public static void findShortestPath(int[][] graph, int[] path, int[] dist, int[] chk, int src, int dest) {
@@ -145,6 +176,7 @@ public class dijkstra {
         int success;                                    /* 確立できた通信回数 */
         int sum_success;                                /* 確立できた通信回数の合計 */
         int sim_time;                                   /* 評価の回数をカウント */
+        List<Communication> history = new ArrayList<>(); /* 通信履歴 */
 
         /*
          * 距離行列の作成
@@ -193,122 +225,89 @@ public class dijkstra {
 
         if (FLAG == 1) {
             Random rand = new Random(System.currentTimeMillis()); /* 乱数の初期化 */
-            do {
-                src = rand.nextInt(NODE_NUM);  // 0からNODE_NUM-1までの乱数を生成
-                dest = rand.nextInt(NODE_NUM);
-            } while (src == dest);  // 送信元と送信先が同じ場合は再抽選
-        }
-
-        /****************************/
-        /* シミュレーション評価開始 */
-        /****************************/
-        success     = 0;
-        sum_success = 0; /* 評価指標を初期化 */
-        for (sim_time = 0; sim_time < 1000; sim_time++) {
-            miss    = 0; /* 空きリンクが存在しない場合のフラグをOFFにする */
-            success = 0; /* 確立できた通信回数を初期化する */
-
-            for (i = 0; i < NODE_NUM; i++) { /* 全リンクの空き容量を初期状態に戻す */
-                for (j = 0; j < NODE_NUM; j++) {
-                    bandwidth[i][j] = link[i][j];  // リンク容量を初期状態にコピー
+            
+            // パラメータnごとに実験を実施
+            for (int param_n : PARAM_N) {
+                System.out.printf("\n===== パラメータn = %d の実験結果 =====\n", param_n);
+                
+                success = 0;
+                sum_success = 0; /* 評価指標を初期化 */
+                history.clear(); /* 通信履歴をクリア */
+                
+                // 初期化
+                for (i = 0; i < NODE_NUM; i++) {
+                    for (j = 0; j < NODE_NUM; j++) {
+                        bandwidth[i][j] = link[i][j];  // リンク容量を初期状態にコピー
+                    }
                 }
-            }
-
-            while (miss == 0) { /* 呼損が発生するまで繰り返す */
-                /* 評価の場合、送受信ノードをランダムに決定 */
-                if (FLAG == 1) {
-                    /* ランダムに送受信ノードを決定 */
-                    System.out.printf("src=%d, dest=%d\n", src, dest); /* 送受信ノードを表示 */
-                    if (src == dest) System.out.println("送受信ノードが一致している");
-                }
-
-                /****************************************/
-                /* ここからdijkstraのアルゴリズムを記述 */
-                /****************************************/
-
-                if (ROUTE_TYPE == 0) {
-                    // 最短路の計算
-                    findShortestPath(graph, path, dist, chk, src, dest);
-                } else {
-                    // 最大路の計算
-                    findMaximumPath(graph, link, path, bottleneck, chk, src, dest);
-                }
-
-                /* 結果出力(Dijkstra作成時のみ実行する) */
-                if (FLAG == 0) {
+                
+                // SIM_COUNT回のシミュレーション
+                for (sim_time = 0; sim_time < SIM_COUNT; sim_time++) {
+                    // ランダムに送受信ノードを決定
+                    do {
+                        src = rand.nextInt(NODE_NUM);
+                        dest = rand.nextInt(NODE_NUM);
+                    } while (src == dest);
+                    
+                    // 経路の計算
                     if (ROUTE_TYPE == 0) {
-                        // 最短路の結果出力
-                        if (dist[dest] >= MAX) {
-                            System.out.printf("No path from node%d to node%d.\n", src, dest);
-                        } else {
-                            System.out.printf("Shortest path from node%d to node%d is as follows.\n", src, dest);
-                            System.out.printf("%d <- ", dest);
-                            i = dest;
-                            for (i = path[i]; i != src; i = path[i]) { /* 前ノード表を辿る */
-                                System.out.printf("%d <- ", i);
-                            }
-                            System.out.printf("%d\n", src);
-                            System.out.printf("Shortest distance is %d.\n", dist[dest]);
-                        }
+                        findShortestPath(graph, path, dist, chk, src, dest);
                     } else {
-                        // 最大路の結果出力
-                        if (bottleneck[dest] <= 0) {
-                            System.out.printf("No path from node%d to node%d.\n", src, dest);
-                        } else {
-                            System.out.printf("Maximum bottleneck path from node%d to node%d is as follows.\n", src, dest);
-                            System.out.printf("%d <- ", dest);
-                            i = dest;
-                            for (i = path[i]; i != src; i = path[i]) { /* 前ノード表を辿る */
-                                System.out.printf("%d <- ", i);
-                            }
-                            System.out.printf("%d\n", src);
-                            System.out.printf("Maximum bottleneck capacity is %d.\n", bottleneck[dest]);
+                        findMaximumPath(graph, link, path, bottleneck, chk, src, dest);
+                    }
+                    
+                    // 通信オブジェクトを作成
+                    Communication comm = new Communication(src, dest);
+                    comm.setPath(path); // 経路情報を設定
+                    
+                    // 経路上のリンク容量をチェック
+                    boolean canEstablish = true;
+                    for (int idx = 0; idx < comm.path.size() - 1; idx++) {
+                        int node1 = comm.path.get(idx);
+                        int node2 = comm.path.get(idx + 1);
+                        if (bandwidth[node1][node2] < 1) {
+                            canEstablish = false;
+                            break;
                         }
                     }
-                    return; /* Dijkstra作成時は結果を出力したら終了 */
-                }
-
-                /************************************/
-                /* ここまでがdijkstraのアルゴリズム */
-                /************************************/
-
-                /**********************************************************************/
-                /* この下にdijkstraで決定した経路を評価するためのプログラムを記述 */
-                /**********************************************************************/
-                /*
-                 * 2-(a) 空き容量がある場合の処理
-                 * 2-(b) 呼損が発生した場合の処理
-                 */
-                int miss_flag = 0;
-                
-                // 経路上の全リンクの空き容量を確認
-                i = dest;
-                int temp = dest;
-                for (i = path[i]; i != src; i = path[i]) {
-                    if (bandwidth[temp][i] < 1) {  // 空き容量が1Mbps未満の場合
-                        miss_flag = 1;
-                        break;
+                    
+                    if (canEstablish) {
+                        // 通信を確立できる場合、経路上のリンク容量を1Mbps減少
+                        for (int idx = 0; idx < comm.path.size() - 1; idx++) {
+                            int node1 = comm.path.get(idx);
+                            int node2 = comm.path.get(idx + 1);
+                            bandwidth[node1][node2]--;
+                            bandwidth[node2][node1]--;
+                        }
+                        comm.established = true;
+                        success++;
                     }
-                    temp = i;
-                }
-
-                if (miss_flag == 0) {  // 経路上の全リンクに十分な空き容量がある場合
-                    // 経路上の全リンクの空き容量を1Mbps減少
-                    i = dest;
-                    temp = dest;
-                    for (i = path[i]; i != src; i = path[i]) {
-                        bandwidth[temp][i]--;
-                        bandwidth[i][temp]--;  // 双方向に容量を減少
-                        temp = i;
+                    
+                    // 通信履歴に追加
+                    history.add(comm);
+                    
+                    // n回前の通信が終了した場合、リンク容量を増加
+                    if (history.size() > param_n) {
+                        Communication oldComm = history.get(history.size() - param_n - 1);
+                        if (oldComm.established) {
+                            // 経路上のリンク容量を1Mbps増加
+                            for (int idx = 0; idx < oldComm.path.size() - 1; idx++) {
+                                int node1 = oldComm.path.get(idx);
+                                int node2 = oldComm.path.get(idx + 1);
+                                bandwidth[node1][node2]++;
+                                bandwidth[node2][node1]++;
+                            }
+                        }
                     }
-                    success++;
-                } else {
-                    miss++;
                 }
-                System.out.printf("success = %d, miss = %d\n", success, miss);
-                return;
                 
+                // 呼損率を計算
+                double blockingRate = (double)(SIM_COUNT - success) / SIM_COUNT;
+                System.out.printf("確立できた通信数: %d / %d\n", success, SIM_COUNT);
+                System.out.printf("呼損率: %.4f\n", blockingRate);
             }
+            
+            return; // シミュレーション終了
         }
 
         /*
