@@ -15,6 +15,7 @@ public class dijkstra {
     static final int ROUTE_TYPE = 5;  /* 経路選択方法：0=最短路、1=最大路、2=要求時最短路、3=要求時最大路、4=空き容量逆数、5=最短最大路 */
     static final int SIM_COUNT = 10000; /* シミュレーション回数 */
     static final int[] PARAM_N = {5, 10, 20, 50, 100}; /* テストするパラメータnの値 */
+    static final double LAMBDA = 1.0; /* 指数分布のレート（λ）パラメータ */
     static final String[] ROUTE_TYPE_NAMES = {
         "最小ホップ経路を用いた固定経路",
         "最大路を用いた固定経路",
@@ -24,18 +25,28 @@ public class dijkstra {
         "最短最大路（Shortest Widest Path）"
     };
 
+    /* 指数分布に基づく乱数生成メソッド */
+    private static double generateExponentialRandom(Random random, double lambda) {
+        // 指数分布の逆関数法を使用
+        return -Math.log(1.0 - random.nextDouble()) / lambda;
+    }
+
     /* 通信履歴を管理するクラス */
     static class Communication {
         int src;           // 送信元ノード
         int dest;          // 宛先ノード
         List<Integer> path; // 経路上のノード
         boolean established; // 通信が確立したかどうか
+        double arrivalTime; // 通信の到着時間
+        double holdingTime; // 通信の保持時間
 
-        public Communication(int src, int dest) {
+        public Communication(int src, int dest, double arrivalTime, double holdingTime) {
             this.src = src;
             this.dest = dest;
             this.path = new ArrayList<>();
             this.established = false;
+            this.arrivalTime = arrivalTime;
+            this.holdingTime = holdingTime;
         }
 
         // 経路情報を設定
@@ -486,9 +497,9 @@ public class dijkstra {
                 System.out.printf("経路選択方法: %s\n", ROUTE_TYPE_NAMES[route_type]);
                 System.out.printf("=======================================\n");
                 
-                // パラメータnごとに実験を実施
-                for (int param_n : PARAM_N) {
-                    System.out.printf("\n===== パラメータn = %d の実験結果 =====\n", param_n);
+                {
+                    double lambda = LAMBDA;
+                    System.out.printf("\n===== レートパラメータλ = %.2f の実験結果 =====\n", lambda);
                     
                     success = 0;
                     sum_success = 0; /* 評価指標を初期化 */
@@ -501,13 +512,22 @@ public class dijkstra {
                         }
                     }
                     
+                    final double[] currentTimeArray = {0.0}; // finalな配列を使用
+                    
                     // SIM_COUNT回のシミュレーション
                     for (sim_time = 0; sim_time < SIM_COUNT; sim_time++) {
+                        // 到着間隔を指数分布に基づいて生成
+                        double interArrivalTime = generateExponentialRandom(rand, lambda);
+                        currentTimeArray[0] += interArrivalTime;
+                        
                         // ランダムに送受信ノードを決定
                         do {
                             src = rand.nextInt(NODE_NUM);
                             dest = rand.nextInt(NODE_NUM);
                         } while (src == dest);
+                        
+                        // 通信保持時間を指数分布に基づいて生成
+                        double holdingTime = generateExponentialRandom(rand, 1.0); // 平均1.0の指数分布
                         
                         // 経路選択方法に応じた経路計算
                         switch (route_type) {
@@ -532,7 +552,7 @@ public class dijkstra {
                         }
                         
                         // 通信オブジェクトを作成
-                        Communication comm = new Communication(src, dest);
+                        Communication comm = new Communication(src, dest, currentTimeArray[0], holdingTime);
                         comm.setPath(path); // 経路情報を設定
                         
                         // 経路が見つからなかった場合はスキップ
@@ -541,19 +561,38 @@ public class dijkstra {
                             continue;
                         }
                         
-                        // 経路上のリンク容量をチェック
+                        // 通信の終了時間を確認
                         boolean canEstablish = true;
-                        for (int idx = 0; idx < comm.path.size() - 1; idx++) {
-                            int node1 = comm.path.get(idx);
-                            int node2 = comm.path.get(idx + 1);
-                            if (bandwidth[node1][node2] < 1) {
-                                canEstablish = false;
-                                break;
+                        for (Communication oldComm : history) {
+                            // 同じリンクを使用する通信が重複していないかチェック
+                            if (oldComm.established && 
+                                oldComm.arrivalTime + oldComm.holdingTime > currentTimeArray[0]) {
+                                for (int idx = 0; idx < comm.path.size() - 1; idx++) {
+                                    int node1 = comm.path.get(idx);
+                                    int node2 = comm.path.get(idx + 1);
+                                    
+                                    // 同じリンクを使用する通信が存在する場合
+                                    for (int oldIdx = 0; oldIdx < oldComm.path.size() - 1; oldIdx++) {
+                                        int oldNode1 = oldComm.path.get(oldIdx);
+                                        int oldNode2 = oldComm.path.get(oldIdx + 1);
+                                        
+                                        if ((node1 == oldNode1 && node2 == oldNode2) ||
+                                            (node1 == oldNode2 && node2 == oldNode1)) {
+                                            canEstablish = false;
+                                            break;
+                                        }
+                                    }
+                                    
+                                    if (!canEstablish) break;
+                                }
+                                
+                                if (!canEstablish) break;
                             }
                         }
                         
+                        // 通信を確立できる場合
                         if (canEstablish) {
-                            // 通信を確立できる場合、経路上のリンク容量を1Mbps減少
+                            // 経路上のリンク容量を減少
                             for (int idx = 0; idx < comm.path.size() - 1; idx++) {
                                 int node1 = comm.path.get(idx);
                                 int node2 = comm.path.get(idx + 1);
@@ -567,19 +606,11 @@ public class dijkstra {
                         // 通信履歴に追加
                         history.add(comm);
                         
-                        // n回前の通信が終了した場合、リンク容量を増加
-                        if (history.size() > param_n) {
-                            Communication oldComm = history.get(history.size() - param_n - 1);
-                            if (oldComm.established) {
-                                // 経路上のリンク容量を1Mbps増加
-                                for (int idx = 0; idx < oldComm.path.size() - 1; idx++) {
-                                    int node1 = oldComm.path.get(idx);
-                                    int node2 = oldComm.path.get(idx + 1);
-                                    bandwidth[node1][node2]++;
-                                    bandwidth[node2][node1]++;
-                                }
-                            }
-                        }
+                        // 終了した通信のリンク容量を回復
+                        history.removeIf(oldComm -> 
+                            oldComm.established && 
+                            oldComm.arrivalTime + oldComm.holdingTime <= currentTimeArray[0]
+                        );
                     }
                     
                     // 呼損率を計算
