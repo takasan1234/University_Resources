@@ -9,7 +9,7 @@ plt.rcParams['font.family'] = 'Hiragino Sans GB'
 plt.rcParams['axes.unicode_minus'] = False
 
 # コマンドライン引数でCSVファイルを指定できるようにする
-input_file = "results_standard.csv"  # デフォルトのファイル名
+input_file = "results_simple.csv"  # デフォルトのファイル名
 output_prefix = "blocking_rate"      # デフォルトの出力ファイル名
 
 if len(sys.argv) > 1:

@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -14,8 +16,9 @@ public class dijkstra {
     static final int FLAG = 1;        /* Dijkstraのテストの場合は0に、シミュレーション評価を行う場合は1にする */
     static final int ROUTE_TYPE = 1;  /* 経路選択方法：0=最短路、1=最大路、2=要求時最短路、3=要求時最大路、4=空き容量逆数、5=最短最大路 */
     static final int SIM_COUNT = 10000; /* シミュレーション回数 */
-    static final int[] PARAM_N = {5, 10, 20, 50, 100}; /* テストするパラメータnの値 */
+    static final int[] PARAM_N = {5, 6, 7, 8, 9, 10, 20, 50, 100}; /* テストするパラメータnの値 */
     static final double LAMBDA = 1.0; /* 指数分布のレート（λ）パラメータ */
+    static final int TIME_MODEL = 1;  /* 時間モデル：0=指数分布、1=単純なn回前リソース解放 */
     static final String[] ROUTE_TYPE_NAMES = {
         "最小ホップ経路を用いた固定経路",
         "最大路を用いた固定経路",
@@ -23,6 +26,10 @@ public class dijkstra {
         "最大路を用いた要求時経路",
         "空き容量の逆数を考慮した経路",
         "最短最大路（Shortest Widest Path）"
+    };
+    static final String[] TIME_MODEL_NAMES = {
+        "指数分布モデル",
+        "単純なn回前リソース解放モデル"
     };
 
     /* 指数分布に基づく乱数生成メソッド */
@@ -39,6 +46,15 @@ public class dijkstra {
         boolean established; // 通信が確立したかどうか
         double arrivalTime; // 通信の到着時間
         double holdingTime; // 通信の保持時間
+
+        public Communication(int src, int dest) {
+            this.src = src;
+            this.dest = dest;
+            this.path = new ArrayList<>();
+            this.established = false;
+            this.arrivalTime = 0.0;
+            this.holdingTime = 0.0;
+        }
 
         public Communication(int src, int dest, double arrivalTime, double holdingTime) {
             this.src = src;
@@ -490,6 +506,19 @@ public class dijkstra {
         if (FLAG == 1) {
             Random rand = new Random(System.currentTimeMillis()); /* 乱数の初期化 */
             
+            // CSVファイル出力の準備
+            String csvFileName = TIME_MODEL == 0 ? "results_exponential.csv" : "results_simple.csv";
+            StringBuilder csvContent = new StringBuilder();
+            // CSVヘッダー
+            csvContent.append("n,min_hop_fixed,max_path_fixed,min_hop_demand,max_path_demand,inverse_capacity,shortest_widest\n");
+            
+            // パラメータnの結果を格納する配列
+            double[][] results = new double[PARAM_N.length][6]; // n値ごとに6種類の経路選択方法の結果を保存
+            
+            System.out.printf("\n=======================================\n");
+            System.out.printf("時間モデル: %s\n", TIME_MODEL_NAMES[TIME_MODEL]);
+            System.out.printf("=======================================\n");
+            
             // 各経路選択方法でシミュレーションを実行
             for (int route_type = 0; route_type < 6; route_type++) {
                 System.out.printf("\n=======================================\n");
@@ -497,7 +526,8 @@ public class dijkstra {
                 System.out.printf("=======================================\n");
                 
                 // パラメータnごとに実験を実施
-                for (int param_n : PARAM_N) {
+                for (int n_idx = 0; n_idx < PARAM_N.length; n_idx++) {
+                    int param_n = PARAM_N[n_idx];
                     System.out.printf("\n===== パラメータn = %d の実験結果 =====\n", param_n);
                     
                     success = 0;
@@ -515,9 +545,13 @@ public class dijkstra {
                     
                     // SIM_COUNT回のシミュレーション
                     for (sim_time = 0; sim_time < SIM_COUNT; sim_time++) {
-                        // 到着間隔を指数分布に基づいて生成
-                        double interArrivalTime = generateExponentialRandom(rand, LAMBDA);
-                        currentTime[0] += interArrivalTime;
+                        // 時間モデルに応じた処理
+                        if (TIME_MODEL == 0) {
+                            // 指数分布モデル
+                            // 到着間隔を指数分布に基づいて生成
+                            double interArrivalTime = generateExponentialRandom(rand, LAMBDA);
+                            currentTime[0] += interArrivalTime;
+                        }
                         
                         // ランダムに送受信ノードを決定
                         do {
@@ -525,8 +559,12 @@ public class dijkstra {
                             dest = rand.nextInt(NODE_NUM);
                         } while (src == dest);
                         
-                        // 通信保持時間を指数分布に基づいて生成
-                        double holdingTime = generateExponentialRandom(rand, 1.0 / param_n); // パラメータnに応じた平均保持時間
+                        // 通信保持時間を決定（時間モデルに応じて）
+                        double holdingTime = 0.0;
+                        if (TIME_MODEL == 0) {
+                            // 指数分布モデル
+                            holdingTime = generateExponentialRandom(rand, 1.0 / param_n); // パラメータnに応じた平均保持時間
+                        }
                         
                         // 経路選択方法に応じた経路計算
                         switch (route_type) {
@@ -551,7 +589,14 @@ public class dijkstra {
                         }
                         
                         // 通信オブジェクトを作成
-                        Communication comm = new Communication(src, dest, currentTime[0], holdingTime);
+                        Communication comm;
+                        if (TIME_MODEL == 0) {
+                            // 指数分布モデル
+                            comm = new Communication(src, dest, currentTime[0], holdingTime);
+                        } else {
+                            // 単純なn回前リソース解放モデル
+                            comm = new Communication(src, dest);
+                        }
                         comm.setPath(path); // 経路情報を設定
                         
                         // 経路が見つからなかった場合はスキップ
@@ -586,30 +631,91 @@ public class dijkstra {
                         // 通信履歴に追加
                         history.add(comm);
                         
-                        // 終了した通信のリンク容量を回復
-                        List<Communication> endedCommunications = new ArrayList<>();
-                        for (Communication oldComm : history) {
-                            if (oldComm.established && 
-                                oldComm.arrivalTime + oldComm.holdingTime <= currentTime[0]) {
-                                // 通信終了時刻が現在時刻以前なら終了
-                                for (int idx = 0; idx < oldComm.path.size() - 1; idx++) {
-                                    int node1 = oldComm.path.get(idx);
-                                    int node2 = oldComm.path.get(idx + 1);
-                                    bandwidth[node1][node2]++;
-                                    bandwidth[node2][node1]++;
+                        // 時間モデルに応じたリソース解放処理
+                        if (TIME_MODEL == 0) {
+                            // 指数分布モデル：終了した通信のリンク容量を回復
+                            List<Communication> endedCommunications = new ArrayList<>();
+                            for (Communication oldComm : history) {
+                                if (oldComm.established && 
+                                    oldComm.arrivalTime + oldComm.holdingTime <= currentTime[0]) {
+                                    // 通信終了時刻が現在時刻以前なら終了
+                                    for (int idx = 0; idx < oldComm.path.size() - 1; idx++) {
+                                        int node1 = oldComm.path.get(idx);
+                                        int node2 = oldComm.path.get(idx + 1);
+                                        bandwidth[node1][node2]++;
+                                        bandwidth[node2][node1]++;
+                                    }
+                                    endedCommunications.add(oldComm);
                                 }
-                                endedCommunications.add(oldComm);
+                            }
+                            // 終了した通信を履歴から削除
+                            history.removeAll(endedCommunications);
+                        } else {
+                            // 単純なn回前リソース解放モデル
+                            if (history.size() > param_n) {
+                                Communication oldComm = history.get(history.size() - param_n - 1);
+                                if (oldComm.established) {
+                                    // 経路上のリンク容量を1Mbps増加
+                                    for (int idx = 0; idx < oldComm.path.size() - 1; idx++) {
+                                        int node1 = oldComm.path.get(idx);
+                                        int node2 = oldComm.path.get(idx + 1);
+                                        bandwidth[node1][node2]++;
+                                        bandwidth[node2][node1]++;
+                                    }
+                                }
                             }
                         }
-                        // 終了した通信を履歴から削除
-                        history.removeAll(endedCommunications);
                     }
                     
                     // 呼損率を計算
                     double blockingRate = (double)(SIM_COUNT - success) / SIM_COUNT;
                     System.out.printf("確立できた通信数: %d / %d\n", success, SIM_COUNT);
                     System.out.printf("呼損率: %.4f\n", blockingRate);
+                    
+                    // 結果を配列に保存
+                    results[n_idx][route_type] = blockingRate;
                 }
+            }
+            
+            // CSVファイルに結果を書き込む
+            for (int n_idx = 0; n_idx < PARAM_N.length; n_idx++) {
+                csvContent.append(PARAM_N[n_idx]);
+                for (int route_type = 0; route_type < 6; route_type++) {
+                    csvContent.append(",").append(String.format("%.6f", results[n_idx][route_type]));
+                }
+                csvContent.append("\n");
+            }
+            
+            // CSVファイルに書き込み
+            try (FileWriter writer = new FileWriter(csvFileName)) {
+                writer.write(csvContent.toString());
+                System.out.println("シミュレーション結果をCSVファイルに保存しました: " + csvFileName);
+                
+                // グラフ作成のためのPythonスクリプトを実行
+                System.out.println("グラフを生成しています...");
+                ProcessBuilder pb = new ProcessBuilder("python", "plot_graph.py", csvFileName);
+                pb.redirectErrorStream(true);
+                Process process = pb.start();
+                
+                // プロセスの出力を読み取る
+                Scanner scanner = new Scanner(process.getInputStream());
+                while (scanner.hasNextLine()) {
+                    System.out.println(scanner.nextLine());
+                }
+                scanner.close();
+                
+                int exitCode = process.waitFor();
+                if (exitCode == 0) {
+                    System.out.println("グラフの生成が完了しました。");
+                } else {
+                    System.out.println("グラフ生成中にエラーが発生しました。終了コード: " + exitCode);
+                }
+            } catch (IOException e) {
+                System.err.println("CSVファイルの書き込み中にエラーが発生しました: " + e.getMessage());
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                System.err.println("プロセス実行中にエラーが発生しました: " + e.getMessage());
+                e.printStackTrace();
             }
             
             return; // シミュレーション終了
