@@ -11,7 +11,7 @@ plt.rcParams['font.family'] = 'Hiragino Sans GB'
 plt.rcParams['axes.unicode_minus'] = False
 
 # コマンドライン引数でCSVファイルを指定できるようにする
-input_file = "results_exponential_lambda_0_00100.csv"  # デフォルトのファイル名
+input_file = "results_simple.csv"  # デフォルトのファイル名
 output_prefix = "blocking_rate"      # デフォルトの出力ファイル名
 compare_lambdas = False              # λ値を比較するかどうか
 
@@ -130,7 +130,6 @@ if compare_lambdas:
     
     # 総合グラフを保存
     plt.savefig(f'{output_prefix}_combined.pdf')
-    plt.savefig(f'{output_prefix}_combined.png')
     print(f"Combined comparison graph created. {output_prefix}_combined.pdf and {output_prefix}_combined.png have been saved.")
     
     # 終了

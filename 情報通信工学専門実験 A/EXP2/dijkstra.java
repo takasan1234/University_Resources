@@ -18,7 +18,7 @@ public class dijkstra {
     static final int SIM_COUNT = 10000; /* シミュレーション回数 */
     static final int[] PARAM_N = {5, 6, 7, 8, 9, 10, 20, 50, 100}; /* テストするパラメータnの値 */
     static final double[] LAMBDA_VALUES = {0.0001, 0.001, 0.01, 0.1, 1.0}; /* 複数の指数分布のレート（λ）パラメータ */
-    static final int TIME_MODEL = 0;  /* 時間モデル：0=指数分布、1=単純なn回前リソース解放 */
+    static final int TIME_MODEL = 1;  /* 時間モデル：0=指数分布、1=単純なn回前リソース解放 */
     static final String[] ROUTE_TYPE_NAMES = {
         "最小ホップ経路を用いた固定経路",
         "最大路を用いた固定経路",
