@@ -4,32 +4,21 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
-import java.util.Arrays;
 
-public class dijkstra {
+public class enshu2_2 {
     /* 定数定義 */
     static final int NODE_NUM = 10;   /* 総ノード数 */
     static final int MAX = 9999;      /* 無限大に相当する数 */
     static final int FLAG = 1;        /* Dijkstraのテストの場合は0に、シミュレーション評価を行う場合は1にする */
-    static final int ROUTE_TYPE = 1;  /* 経路選択方法：0=最短路、1=最大路、2=要求時最短路、3=要求時最大路、4=空き容量逆数、5=最短最大路 */
+    static final int ROUTE_TYPE = 2;  /* 経路選択方法：0=最短路、1=最大路、2=要求時最短路、3=要求時最大路 */
     static final int SIM_COUNT = 10000; /* シミュレーション回数 */
     static final int[] PARAM_N = {5, 10, 20, 50, 100}; /* テストするパラメータnの値 */
-    static final double LAMBDA = 1.0; /* 指数分布のレート（λ）パラメータ */
     static final String[] ROUTE_TYPE_NAMES = {
         "最小ホップ経路を用いた固定経路",
         "最大路を用いた固定経路",
         "最小ホップを用いた要求時経路",
-        "最大路を用いた要求時経路",
-        "空き容量の逆数を考慮した経路",
-        "最短最大路（Shortest Widest Path）"
+        "最大路を用いた要求時経路"
     };
-
-    /* 指数分布に基づく乱数生成メソッド */
-    private static double generateExponentialRandom(Random random, double lambda) {
-        // 指数分布の逆関数法を使用
-        return -Math.log(1.0 - random.nextDouble()) / lambda;
-    }
 
     /* 通信履歴を管理するクラス */
     static class Communication {
@@ -37,16 +26,12 @@ public class dijkstra {
         int dest;          // 宛先ノード
         List<Integer> path; // 経路上のノード
         boolean established; // 通信が確立したかどうか
-        double arrivalTime; // 通信の到着時間
-        double holdingTime; // 通信の保持時間
 
-        public Communication(int src, int dest, double arrivalTime, double holdingTime) {
+        public Communication(int src, int dest) {
             this.src = src;
             this.dest = dest;
             this.path = new ArrayList<>();
             this.established = false;
-            this.arrivalTime = arrivalTime;
-            this.holdingTime = holdingTime;
         }
 
         // 経路情報を設定
@@ -64,25 +49,6 @@ public class dijkstra {
                 }
                 this.path.add(current);
             }
-        }
-    }
-
-    /* リンク情報を格納するクラス */
-    static class Link implements Comparable<Link> {
-        int node1;
-        int node2;
-        int capacity;
-
-        public Link(int node1, int node2, int capacity) {
-            this.node1 = node1;
-            this.node2 = node2;
-            this.capacity = capacity;
-        }
-
-        @Override
-        public int compareTo(Link other) {
-            // 容量の大きい順にソート
-            return Integer.compare(other.capacity, this.capacity);
         }
     }
 
@@ -135,77 +101,70 @@ public class dijkstra {
         }
     }
 
-    /* 深さ優先探索で経路を探す */
-    private static boolean dfs(int[][] graph, boolean[] visited, int[] path, int current, int dest) {
-        if (current == dest) {
-            return true;
-        }
-
-        visited[current] = true;
-
-        for (int next = 0; next < NODE_NUM; next++) {
-            if (graph[current][next] > 0 && !visited[next]) {
-                path[next] = current;
-                if (dfs(graph, visited, path, next, dest)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     /* 最大路の計算（ボトルネックリンクが最大の経路を求める） */
     public static void findMaximumPath(int[][] graph, int[][] link, int[] path, int[] bottleneck, int[] chk, int src, int dest) {
-        // リンクのリストを作成
-        List<Link> links = new ArrayList<>();
-        for (int i = 0; i < NODE_NUM; i++) {
-            for (int j = i + 1; j < NODE_NUM; j++) {
-                if (link[i][j] > 0) {
-                    links.add(new Link(i, j, link[i][j]));
+        int i, j, tmp_node, tmp_bottleneck, fin;
+        int[][] capacityGraph = new int[NODE_NUM][NODE_NUM]; // ボトルネック容量用のグラフ
+        
+        /* 容量グラフの初期化 */
+        for (i = 0; i < NODE_NUM; i++) {
+            for (j = 0; j < NODE_NUM; j++) {
+                if (graph[i][j] < MAX) { // リンクが存在する場合
+                    capacityGraph[i][j] = link[i][j]; // リンク容量を使用
+                } else {
+                    capacityGraph[i][j] = 0; // リンクがない場合は容量0
                 }
             }
         }
-
-        // リンクを容量の大きい順にソート
-        Collections.sort(links);
-
-        // 経路探索用の一時グラフ
-        int[][] tempGraph = new int[NODE_NUM][NODE_NUM];
-        boolean[] visited = new boolean[NODE_NUM];
-        int currentBottleneck = 0;
-
-        // 容量の大きいリンクから順にグラフを構築
-        for (int i = 0; i < links.size(); i++) {
-            // 現在のリンクの容量をボトルネック容量の候補とする
-            currentBottleneck = links.get(i).capacity;
-
-            // 同じ容量を持つリンクを全て追加
-            while (i < links.size() && links.get(i).capacity == currentBottleneck) {
-                Link currentLink = links.get(i);
-                tempGraph[currentLink.node1][currentLink.node2] = 1;
-                tempGraph[currentLink.node2][currentLink.node1] = 1;  // 無向グラフなので両方向に追加
-                i++;
-            }
-            i--; // whileループで余分にインクリメントされた分を戻す
-
-            // 経路探索
-            Arrays.fill(visited, false);
-            Arrays.fill(path, NODE_NUM);
-            path[src] = src;
-
-            if (dfs(tempGraph, visited, path, src, dest)) {
-                // 経路が見つかった場合、この容量が最大ボトルネック容量
-                for (int j = 0; j < NODE_NUM; j++) {
-                    bottleneck[j] = currentBottleneck;
-                }
-                return;
-            }
+        
+        /* 初期化 */
+        for (i = 0; i < NODE_NUM; i++) {
+            bottleneck[i] = 0; // ボトルネック容量を0で初期化
+            chk[i] = 0;
+            path[i] = NODE_NUM;
         }
-
-        // 経路が見つからなかった場合
-        Arrays.fill(bottleneck, 0);
-        Arrays.fill(path, NODE_NUM);
+        
+        path[src] = src;   // 始点ノードへの経路上の前ノードはそれ自身
+        bottleneck[src] = MAX; // 始点ノード自身へのボトルネック容量は最大
+        chk[src] = 1;      // 始点ノードは確定
+        tmp_node = src;    // 始点ノードから探索開始
+        fin = 0;
+        
+        /* 経路探索 */
+        while (fin == 0) {
+            /* 更新処理 */
+            for (i = 0; i < NODE_NUM; i++) {
+                if (capacityGraph[tmp_node][i] > 0 && chk[i] == 0) {
+                    // 経路上のボトルネック容量は、これまでの最小容量と新しいリンク容量の小さい方
+                    int newBottleneck = Math.min(bottleneck[tmp_node], capacityGraph[tmp_node][i]);
+                    
+                    // より大きなボトルネック容量を持つ経路が見つかった場合、更新
+                    if (bottleneck[i] < newBottleneck) {
+                        bottleneck[i] = newBottleneck;
+                        path[i] = tmp_node;
+                    }
+                }
+            }
+            
+            /* 次に確定するノードを選択（未確定ノードの中でボトルネック容量が最大のもの） */
+            tmp_bottleneck = 0;
+            tmp_node = -1;
+            for (i = 0; i < NODE_NUM; i++) {
+                if (chk[i] == 0 && bottleneck[i] > tmp_bottleneck) {
+                    tmp_bottleneck = bottleneck[i];
+                    tmp_node = i;
+                }
+            }
+            
+            // 未確定ノードが存在しない、または到達不能な場合
+            if (tmp_node == -1) {
+                fin = 1;
+            } else {
+                chk[tmp_node] = 1; // ノードを確定
+            }
+            
+            if (chk[dest] == 1) fin = 1; // 終点ノードが確定したら終了
+        }
     }
 
     /* 最小ホップを用いた要求時経路（空き容量のないリンクをグラフから取り除く） */
@@ -327,100 +286,6 @@ public class dijkstra {
         }
     }
 
-    /* 空き容量の逆数を考慮した経路選択 */
-    public static void findInverseCapacityPath(int[][] graph, int[][] bandwidth, int[] path, int[] dist, int[] chk, int src, int dest) {
-        int i, tmp_node, tmp_dist, fin;
-        double[][] inverseGraph = new double[NODE_NUM][NODE_NUM]; // 空き容量の逆数を格納するグラフ
-        
-        /* 空き容量の逆数でグラフを初期化 */
-        for (i = 0; i < NODE_NUM; i++) {
-            for (int j = 0; j < NODE_NUM; j++) {
-                if (graph[i][j] < MAX && bandwidth[i][j] >= 1) {
-                    // 空き容量が1Mbps以上あるリンクのみを使用
-                    inverseGraph[i][j] = 1.0 / bandwidth[i][j]; // 空き容量の逆数を重みとする
-                } else {
-                    inverseGraph[i][j] = MAX; // 使用できないリンク
-                }
-            }
-        }
-        
-        /* 初期化 */
-        for (i = 0; i < NODE_NUM; i++) {
-            dist[i] = MAX;
-            chk[i] = 0;
-            path[i] = NODE_NUM;
-        }
-        
-        path[src] = src;
-        dist[src] = 0;
-        chk[src] = 1;
-        tmp_node = src;
-        fin = 0;
-        
-        /* Dijkstraアルゴリズムで最小コスト経路を探索 */
-        while (fin == 0) {
-            for (i = 0; i < NODE_NUM; i++) {
-                if (inverseGraph[tmp_node][i] < MAX && chk[i] == 0) {
-                    int newDist = (int)(dist[tmp_node] + inverseGraph[tmp_node][i] * 1000); // 小数を整数に変換
-                    if (dist[i] > newDist) {
-                        dist[i] = newDist;
-                        path[i] = tmp_node;
-                    }
-                }
-            }
-            
-            tmp_dist = MAX;
-            for (i = 0; i < NODE_NUM; i++) {
-                if (chk[i] == 0 && dist[i] < tmp_dist) {
-                    tmp_dist = dist[i];
-                    tmp_node = i;
-                }
-            }
-            
-            if (tmp_dist == MAX) {
-                fin = 1;
-            } else {
-                chk[tmp_node] = 1;
-            }
-            
-            if (chk[dest] == 1) fin = 1;
-        }
-    }
-
-    /* 最短最大路（Shortest Widest Path）の計算 */
-    public static void findShortestWidestPath(int[][] graph, int[][] bandwidth, int[] path, int[] dist, int[] chk, int src, int dest) {
-        int i, j;
-        int[] bottleneck = new int[NODE_NUM];
-        int maxBottleneck;
-
-        // Step 1: 最大帯域幅を持つ経路を見つける
-        findOnDemandMaximumPath(graph, bandwidth, path, bottleneck, chk, src, dest);
-        maxBottleneck = bottleneck[dest];
-
-        // 経路が見つからない場合は終了
-        if (maxBottleneck == 0) {
-            Arrays.fill(path, NODE_NUM);
-            Arrays.fill(dist, MAX);
-            return;
-        }
-
-        // Step 2: 最大帯域幅以上の容量を持つリンクのみを使用して最短経路を計算
-        int[][] filteredGraph = new int[NODE_NUM][NODE_NUM];
-        for (i = 0; i < NODE_NUM; i++) {
-            for (j = 0; j < NODE_NUM; j++) {
-                if (graph[i][j] < MAX && bandwidth[i][j] >= maxBottleneck) {
-                    // 最大帯域幅以上の容量を持つリンクのみを使用
-                    filteredGraph[i][j] = graph[i][j];
-                } else {
-                    filteredGraph[i][j] = MAX;
-                }
-            }
-        }
-
-        // 最短経路を計算
-        findShortestPath(filteredGraph, path, dist, chk, src, dest);
-    }
-
     public static void main(String[] args) {
         /* Dijkstraのアルゴリズム部分で必要な変数 */
         int[][] graph = new int[NODE_NUM][NODE_NUM];    /* 距離行列 */
@@ -432,6 +297,7 @@ public class dijkstra {
         int src = 0, dest = 0;                          /* 始点・終点ノード */
         int a = 0, b = 0, c = 0, d = 0, i = 0, j = 0;
         int fin;                                        /* 未確定ノードが残っているかどうかのフラグ */
+        Scanner stdin;
 
         /* シミュレーション評価の部分で必要な変数 */
         int[][] link      = new int[NODE_NUM][NODE_NUM]; /* リンク容量 */
@@ -479,7 +345,7 @@ public class dijkstra {
          * 始点・終点ノードを標準入力から得る (評価の場合は、実行しない)
          */
         if (FLAG == 0) {
-            Scanner stdin = new Scanner(System.in);
+            stdin = new Scanner(System.in);
             System.out.printf("Source Node?(0-%d)", NODE_NUM - 1);
             src = stdin.nextInt();
             System.out.printf("Destination Node?(0-%d)", NODE_NUM - 1);
@@ -491,7 +357,7 @@ public class dijkstra {
             Random rand = new Random(System.currentTimeMillis()); /* 乱数の初期化 */
             
             // 各経路選択方法でシミュレーションを実行
-            for (int route_type = 0; route_type < 6; route_type++) {
+            for (int route_type = 0; route_type < 4; route_type++) {
                 System.out.printf("\n=======================================\n");
                 System.out.printf("経路選択方法: %s\n", ROUTE_TYPE_NAMES[route_type]);
                 System.out.printf("=======================================\n");
@@ -511,22 +377,13 @@ public class dijkstra {
                         }
                     }
                     
-                    final double[] currentTime = {0.0}; // 現在時刻（指数分布用）
-                    
                     // SIM_COUNT回のシミュレーション
                     for (sim_time = 0; sim_time < SIM_COUNT; sim_time++) {
-                        // 到着間隔を指数分布に基づいて生成
-                        double interArrivalTime = generateExponentialRandom(rand, LAMBDA);
-                        currentTime[0] += interArrivalTime;
-                        
                         // ランダムに送受信ノードを決定
                         do {
                             src = rand.nextInt(NODE_NUM);
                             dest = rand.nextInt(NODE_NUM);
                         } while (src == dest);
-                        
-                        // 通信保持時間を指数分布に基づいて生成
-                        double holdingTime = generateExponentialRandom(rand, 1.0 / param_n); // パラメータnに応じた平均保持時間
                         
                         // 経路選択方法に応じた経路計算
                         switch (route_type) {
@@ -542,16 +399,10 @@ public class dijkstra {
                             case 3: // 最大路を用いた要求時経路
                                 findOnDemandMaximumPath(graph, bandwidth, path, bottleneck, chk, src, dest);
                                 break;
-                            case 4: // 空き容量の逆数を考慮した経路
-                                findInverseCapacityPath(graph, bandwidth, path, dist, chk, src, dest);
-                                break;
-                            case 5: // 最短最大路（Shortest Widest Path）
-                                findShortestWidestPath(graph, bandwidth, path, dist, chk, src, dest);
-                                break;
                         }
                         
                         // 通信オブジェクトを作成
-                        Communication comm = new Communication(src, dest, currentTime[0], holdingTime);
+                        Communication comm = new Communication(src, dest);
                         comm.setPath(path); // 経路情報を設定
                         
                         // 経路が見つからなかった場合はスキップ
@@ -586,23 +437,19 @@ public class dijkstra {
                         // 通信履歴に追加
                         history.add(comm);
                         
-                        // 終了した通信のリンク容量を回復
-                        List<Communication> endedCommunications = new ArrayList<>();
-                        for (Communication oldComm : history) {
-                            if (oldComm.established && 
-                                oldComm.arrivalTime + oldComm.holdingTime <= currentTime[0]) {
-                                // 通信終了時刻が現在時刻以前なら終了
+                        // n回前の通信が終了した場合、リンク容量を増加
+                        if (history.size() > param_n) {
+                            Communication oldComm = history.get(history.size() - param_n - 1);
+                            if (oldComm.established) {
+                                // 経路上のリンク容量を1Mbps増加
                                 for (int idx = 0; idx < oldComm.path.size() - 1; idx++) {
                                     int node1 = oldComm.path.get(idx);
                                     int node2 = oldComm.path.get(idx + 1);
                                     bandwidth[node1][node2]++;
                                     bandwidth[node2][node1]++;
                                 }
-                                endedCommunications.add(oldComm);
                             }
                         }
-                        // 終了した通信を履歴から削除
-                        history.removeAll(endedCommunications);
                     }
                     
                     // 呼損率を計算
