@@ -3,21 +3,140 @@ import numpy as np
 import pandas as pd
 import sys
 import matplotlib.font_manager as fm
+import glob
+import os
 
 # MacOSの日本語フォントを設定
 plt.rcParams['font.family'] = 'Hiragino Sans GB'
 plt.rcParams['axes.unicode_minus'] = False
 
 # コマンドライン引数でCSVファイルを指定できるようにする
-input_file = "results_simple.csv"  # デフォルトのファイル名
+input_file = "results_exponential_lambda_0_00100.csv"  # デフォルトのファイル名
 output_prefix = "blocking_rate"      # デフォルトの出力ファイル名
+compare_lambdas = False              # λ値を比較するかどうか
 
 if len(sys.argv) > 1:
-    input_file = sys.argv[1]
-    # 出力ファイル名をCSVファイル名に基づいて変更
-    output_prefix = "graph_" + input_file.replace(".csv", "")
+    if sys.argv[1] == "compare_lambdas":
+        compare_lambdas = True
+        output_prefix = "comparison_all_lambdas"
+    else:
+        input_file = sys.argv[1]
+        # 出力ファイル名をCSVファイル名に基づいて変更
+        output_prefix = "graph_" + input_file.replace(".csv", "")
 
-# Read data from CSV file
+# λ値の比較グラフを生成
+if compare_lambdas:
+    # 各経路選択方法ごとにλ値を比較するグラフを作成
+    route_methods = [
+        "min_hop_fixed", 
+        "max_path_fixed", 
+        "min_hop_demand", 
+        "max_path_demand", 
+        "inverse_capacity", 
+        "shortest_widest"
+    ]
+    
+    route_labels = [
+        "Min Hop Route (Fixed)", 
+        "Max Path (Fixed)", 
+        "Min Hop Route (On Demand)", 
+        "Max Path (On Demand)", 
+        "Route Considering Inverse Capacity", 
+        "Shortest Widest Path"
+    ]
+    
+    # 各経路選択方法ごとに別々のグラフを作成
+    for method_idx, method in enumerate(route_methods):
+        plt.figure(figsize=(12, 8))
+        plt.grid(True, linestyle='--', alpha=0.7)
+        plt.xlabel('Parameter n', fontsize=14)
+        plt.ylabel('Blocking Rate', fontsize=14)
+        plt.title(f'Effect of λ on Blocking Rate: {route_labels[method_idx]}', fontsize=16)
+        
+        # 用意する色のリスト
+        colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'orange', 'purple', 'brown']
+        
+        # すべてのλ値のCSVファイルを取得
+        csv_files = sorted(glob.glob("results_exponential_lambda_*.csv"))
+        
+        # 各ファイルから対応する列のデータを抽出してプロット
+        for i, csv_file in enumerate(csv_files):
+            try:
+                df = pd.read_csv(csv_file)
+                param_n = df['n'].tolist()
+                data = df[method].tolist()
+                
+                # ファイル名からλ値を抽出
+                lambda_str = os.path.basename(csv_file).replace("results_exponential_lambda_", "").replace(".csv", "")
+                lambda_val = float(lambda_str.replace("_", "."))
+                
+                # λ値ごとに異なる色でプロット
+                plt.plot(param_n, data, 'o-', 
+                        label=f'λ = {lambda_val:.5f}', 
+                        linewidth=2, 
+                        color=colors[i % len(colors)])
+            except Exception as e:
+                print(f"Error reading {csv_file}: {str(e)}")
+        
+        # Legend settings
+        plt.legend(loc='best', fontsize=12)
+        
+        # x-axis ticks
+        plt.xticks(param_n)
+        
+        # y-axis range
+        plt.ylim(0, 1.0)
+        
+        # 各方式ごとのグラフを保存
+        method_output = f'{output_prefix}_{method}'
+        plt.savefig(f'{method_output}.pdf')
+        plt.savefig(f'{method_output}.png')
+        print(f"Comparison graph created for {method}. {method_output}.pdf and {method_output}.png have been saved.")
+    
+    # すべての方式を比較した総合グラフも作成
+    plt.figure(figsize=(15, 10))
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.xlabel('Parameter n', fontsize=14)
+    plt.ylabel('Blocking Rate', fontsize=14)
+    plt.title(f'Comparison of All Routing Methods and λ Values', fontsize=16)
+    
+    # λ値とルーティング方式の組み合わせをプロット
+    linestyles = ['-', '--', '-.', ':']
+    markers = ['o', 's', '^', 'D', '*', 'X', 'P', 'p', 'h']
+    
+    for i, csv_file in enumerate(csv_files):
+        try:
+            df = pd.read_csv(csv_file)
+            param_n = df['n'].tolist()
+            
+            # ファイル名からλ値を抽出
+            lambda_str = os.path.basename(csv_file).replace("results_exponential_lambda_", "").replace(".csv", "")
+            lambda_val = float(lambda_str.replace("_", "."))
+            
+            for j, method in enumerate(route_methods):
+                data = df[method].tolist()
+                plt.plot(param_n, data, 
+                        marker=markers[j % len(markers)], 
+                        linestyle=linestyles[i % len(linestyles)],
+                        label=f'{route_labels[j]} (λ={lambda_val:.5f})', 
+                        linewidth=1.5)
+        except Exception as e:
+            print(f"Error reading {csv_file}: {str(e)}")
+    
+    # Legend settings for the combined graph
+    plt.legend(loc='best', fontsize=10)
+    plt.xticks(param_n)
+    plt.ylim(0, 1.0)
+    
+    # 総合グラフを保存
+    plt.savefig(f'{output_prefix}_combined.pdf')
+    plt.savefig(f'{output_prefix}_combined.png')
+    print(f"Combined comparison graph created. {output_prefix}_combined.pdf and {output_prefix}_combined.png have been saved.")
+    
+    # 終了
+    sys.exit(0)
+
+# 通常の単一ファイルグラフ作成処理
 try:
     # Read CSV file using pandas
     df = pd.read_csv(input_file)
