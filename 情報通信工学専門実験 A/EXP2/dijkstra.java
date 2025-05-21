@@ -12,14 +12,15 @@ public class dijkstra {
     static final int NODE_NUM = 10;   /* 総ノード数 */
     static final int MAX = 9999;      /* 無限大に相当する数 */
     static final int FLAG = 1;        /* Dijkstraのテストの場合は0に、シミュレーション評価を行う場合は1にする */
-    static final int ROUTE_TYPE = 0;  /* 経路選択方法：0=最短路、1=最大路、2=要求時最短路、3=要求時最大路 */
+    static final int ROUTE_TYPE = 4;  /* 経路選択方法：0=最短路、1=最大路、2=要求時最短路、3=要求時最大路、4=空き容量逆数 */
     static final int SIM_COUNT = 10000; /* シミュレーション回数 */
     static final int[] PARAM_N = {5, 10, 20, 50, 100}; /* テストするパラメータnの値 */
     static final String[] ROUTE_TYPE_NAMES = {
         "最小ホップ経路を用いた固定経路",
         "最大路を用いた固定経路",
         "最小ホップを用いた要求時経路",
-        "最大路を用いた要求時経路"
+        "最大路を用いた要求時経路",
+        "空き容量の逆数を考慮した経路"
     };
 
     /* 通信履歴を管理するクラス */
@@ -314,6 +315,66 @@ public class dijkstra {
         }
     }
 
+    /* 空き容量の逆数を考慮した経路選択 */
+    public static void findInverseCapacityPath(int[][] graph, int[][] bandwidth, int[] path, int[] dist, int[] chk, int src, int dest) {
+        int i, tmp_node, tmp_dist, fin;
+        double[][] inverseGraph = new double[NODE_NUM][NODE_NUM]; // 空き容量の逆数を格納するグラフ
+        
+        /* 空き容量の逆数でグラフを初期化 */
+        for (i = 0; i < NODE_NUM; i++) {
+            for (int j = 0; j < NODE_NUM; j++) {
+                if (graph[i][j] < MAX && bandwidth[i][j] >= 1) {
+                    // 空き容量が1Mbps以上あるリンクのみを使用
+                    inverseGraph[i][j] = 1.0 / bandwidth[i][j]; // 空き容量の逆数を重みとする
+                } else {
+                    inverseGraph[i][j] = MAX; // 使用できないリンク
+                }
+            }
+        }
+        
+        /* 初期化 */
+        for (i = 0; i < NODE_NUM; i++) {
+            dist[i] = MAX;
+            chk[i] = 0;
+            path[i] = NODE_NUM;
+        }
+        
+        path[src] = src;
+        dist[src] = 0;
+        chk[src] = 1;
+        tmp_node = src;
+        fin = 0;
+        
+        /* Dijkstraアルゴリズムで最小コスト経路を探索 */
+        while (fin == 0) {
+            for (i = 0; i < NODE_NUM; i++) {
+                if (inverseGraph[tmp_node][i] < MAX && chk[i] == 0) {
+                    int newDist = (int)(dist[tmp_node] + inverseGraph[tmp_node][i] * 1000); // 小数を整数に変換
+                    if (dist[i] > newDist) {
+                        dist[i] = newDist;
+                        path[i] = tmp_node;
+                    }
+                }
+            }
+            
+            tmp_dist = MAX;
+            for (i = 0; i < NODE_NUM; i++) {
+                if (chk[i] == 0 && dist[i] < tmp_dist) {
+                    tmp_dist = dist[i];
+                    tmp_node = i;
+                }
+            }
+            
+            if (tmp_dist == MAX) {
+                fin = 1;
+            } else {
+                chk[tmp_node] = 1;
+            }
+            
+            if (chk[dest] == 1) fin = 1;
+        }
+    }
+
     public static void main(String[] args) {
         /* Dijkstraのアルゴリズム部分で必要な変数 */
         int[][] graph = new int[NODE_NUM][NODE_NUM];    /* 距離行列 */
@@ -385,7 +446,7 @@ public class dijkstra {
             Random rand = new Random(System.currentTimeMillis()); /* 乱数の初期化 */
             
             // 各経路選択方法でシミュレーションを実行
-            for (int route_type = 0; route_type < 4; route_type++) {
+            for (int route_type = 0; route_type < 5; route_type++) {
                 System.out.printf("\n=======================================\n");
                 System.out.printf("経路選択方法: %s\n", ROUTE_TYPE_NAMES[route_type]);
                 System.out.printf("=======================================\n");
@@ -426,6 +487,9 @@ public class dijkstra {
                                 break;
                             case 3: // 最大路を用いた要求時経路
                                 findOnDemandMaximumPath(graph, bandwidth, path, bottleneck, chk, src, dest);
+                                break;
+                            case 4: // 空き容量の逆数を考慮した経路
+                                findInverseCapacityPath(graph, bandwidth, path, dist, chk, src, dest);
                                 break;
                         }
                         
