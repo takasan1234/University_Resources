@@ -4,6 +4,8 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import java.util.Arrays;
 
 public class dijkstra {
     /* 定数定義 */
@@ -49,6 +51,25 @@ public class dijkstra {
                 }
                 this.path.add(current);
             }
+        }
+    }
+
+    /* リンク情報を格納するクラス */
+    static class Link implements Comparable<Link> {
+        int node1;
+        int node2;
+        int capacity;
+
+        public Link(int node1, int node2, int capacity) {
+            this.node1 = node1;
+            this.node2 = node2;
+            this.capacity = capacity;
+        }
+
+        @Override
+        public int compareTo(Link other) {
+            // 容量の大きい順にソート
+            return Integer.compare(other.capacity, this.capacity);
         }
     }
 
@@ -101,70 +122,77 @@ public class dijkstra {
         }
     }
 
+    /* 深さ優先探索で経路を探す */
+    private static boolean dfs(int[][] graph, boolean[] visited, int[] path, int current, int dest) {
+        if (current == dest) {
+            return true;
+        }
+
+        visited[current] = true;
+
+        for (int next = 0; next < NODE_NUM; next++) {
+            if (graph[current][next] > 0 && !visited[next]) {
+                path[next] = current;
+                if (dfs(graph, visited, path, next, dest)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     /* 最大路の計算（ボトルネックリンクが最大の経路を求める） */
     public static void findMaximumPath(int[][] graph, int[][] link, int[] path, int[] bottleneck, int[] chk, int src, int dest) {
-        int i, j, tmp_node, tmp_bottleneck, fin;
-        int[][] capacityGraph = new int[NODE_NUM][NODE_NUM]; // ボトルネック容量用のグラフ
-        
-        /* 容量グラフの初期化 */
-        for (i = 0; i < NODE_NUM; i++) {
-            for (j = 0; j < NODE_NUM; j++) {
-                if (graph[i][j] < MAX) { // リンクが存在する場合
-                    capacityGraph[i][j] = link[i][j]; // リンク容量を使用
-                } else {
-                    capacityGraph[i][j] = 0; // リンクがない場合は容量0
+        // リンクのリストを作成
+        List<Link> links = new ArrayList<>();
+        for (int i = 0; i < NODE_NUM; i++) {
+            for (int j = i + 1; j < NODE_NUM; j++) {
+                if (link[i][j] > 0) {
+                    links.add(new Link(i, j, link[i][j]));
                 }
             }
         }
-        
-        /* 初期化 */
-        for (i = 0; i < NODE_NUM; i++) {
-            bottleneck[i] = 0; // ボトルネック容量を0で初期化
-            chk[i] = 0;
-            path[i] = NODE_NUM;
-        }
-        
-        path[src] = src;   // 始点ノードへの経路上の前ノードはそれ自身
-        bottleneck[src] = MAX; // 始点ノード自身へのボトルネック容量は最大
-        chk[src] = 1;      // 始点ノードは確定
-        tmp_node = src;    // 始点ノードから探索開始
-        fin = 0;
-        
-        /* 経路探索 */
-        while (fin == 0) {
-            /* 更新処理 */
-            for (i = 0; i < NODE_NUM; i++) {
-                if (capacityGraph[tmp_node][i] > 0 && chk[i] == 0) {
-                    // 経路上のボトルネック容量は、これまでの最小容量と新しいリンク容量の小さい方
-                    int newBottleneck = Math.min(bottleneck[tmp_node], capacityGraph[tmp_node][i]);
-                    
-                    // より大きなボトルネック容量を持つ経路が見つかった場合、更新
-                    if (bottleneck[i] < newBottleneck) {
-                        bottleneck[i] = newBottleneck;
-                        path[i] = tmp_node;
-                    }
+
+        // リンクを容量の大きい順にソート
+        Collections.sort(links);
+
+        // 経路探索用の一時グラフ
+        int[][] tempGraph = new int[NODE_NUM][NODE_NUM];
+        boolean[] visited = new boolean[NODE_NUM];
+        int currentBottleneck = 0;
+
+        // 容量の大きいリンクから順にグラフを構築
+        for (int i = 0; i < links.size(); i++) {
+            // 現在のリンクの容量をボトルネック容量の候補とする
+            currentBottleneck = links.get(i).capacity;
+
+            // 同じ容量を持つリンクを全て追加
+            while (i < links.size() && links.get(i).capacity == currentBottleneck) {
+                Link currentLink = links.get(i);
+                tempGraph[currentLink.node1][currentLink.node2] = 1;
+                tempGraph[currentLink.node2][currentLink.node1] = 1;  // 無向グラフなので両方向に追加
+                i++;
+            }
+            i--; // whileループで余分にインクリメントされた分を戻す
+
+            // 経路探索
+            Arrays.fill(visited, false);
+            Arrays.fill(path, NODE_NUM);
+            path[src] = src;
+
+            if (dfs(tempGraph, visited, path, src, dest)) {
+                // 経路が見つかった場合、この容量が最大ボトルネック容量
+                for (int j = 0; j < NODE_NUM; j++) {
+                    bottleneck[j] = currentBottleneck;
                 }
+                return;
             }
-            
-            /* 次に確定するノードを選択（未確定ノードの中でボトルネック容量が最大のもの） */
-            tmp_bottleneck = 0;
-            tmp_node = -1;
-            for (i = 0; i < NODE_NUM; i++) {
-                if (chk[i] == 0 && bottleneck[i] > tmp_bottleneck) {
-                    tmp_bottleneck = bottleneck[i];
-                    tmp_node = i;
-                }
-            }
-            
-            // 未確定ノードが存在しない、または到達不能な場合
-            if (tmp_node == -1) {
-                fin = 1;
-            } else {
-                chk[tmp_node] = 1; // ノードを確定
-            }
-            
-            if (chk[dest] == 1) fin = 1; // 終点ノードが確定したら終了
         }
+
+        // 経路が見つからなかった場合
+        Arrays.fill(bottleneck, 0);
+        Arrays.fill(path, NODE_NUM);
     }
 
     /* 最小ホップを用いた要求時経路（空き容量のないリンクをグラフから取り除く） */
