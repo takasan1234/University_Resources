@@ -12,7 +12,7 @@ public class dijkstra {
     static final int NODE_NUM = 10;   /* 総ノード数 */
     static final int MAX = 9999;      /* 無限大に相当する数 */
     static final int FLAG = 1;        /* Dijkstraのテストの場合は0に、シミュレーション評価を行う場合は1にする */
-    static final int ROUTE_TYPE = 4;  /* 経路選択方法：0=最短路、1=最大路、2=要求時最短路、3=要求時最大路、4=空き容量逆数 */
+    static final int ROUTE_TYPE = 5;  /* 経路選択方法：0=最短路、1=最大路、2=要求時最短路、3=要求時最大路、4=空き容量逆数、5=最短最大路 */
     static final int SIM_COUNT = 10000; /* シミュレーション回数 */
     static final int[] PARAM_N = {5, 10, 20, 50, 100}; /* テストするパラメータnの値 */
     static final String[] ROUTE_TYPE_NAMES = {
@@ -20,7 +20,8 @@ public class dijkstra {
         "最大路を用いた固定経路",
         "最小ホップを用いた要求時経路",
         "最大路を用いた要求時経路",
-        "空き容量の逆数を考慮した経路"
+        "空き容量の逆数を考慮した経路",
+        "最短最大路（Shortest Widest Path）"
     };
 
     /* 通信履歴を管理するクラス */
@@ -375,6 +376,40 @@ public class dijkstra {
         }
     }
 
+    /* 最短最大路（Shortest Widest Path）の計算 */
+    public static void findShortestWidestPath(int[][] graph, int[][] bandwidth, int[] path, int[] dist, int[] chk, int src, int dest) {
+        int i, j;
+        int[] bottleneck = new int[NODE_NUM];
+        int maxBottleneck;
+
+        // Step 1: 最大帯域幅を持つ経路を見つける
+        findOnDemandMaximumPath(graph, bandwidth, path, bottleneck, chk, src, dest);
+        maxBottleneck = bottleneck[dest];
+
+        // 経路が見つからない場合は終了
+        if (maxBottleneck == 0) {
+            Arrays.fill(path, NODE_NUM);
+            Arrays.fill(dist, MAX);
+            return;
+        }
+
+        // Step 2: 最大帯域幅以上の容量を持つリンクのみを使用して最短経路を計算
+        int[][] filteredGraph = new int[NODE_NUM][NODE_NUM];
+        for (i = 0; i < NODE_NUM; i++) {
+            for (j = 0; j < NODE_NUM; j++) {
+                if (graph[i][j] < MAX && bandwidth[i][j] >= maxBottleneck) {
+                    // 最大帯域幅以上の容量を持つリンクのみを使用
+                    filteredGraph[i][j] = graph[i][j];
+                } else {
+                    filteredGraph[i][j] = MAX;
+                }
+            }
+        }
+
+        // 最短経路を計算
+        findShortestPath(filteredGraph, path, dist, chk, src, dest);
+    }
+
     public static void main(String[] args) {
         /* Dijkstraのアルゴリズム部分で必要な変数 */
         int[][] graph = new int[NODE_NUM][NODE_NUM];    /* 距離行列 */
@@ -446,7 +481,7 @@ public class dijkstra {
             Random rand = new Random(System.currentTimeMillis()); /* 乱数の初期化 */
             
             // 各経路選択方法でシミュレーションを実行
-            for (int route_type = 0; route_type < 5; route_type++) {
+            for (int route_type = 0; route_type < 6; route_type++) {
                 System.out.printf("\n=======================================\n");
                 System.out.printf("経路選択方法: %s\n", ROUTE_TYPE_NAMES[route_type]);
                 System.out.printf("=======================================\n");
@@ -490,6 +525,9 @@ public class dijkstra {
                                 break;
                             case 4: // 空き容量の逆数を考慮した経路
                                 findInverseCapacityPath(graph, bandwidth, path, dist, chk, src, dest);
+                                break;
+                            case 5: // 最短最大路（Shortest Widest Path）
+                                findShortestWidestPath(graph, bandwidth, path, dist, chk, src, dest);
                                 break;
                         }
                         
