@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class dijkstra {
     /* 定数定義 */
     static final int NODE_NUM = 10;   /* 総ノード数 */
-    static final int MAX = 9999;      /* 無限大に相当する数 */
+    static final int MAX = Integer.MAX_VALUE;      /* 無限大に相当する数 */
     static final int FLAG = 1;        /* Dijkstraのテストの場合は0に、シミュレーション評価を行う場合は1にする */
     static final int ROUTE_TYPE = 1;  /* 経路選択方法：0=最短路、1=最大路、2=要求時最短路、3=要求時最大路、4=空き容量逆数、5=最短最大路 */
     static final int SIM_COUNT = 10000; /* シミュレーション回数 */
@@ -545,6 +545,41 @@ public class dijkstra {
                     
                     // SIM_COUNT回のシミュレーション
                     for (sim_time = 0; sim_time < SIM_COUNT; sim_time++) {
+                        // 時間モデルに応じたリソース解放処理
+                        if (TIME_MODEL == 0) {
+                            // 指数分布モデル：終了した通信のリンク容量を回復
+                            List<Communication> endedCommunications = new ArrayList<>();
+                            for (Communication oldComm : history) {
+                                if (oldComm.established && 
+                                    oldComm.arrivalTime + oldComm.holdingTime <= currentTime[0]) {
+                                    // 通信終了時刻が現在時刻以前なら終了
+                                    for (int idx = 0; idx < oldComm.path.size() - 1; idx++) {
+                                        int node1 = oldComm.path.get(idx);
+                                        int node2 = oldComm.path.get(idx + 1);
+                                        bandwidth[node1][node2]++;
+                                        bandwidth[node2][node1]++;
+                                    }
+                                    endedCommunications.add(oldComm);
+                                }
+                            }
+                            // 終了した通信を履歴から削除
+                            history.removeAll(endedCommunications);
+                        } else {
+                            // 単純なn回前リソース解放モデル
+                            if (history.size() > param_n) {
+                                Communication oldComm = history.get(history.size() - param_n - 1);
+                                if (oldComm.established) {
+                                    // 経路上のリンク容量を1Mbps増加
+                                    for (int idx = 0; idx < oldComm.path.size() - 1; idx++) {
+                                        int node1 = oldComm.path.get(idx);
+                                        int node2 = oldComm.path.get(idx + 1);
+                                        bandwidth[node1][node2]++;
+                                        bandwidth[node2][node1]++;
+                                    }
+                                }
+                            }
+                        }
+                        
                         // 時間モデルに応じた処理
                         if (TIME_MODEL == 0) {
                             // 指数分布モデル
@@ -599,72 +634,37 @@ public class dijkstra {
                         }
                         comm.setPath(path); // 経路情報を設定
                         
-                        // 経路が見つからなかった場合はスキップ
-                        if (comm.path.isEmpty()) {
-                            history.add(comm);
-                            continue;
-                        }
+                        // デフォルトでは確立失敗とマークし、条件を満たせば成功に変更
+                        comm.established = false;
                         
-                        // 経路上のリンク容量をチェック
-                        boolean canEstablish = true;
-                        for (int idx = 0; idx < comm.path.size() - 1; idx++) {
-                            int node1 = comm.path.get(idx);
-                            int node2 = comm.path.get(idx + 1);
-                            if (bandwidth[node1][node2] < 1) {
-                                canEstablish = false;
-                                break;
-                            }
-                        }
-                        
-                        if (canEstablish) {
-                            // 通信を確立できる場合、経路上のリンク容量を1Mbps減少
+                        // 経路が見つかった場合のみリンク容量チェックを行う
+                        if (!comm.path.isEmpty()) {
+                            // 経路上のリンク容量をチェック
+                            boolean canEstablish = true;
                             for (int idx = 0; idx < comm.path.size() - 1; idx++) {
                                 int node1 = comm.path.get(idx);
                                 int node2 = comm.path.get(idx + 1);
-                                bandwidth[node1][node2]--;
-                                bandwidth[node2][node1]--;
+                                if (bandwidth[node1][node2] < 1) {
+                                    canEstablish = false;
+                                    break;
+                                }
                             }
-                            comm.established = true;
-                            success++;
+                            
+                            if (canEstablish) {
+                                // 通信を確立できる場合、経路上のリンク容量を1Mbps減少
+                                for (int idx = 0; idx < comm.path.size() - 1; idx++) {
+                                    int node1 = comm.path.get(idx);
+                                    int node2 = comm.path.get(idx + 1);
+                                    bandwidth[node1][node2]--;
+                                    bandwidth[node2][node1]--;
+                                }
+                                comm.established = true;
+                                success++;
+                            }
                         }
                         
                         // 通信履歴に追加
                         history.add(comm);
-                        
-                        // 時間モデルに応じたリソース解放処理
-                        if (TIME_MODEL == 0) {
-                            // 指数分布モデル：終了した通信のリンク容量を回復
-                            List<Communication> endedCommunications = new ArrayList<>();
-                            for (Communication oldComm : history) {
-                                if (oldComm.established && 
-                                    oldComm.arrivalTime + oldComm.holdingTime <= currentTime[0]) {
-                                    // 通信終了時刻が現在時刻以前なら終了
-                                    for (int idx = 0; idx < oldComm.path.size() - 1; idx++) {
-                                        int node1 = oldComm.path.get(idx);
-                                        int node2 = oldComm.path.get(idx + 1);
-                                        bandwidth[node1][node2]++;
-                                        bandwidth[node2][node1]++;
-                                    }
-                                    endedCommunications.add(oldComm);
-                                }
-                            }
-                            // 終了した通信を履歴から削除
-                            history.removeAll(endedCommunications);
-                        } else {
-                            // 単純なn回前リソース解放モデル
-                            if (history.size() > param_n) {
-                                Communication oldComm = history.get(history.size() - param_n - 1);
-                                if (oldComm.established) {
-                                    // 経路上のリンク容量を1Mbps増加
-                                    for (int idx = 0; idx < oldComm.path.size() - 1; idx++) {
-                                        int node1 = oldComm.path.get(idx);
-                                        int node2 = oldComm.path.get(idx + 1);
-                                        bandwidth[node1][node2]++;
-                                        bandwidth[node2][node1]++;
-                                    }
-                                }
-                            }
-                        }
                     }
                     
                     // 呼損率を計算
