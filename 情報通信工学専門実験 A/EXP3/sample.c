@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 /*
  * マクロ定義
@@ -234,6 +235,112 @@ filteringImage(image_t *resultImage, image_t *originalImage)
 }
 
 /*======================================================================
+ * フィルタリング(Prewittフィルタ)
+ *======================================================================
+ *   画像構造体 image_t *originalImage の画像をフィルタリング(Prewittフィルタ)
+ * して、image_t *resultImage に格納する
+ */
+void
+filteringImageByPrewittWithSquareRoot(image_t *resultImage, image_t *originalImage)
+{
+    int     x, y;
+    int     width, height;
+
+    /* originalImage と resultImage のサイズが違う場合は、共通部分のみ */
+    /* を処理する。*/
+    width = min(originalImage->width, resultImage->width);
+    height = min(originalImage->height, resultImage->height);
+
+    int x_filter[3][3] = {
+        {-1, 0, 1},
+        {-1, 0, 1},
+        {-1, 0, 1}
+    };
+    int y_filter[3][3] = {
+        {-1, -1, -1},
+        {0, 0, 0},
+        {1, 1, 1}
+    };
+    
+    for(y=0; y<height-2; y++)
+    {
+        for(x=0; x<width-2; x++)
+        {
+            int x_sum = 0;
+            int y_sum = 0;
+            for(int i=0; i<3; i++)
+            {
+                for(int j=0; j<3; j++)
+                {
+                    x_sum += originalImage->data[x+i+originalImage->width*(y+j)] * x_filter[i][j];
+                    y_sum += originalImage->data[x+i+originalImage->width*(y+j)] * y_filter[i][j];
+                }
+            }
+            int result =  sqrt(x_sum*x_sum + y_sum*y_sum);
+            if(result > 255)
+            {
+                result = 255;
+            }
+            resultImage->data[x+resultImage->width*y] = result;
+        }
+    }
+}
+
+/*======================================================================
+ * フィルタリング(Prewittフィルタ)
+ *======================================================================
+ *   画像構造体 image_t *originalImage の画像をフィルタリング(Prewittフィルタ)
+ * して、image_t *resultImage に格納する
+ */
+void
+filteringImageByPrewittWithAbsolute(image_t *resultImage, image_t *originalImage)
+{
+    int     x, y;
+    int     width, height;
+
+    /* originalImage と resultImage のサイズが違う場合は、共通部分のみ */
+    /* を処理する。*/
+    width = min(originalImage->width, resultImage->width);
+    height = min(originalImage->height, resultImage->height);
+
+    int x_filter[3][3] = {
+        {-1, 0, 1},
+        {-1, 0, 1},
+        {-1, 0, 1}
+    };
+    int y_filter[3][3] = {
+        {-1, -1, -1},
+        {0, 0, 0},
+        {1, 1, 1}
+    };
+    
+    for(y=0; y<height-2; y++)
+    {
+        for(x=0; x<width-2; x++)
+        {
+            int x_sum = 0;
+            int y_sum = 0;
+            for(int i=0; i<3; i++)
+            {
+                for(int j=0; j<3; j++)
+                {
+                    x_sum += originalImage->data[x+i+originalImage->width*(y+j)] * x_filter[i][j];
+                    y_sum += originalImage->data[x+i+originalImage->width*(y+j)] * y_filter[i][j];
+                }
+            }
+            int result = abs(x_sum) + abs(y_sum);
+            if(result > 255)
+            {
+                result = 255;
+            }
+            resultImage->data[x+resultImage->width*y] = result;
+        }
+    }
+}
+
+
+
+/*======================================================================
  * PGM-RAW フォーマットのヘッダ部分の書き込み
  *======================================================================
  *   画像構造体 image_t *ptImage の内容に従って、出力ファイル FILE *fp
@@ -312,7 +419,7 @@ main(int argc, char **argv)
             originalImage.maxValue);
 
     /* フィルタリング */
-    filteringImage(&resultImage, &originalImage);
+    filteringImageByPrewittWithAbsolute(&resultImage, &originalImage);
 
     /* 画像ファイルのヘッダ部分の書き込み */
     writePgmRawHeader(outfp, &resultImage);
