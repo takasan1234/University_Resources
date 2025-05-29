@@ -447,9 +447,18 @@ calclateThreshold(image_t *resultImage, image_t *originalImage)
             optimal_k = k;
         }
     }
-    
     return optimal_k;  // 最適な閾値を返す
 }
+
+void
+PrewittAndBinarization(image_t *resultImage, image_t *originalImage)
+{
+    image_t tempImage;
+    initImage(&tempImage, originalImage->width, originalImage->height, originalImage->maxValue);
+    filteringImageByPrewittWithAbsolute(&tempImage, originalImage);
+    binarizationWithThreshold(resultImage, &tempImage);
+}
+
 
 /*======================================================================
  * PGM-RAW フォーマットのヘッダ部分の書き込み
@@ -530,7 +539,7 @@ main(int argc, char **argv)
             originalImage.maxValue);
 
     /* フィルタリング */
-    binarizationWithThreshold(&resultImage, &originalImage);
+    PrewittAndBinarization(&resultImage, &originalImage);
 
     /* 画像ファイルのヘッダ部分の書き込み */
     writePgmRawHeader(outfp, &resultImage);
