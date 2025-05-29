@@ -338,6 +338,40 @@ filteringImageByPrewittWithAbsolute(image_t *resultImage, image_t *originalImage
     }
 }
 
+/*======================================================================
+ * 二値化
+ *======================================================================
+ *   画像構造体 image_t *originalImage の画像を二値化して、image_t *resultImage に格納する
+ */
+void
+binarization(image_t *resultImage, image_t *originalImage)
+{
+    int     x, y;
+    int     width, height;
+
+    /* originalImage と resultImage のサイズが違う場合は、共通部分のみ */
+    /* を処理する。*/
+    width = min(originalImage->width, resultImage->width);
+    height = min(originalImage->height, resultImage->height);
+
+    int threshold = 128;
+
+    for(y=0; y<height; y++)
+    {
+        for(x=0; x<width; x++)
+        {
+            if(originalImage->data[x+originalImage->width*y] > threshold)
+            {
+                resultImage->data[x+resultImage->width*y] = 255;
+            }
+            else
+            {
+                resultImage->data[x+resultImage->width*y] = 0;
+            }
+        }
+    }
+}
+
 
 
 /*======================================================================
@@ -419,7 +453,7 @@ main(int argc, char **argv)
             originalImage.maxValue);
 
     /* フィルタリング */
-    filteringImageByPrewittWithAbsolute(&resultImage, &originalImage);
+    binarization(&resultImage, &originalImage);
 
     /* 画像ファイルのヘッダ部分の書き込み */
     writePgmRawHeader(outfp, &resultImage);
