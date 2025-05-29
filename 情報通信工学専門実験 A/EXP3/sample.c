@@ -20,6 +20,8 @@ typedef struct
                             /* ポインタ */
 } image_t;
 
+// 関数の前方宣言を追加
+int calclateThreshold(image_t *resultImage, image_t *originalImage);
 
 /*======================================================================
  * このプログラムに与えられた引数の解析
@@ -344,7 +346,7 @@ filteringImageByPrewittWithAbsolute(image_t *resultImage, image_t *originalImage
  *   画像構造体 image_t *originalImage の画像を二値化して、image_t *resultImage に格納する
  */
 void
-binarization(image_t *resultImage, image_t *originalImage)
+binarizationWithThreshold(image_t *resultImage, image_t *originalImage)
 {
     int     x, y;
     int     width, height;
@@ -354,7 +356,8 @@ binarization(image_t *resultImage, image_t *originalImage)
     width = min(originalImage->width, resultImage->width);
     height = min(originalImage->height, resultImage->height);
 
-    int threshold = 128;
+    int threshold = calclateThreshold(resultImage, originalImage);
+    printf("threshold: %d\n", threshold);
 
     for(y=0; y<height; y++)
     {
@@ -372,7 +375,81 @@ binarization(image_t *resultImage, image_t *originalImage)
     }
 }
 
+// 関数の戻り値の型をintに修正
+int
+calclateThreshold(image_t *resultImage, image_t *originalImage)
+{
+    int x, y;
+    int width, height;
+    
+    width = min(originalImage->width, resultImage->width);
+    height = min(originalImage->height, resultImage->height);
 
+    int N = width * height;  // N = 全画素数
+    int ni[256] = {0};      // ni = 階調値iである画素の数
+    double pi[256] = {0.0}; // pi = ni/N
+    int L = 256;            // L = 階調値の最大値+1
+    
+    // niの計算：各階調値の出現回数をカウント
+    for(y = 0; y < height; y++) {
+        for(x = 0; x < width; x++) {
+            ni[originalImage->data[x + originalImage->width * y]]++;
+        }
+    }
+
+    // piの計算：pi = ni/N
+    for(int i = 0; i < L; i++) {
+        pi[i] = (double)ni[i] / N;
+    }
+
+    // μTの計算：μT = Σ(i*pi)
+    double mu_T = 0.0;
+    for(int i = 0; i < L; i++) {
+        mu_T += i * pi[i];
+    }
+
+    // クラス間分散の計算とその最大値を求める
+    double max_sigma_B = 0.0;
+    int optimal_k = 0;
+    
+    // 1 ≤ k ≤ L-1 の範囲で探索
+    for(int k = 1; k < L; k++) {
+        // ω0の計算：ω0 = Σ(pi) [i=0からk]
+        double omega_0 = 0.0;
+        for(int i = 0; i <= k; i++) {
+            omega_0 += pi[i];
+        }
+        
+        // ω1の計算：ω1 = Σ(pi) [i=k+1からL-1]
+        double omega_1 = 1.0 - omega_0;  // ω0 + ω1 = 1 なので
+        
+        // μ0の計算：μ0 = Σ(i*pi)/ω0 [i=0からk]
+        double mu_0 = 0.0;
+        for(int i = 0; i <= k; i++) {
+            mu_0 += i * pi[i];
+        }
+        mu_0 = omega_0 > 0 ? mu_0 / omega_0 : 0;
+        
+        // μ1の計算：μ1 = Σ(i*pi)/ω1 [i=k+1からL-1]
+        double mu_1 = 0.0;
+        for(int i = k + 1; i < L; i++) {
+            mu_1 += i * pi[i];
+        }
+        mu_1 = omega_1 > 0 ? mu_1 / omega_1 : 0;
+        
+        // クラス間分散σB²(k)の計算
+        double sigma_B = omega_0 * (mu_0 - mu_T) * (mu_0 - mu_T) + 
+                        omega_1 * (mu_1 - mu_T) * (mu_1 - mu_T);
+        
+        // 最大値の更新
+        if(sigma_B > max_sigma_B) {
+            max_sigma_B = sigma_B;
+            optimal_k = k;
+        }
+    }
+    
+    return optimal_k;  // 最適な閾値を返す
+}
 
 /*======================================================================
  * PGM-RAW フォーマットのヘッダ部分の書き込み
@@ -453,7 +530,7 @@ main(int argc, char **argv)
             originalImage.maxValue);
 
     /* フィルタリング */
-    binarization(&resultImage, &originalImage);
+    binarizationWithThreshold(&resultImage, &originalImage);
 
     /* 画像ファイルのヘッダ部分の書き込み */
     writePgmRawHeader(outfp, &resultImage);
