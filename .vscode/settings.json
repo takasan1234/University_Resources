@@ -17,22 +17,26 @@
                 "-synctex=1",
                 "-interaction=nonstopmode",
                 "-file-line-error",
-                "%DOC%"
-            ]
+                "%DOCFILE%"
+            ],
+            "env": {},
+            "cwd": "%DIR%"
         },
         {
             "name": "pbibtex",
             "command": "pbibtex",
             "args": [
                 "%DOCFILE%"
-            ]
+            ],
+            "cwd": "%DIR%"
         },
         {
             "name": "dvipdfmx",
             "command": "dvipdfmx",
             "args": [
                 "%DOCFILE%.dvi"
-            ]
+            ],
+            "cwd": "%DIR%"
         }
     ],
     "latex-workshop.latex.clean.fileTypes": [
@@ -52,7 +56,7 @@
         "*.gls",
         "*.fls",
         "*.log",
-        "*.fdb_latexmk",
+        "*.fdb_latexmx",
         "*.snm",
         "*.nav",
         "*.dvi",
@@ -61,5 +65,7 @@
     "latex-workshop.view.pdf.viewer": "tab",
     "latex-workshop.latex.autoClean.run": "onFailed",
     "latex-workshop.latex.outDir": "%DIR%",
-    "latex-workshop.latex.autoBuild.run": "onSave"
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.latex.build.forceRecipeUsage": false,
+    "latex-workshop.latex.build.clearLog.everyRecipeStep.enabled": false
 } 

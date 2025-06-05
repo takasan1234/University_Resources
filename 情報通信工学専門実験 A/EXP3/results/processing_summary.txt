@@ -1,0 +1,67 @@
+実行日時: 2025年 5月31日 土曜日 19時58分32秒 JST
+
+=== sample1.pgm 二値化処理 ===
+threshold: 134
+=== sample1.pgm エッジ強調→二値化処理 ===
+threshold: 125
+
+=== sample2.pgm 二値化処理 ===
+threshold: 111
+=== sample2.pgm エッジ強調→二値化処理 ===
+threshold: 127
+
+=== sample3.pgm 二値化処理 ===
+threshold: 105
+=== sample3.pgm エッジ強調→二値化処理 ===
+threshold: 125
+
+=== sample4.pgm 二値化処理 ===
+threshold: 155
+=== sample4.pgm エッジ強調→二値化処理 ===
+threshold: 112
+
+=== sample5.pgm 二値化処理 ===
+threshold: 128
+=== sample5.pgm エッジ強調→二値化処理 ===
+threshold: 128
+
+=== sample6.pgm 二値化処理 ===
+threshold: 127
+=== sample6.pgm エッジ強調→二値化処理 ===
+threshold: 109
+
+=== sample7.pgm 二値化処理 ===
+threshold: 107
+=== sample7.pgm エッジ強調→二値化処理 ===
+threshold: 114
+
+=== sample8.pgm 二値化処理 ===
+threshold: 136
+=== sample8.pgm エッジ強調→二値化処理 ===
+threshold: 105
+
+=== sample9.pgm 二値化処理 ===
+threshold: 162
+=== sample9.pgm エッジ強調→二値化処理 ===
+threshold: 133
+
+=== sample10.pgm 二値化処理 ===
+threshold: 103
+=== sample10.pgm エッジ強調→二値化処理 ===
+threshold: 126
+
+=== sample11.pgm 二値化処理 ===
+threshold: 117
+=== sample11.pgm エッジ強調→二値化処理 ===
+threshold: 100
+
+=== sample12.pgm 二値化処理 ===
+threshold: 1
+=== sample12.pgm エッジ強調→二値化処理 ===
+threshold: 1
+
+=== sample13.pgm 二値化処理 ===
+threshold: 1
+=== sample13.pgm エッジ強調→二値化処理 ===
+threshold: 1
+

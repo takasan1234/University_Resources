@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 /*
  * マクロ定義
@@ -28,17 +29,20 @@ int calclateThreshold(image_t *resultImage, image_t *originalImage);
  *======================================================================
  */
 void
-parseArg(int argc, char **argv, FILE **infp, FILE **outfp)
+parseArg(int argc, char **argv, FILE **infp, FILE **outfp, char **mode)
 {     
     FILE *fp;
 
     /* 引数の個数をチェック */
-    if (argc!=3)
+    if (argc!=4)
     {
         goto usage;
     }
 
-    *infp = fopen(argv[1], "rb"); /* 入力画像ファイルをバイナリモードで */
+    /* モードを設定 */
+    *mode = argv[1];
+
+    *infp = fopen(argv[2], "rb"); /* 入力画像ファイルをバイナリモードで */
                                 /* オープン */
 
     if (*infp==NULL)		/* オープンできない時はエラー */
@@ -47,7 +51,7 @@ parseArg(int argc, char **argv, FILE **infp, FILE **outfp)
         goto usage;
     }
 
-    *outfp = fopen(argv[2], "wb"); /* 出力画像ファイルをバイナリモードで */
+    *outfp = fopen(argv[3], "wb"); /* 出力画像ファイルをバイナリモードで */
                                 /* オープン */
 
     if (*outfp==NULL)		/* オープンできない時はエラー */
@@ -60,7 +64,11 @@ parseArg(int argc, char **argv, FILE **infp, FILE **outfp)
 
 /* このプログラムの使い方の説明 */
 usage:
-    fprintf(stderr, "usage : %s <input pgm file> <output pgm file>\n", argv[0]);
+    fprintf(stderr, "usage : %s <mode> <input pgm file> <output pgm file>\n", argv[0]);
+    fprintf(stderr, "mode:\n");
+    fprintf(stderr, "  edge    - エッジ強調のみ\n");
+    fprintf(stderr, "  binary  - 二値化のみ\n");
+    fprintf(stderr, "  both    - エッジ強調→二値化\n");
     exit(1);
 }
 
@@ -136,11 +144,17 @@ readPgmRawHeader(FILE *fp, image_t *ptImage)
 {
     int width, height, maxValue;
     char buf[128];
+    char *commentPos;
 
     /* マジックナンバー(P5) の確認 */
     if(readOneLine(buf, 128, fp)==NULL)
     {
         goto error;
+    }
+    /* 行内コメントを除去 */
+    commentPos = strchr(buf, '#');
+    if (commentPos != NULL) {
+        *commentPos = '\0';
     }
     if (buf[0]!='P' || buf[1]!='5')
     {
@@ -151,6 +165,11 @@ readPgmRawHeader(FILE *fp, image_t *ptImage)
     if (readOneLine(buf, 128, fp)==NULL)
     {
         goto error;
+    }
+    /* 行内コメントを除去 */
+    commentPos = strchr(buf, '#');
+    if (commentPos != NULL) {
+        *commentPos = '\0';
     }
     if (sscanf(buf, "%d %d", &width, &height) != 2)
     {
@@ -165,6 +184,11 @@ readPgmRawHeader(FILE *fp, image_t *ptImage)
     if (readOneLine(buf, 128, fp)==NULL)
     {
         goto error;
+    }
+    /* 行内コメントを除去 */
+    commentPos = strchr(buf, '#');
+    if (commentPos != NULL) {
+        *commentPos = '\0';
     }
     if (sscanf(buf, "%d", &maxValue) != 1)
     {
@@ -523,9 +547,10 @@ main(int argc, char **argv)
 {
     image_t originalImage, resultImage;
     FILE *infp, *outfp;
+    char *mode;
   
     /* 引数の解析 */
-    parseArg(argc, argv, &infp, &outfp);
+    parseArg(argc, argv, &infp, &outfp, &mode);
 
     /* 元画像の画像ファイルのヘッダ部分を読み込み、画像構造体を初期化 */
     /* する */
@@ -538,8 +563,21 @@ main(int argc, char **argv)
     initImage(&resultImage, originalImage.width, originalImage.height,
             originalImage.maxValue);
 
-    /* フィルタリング */
-    PrewittAndBinarization(&resultImage, &originalImage);
+    /* 処理モードに応じたフィルタリング */
+    if (strcmp(mode, "edge") == 0) {
+        /* エッジ強調のみ（Prewitt + 絶対値） */
+        filteringImageByPrewittWithAbsolute(&resultImage, &originalImage);
+    } else if (strcmp(mode, "binary") == 0) {
+        /* 二値化のみ */
+        binarizationWithThreshold(&resultImage, &originalImage);
+    } else if (strcmp(mode, "both") == 0) {
+        /* エッジ強調→二値化 */
+        PrewittAndBinarization(&resultImage, &originalImage);
+    } else {
+        fprintf(stderr, "Error: Invalid mode '%s'\n", mode);
+        fprintf(stderr, "Valid modes: edge, binary, both\n");
+        exit(1);
+    }
 
     /* 画像ファイルのヘッダ部分の書き込み */
     writePgmRawHeader(outfp, &resultImage);
