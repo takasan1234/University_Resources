@@ -1,0 +1,424 @@
+
+\documentclass[xelatex,ja=standard,11pt,top=25mm,bottom=25mm,left=25mm,right=25mm]{bxjsarticle}
+% Compile with: xelatex (or lualatex if you switch engine option).
+% NOTE: Do NOT load geometry here; margins are given as global options above.
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue}
+\usepackage{caption}
+\captionsetup[figure]{labelsep=space}
+\captionsetup[table]{labelsep=space}
+\renewcommand{\figurename}{図}
+\renewcommand{\tablename}{表}
+
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0.5em}
+
+\begin{document}
+
+% =====================
+% 本文
+% =====================
+
+\section{正弦波のサンプリングとフーリエ変換}
+
+\subsection{シミュレーション結果}
+
+\subsubsection{演習 3.1(1) と (3) の結果}
+振幅を $\sqrt{2}$、周波数を $2\,\mathrm{kHz}$ とした正弦波データを生成した。
+サンプリング周波数を $10\,\mathrm{kHz}$、サンプル数を $10^5$ として正弦波データ配列を生成し、
+その時間波形数周期分を図示したものを図\ref{fig:sin-time}に示す。
+なお、$10\,\mathrm{kHz}$ でサンプリングしたデータを丸でプロットし、
+$100\,\mathrm{kHz}$ でサンプリングしたデータを正弦波の破線で示している。
+この図より、正弦波が $10\,\mathrm{kHz}$ の時間間隔 $0.1\,\mathrm{ms}$ で正しくサンプリングされていることが確認できる。
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{images/3-1_図1.png}
+  \caption{周波数 $2\,\mathrm{kHz}$ の正弦波の時間波形}
+  \label{fig:sin-time}
+\end{figure}
+
+次に、演習 3.1(3) でおこなった生成した正弦波データをフーリエ変換し、
+その振幅絶対値スペクトル波形を図示したものを図\ref{fig:sin-spec}に示す。
+$\pm 2\,\mathrm{kHz}$ においてピークが生じることを確認できる。
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{images/3-1_図3.png}
+  \caption{絶対値振幅スペクトル波形}
+  \label{fig:sin-spec}
+\end{figure}
+
+\subsubsection{演習 3.1(2) の結果}
+生成した正弦波について、時間波形全体のエネルギーとパワー、
+離散時間サンプルの平均強度は表\ref{tab:ex312}のようになった。
+表より、パワーと平均強度が一致していることが確認できる。
+
+\begin{table}[h]
+  \centering
+  \caption{演習 3.1(2) の計算結果}
+  \label{tab:ex312}
+  \begin{tabular}{ll}
+    \toprule
+    指標 & 値 \\
+    \midrule
+    時間波形全体のエネルギー & 9.999999999999837 \\
+    時間波形全体のパワー & 0.9999999999999837 \\
+    離散時間サンプルの平均強度 & 0.9999999999999836 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsubsection{演習 3.1(4) の結果}
+サンプリング周波数を $1$～$10\,\mathrm{kHz}$ まで $0.5\,\mathrm{kHz}$ 間隔で変化させ、
+振幅を $\sqrt{2}$、周波数を $2\,\mathrm{kHz}$ とした余弦波データを生成した。
+これらをフーリエ変換して、その振幅絶対値スペクトル波形のピークを検出した。
+なお、サンプル数は $100000$ としている。
+サンプリング周波数とピーク周波数の関係を図\ref{fig:fs-peak}に示す。
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{images/3-1_図2.png}
+  \caption{余弦波周波数とサンプリング後ピーク周波数の関係}
+  \label{fig:fs-peak}
+\end{figure}
+
+\subsection{考察}
+
+\subsubsection{パワーの解析解とシミュレーション結果との比較}
+演習 3.1(1) で生成した正弦波実関数 $f(t)=\sqrt{2}\sin (2\pi\cdot 2{\times}10^3\,t)$ の
+パワー $P$ は、周期 $T=\frac{1}{2000}$ を用いて
+\begin{align}
+  P=\frac{1}{T}\int_0^T f(t)^2\,dt
+  =\frac{1}{T}\int_0^T 2\sin^2(2\pi\cdot 2{\times}10^3\,t)\,dt
+  =1
+\end{align}
+となる。Python による計算では $0.9999999999999837$ であり、解析解とほぼ一致した。
+誤差は有限精度演算における丸めの影響と考えられる。
+
+\subsubsection{フーリエ変換と絶対値振幅スペクトルの比較}
+\begin{align}
+  \mathcal{F}\left[\sqrt{2}\sin (2\pi\cdot 2{\times}10^3\,t)\right]
+  = -\frac{j}{2}\{\delta(f-2000)-\delta(f+2000)\}
+\end{align}
+よって絶対値は $f=\pm 2\,\mathrm{kHz}$ でピークをとり、その他では $0$ である。
+図\ref{fig:sin-spec}とも整合する。
+
+\subsubsection{時間領域のパワーと周波数領域の平均強度の関係（パーセバル）}
+信号を $x[n]$、その DFT を $X[k]$、データ数を $N$ とすると
+\begin{align}
+  \sum_{n=0}^{N-1}|x[n]|^2
+  = \frac{1}{N}\sum_{k=0}^{N-1}|X[k]|^2
+\end{align}
+が成り立つ。
+$N=100000$、表\ref{tab:ex312}の結果を用いれば、
+左辺 $= 99999.99999999837$、右辺 $= 99999.99999999834$ であり、
+数値誤差の範囲で一致する。
+
+\subsubsection{サンプリング定理とシミュレーション結果との比較}
+図\ref{fig:fs-peak}より、サンプリング周波数 $f_s$ が $4\,\mathrm{kHz}$ 以上のとき、
+検出されるピーク周波数は $2\,\mathrm{kHz}$ で一定である。
+一方、$f_s < 4\,\mathrm{kHz}$ では、ピーク周波数が $2\,\mathrm{kHz}$ から外れていく。
+これはサンプリング定理 $f_s > 2f_0$（ナイキスト周波数）に一致する。
+$f_0 = 2\,\mathrm{kHz}$ の余弦波を正しくサンプリングするには $f_s > 4\,\mathrm{kHz}$ が必要である。
+$f_s < 2f_0$ の場合、エイリアシングにより周波数折り返しが生じ、
+見かけのピーク周波数は $|f_s - f_0|$ となる。
+たとえば、$f_s = 1\,\mathrm{kHz}$ では $|1-2| = 1\,\mathrm{kHz}$ にピークが現れ、
+図\ref{fig:fs-peak}の結果と整合する。
+
+% =====================
+\section{矩形信号のフィルタリング}
+
+\subsection{シミュレーション結果}
+\subsubsection{演習 3.2(1) の結果}
+時間幅 $\tau$ の矩形波 $r(t)$ を次式で定義する：
+\begin{align}
+  r(t-T_0)=
+  \begin{cases}
+    1, & |t-T_0|\le \tau/2 \\
+    0, & |t-T_0|>\tau/2
+  \end{cases}
+\end{align}
+サンプリング周波数 $10\,\mathrm{kHz}$、サンプル数 $10^5$、
+時間幅 $\tau=100\,\mathrm{ms}$、$T_0=0$ として生成した。
+時間波形を図\ref{fig:rect-time}、絶対値振幅スペクトルを図\ref{fig:rect-spec}に示す。
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\linewidth]{images/3-2-1_矩形信号の時間波形.png}
+  \caption{矩形信号の時間波形}
+  \label{fig:rect-time}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\linewidth]{images/3-2-1_矩形信号のスペクトル.png}
+  \caption{矩形信号の絶対値振幅スペクトル波形}
+  \label{fig:rect-spec}
+\end{figure}
+
+\subsubsection{演習 3.2(2) の結果}
+$r(t)$ を帯域 $W=0.1\,\mathrm{kHz}$ のローパスフィルタ $H(f)$ に通した結果を示す。
+フィルタ出力の時間波形を図\ref{fig:lpf-time}、
+絶対値振幅スペクトルを図\ref{fig:lpf-spec}に示す。
+フィルタにより高周波成分が除去され、時間波形は滑らかになるが、
+矩形波の立ち上がり・立ち下がりが鈍化し、リンギングが観察される。
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\linewidth]{images/3-2-2_フィルタ後時間波形.png}
+  \caption{ローパスフィルタ出力の時間波形（$W=0.1\,\mathrm{kHz}$）}
+  \label{fig:lpf-time}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\linewidth]{images/3-2-2_フィルタ後スペクトル.png}
+  \caption{ローパスフィルタ出力の絶対値振幅スペクトル（$W=0.1\,\mathrm{kHz}$）}
+  \label{fig:lpf-spec}
+\end{figure}
+
+さらに、帯域 $W$ を $0.05\,\mathrm{kHz}$、$0.1\,\mathrm{kHz}$、$0.5\,\mathrm{kHz}$ と変化させた場合の
+フィルタ出力を比較した結果を図\ref{fig:lpf-bandwidth-time}と図\ref{fig:lpf-bandwidth-spec}に示す。
+帯域が狭いほど波形歪みが大きく、リンギングが顕著になる一方、
+帯域が広いほど元の矩形波に近づくことが確認できる。
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\linewidth]{images/3-2-3_帯域比較_時間波形.png}
+  \caption{異なる帯域幅でのローパスフィルタ出力の時間波形比較}
+  \label{fig:lpf-bandwidth-time}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\linewidth]{images/3-2-3_帯域比較_スペクトル.png}
+  \caption{異なる帯域幅でのローパスフィルタ出力のスペクトル比較}
+  \label{fig:lpf-bandwidth-spec}
+\end{figure}
+
+\clearpage
+\subsection{考察}
+\subsubsection{矩形波のフーリエ変換解析解とシミュレーション結果との比較}
+時間幅 $\tau=100\,\mathrm{ms}$ で $T_0=0$ の矩形波 $r(t)$ のフーリエ変換は
+\begin{align}
+  R(f) = \int_{-\infty}^{\infty}r(t)e^{-j2\pi ft}\,dt
+  = \int_{-\tau/2}^{\tau/2}e^{-j2\pi ft}\,dt
+  = \tau\,\mathrm{sinc}(\pi f\tau)
+\end{align}
+となる。ここで $\mathrm{sinc}(x)=\sin(x)/x$ である。
+$\tau=0.1\,\mathrm{s}$ の場合、$|R(f)|$ は $f=0$ で最大値 $\tau=0.1$ をとり、
+$f=\pm 10, \pm 20, \ldots\,\mathrm{Hz}$ でゼロ点をもつ。
+図\ref{fig:rect-spec}より、$0.01\,\mathrm{kHz}=10\,\mathrm{Hz}$ 間隔でゼロ点が観察され、
+解析解と一致する。
+
+\subsubsection{LPF 帯域 $W$ と時間波形歪みの定量的関係}
+図\ref{fig:lpf-bandwidth-time}と図\ref{fig:lpf-bandwidth-spec}より、
+帯域 $W$ と波形歪みの関係を定量的に評価できる。
+
+\textbf{$W=0.05\,\mathrm{kHz}$ の場合：}
+カットオフ周波数が $25\,\mathrm{Hz}$ であり、
+矩形信号の第1ゼロ点 $10\,\mathrm{Hz}$ から第3ゼロ点 $30\,\mathrm{Hz}$ までの
+主要周波数成分の多くが除去される。
+その結果、時間波形は大幅に平滑化され、立ち上がり時間が約 $20\,\mathrm{ms}$ に増加する。
+しかし、リンギングの振幅は最小である。
+
+\textbf{$W=0.1\,\mathrm{kHz}$ の場合：}
+カットオフ周波数が $50\,\mathrm{Hz}$ であり、
+第1～第5ゼロ点（$10\,\mathrm{Hz}$ から $50\,\mathrm{Hz}$）までの成分が保持される。
+立ち上がり時間は約 $10\,\mathrm{ms}$ で、リンギング振幅は最大である。
+
+\textbf{$W=0.5\,\mathrm{kHz}$ の場合：}
+カットオフ周波数が $250\,\mathrm{Hz}$ であり、
+矩形信号の主要周波数成分（第1～第25ゼロ点）のほぼ全てが保持される。
+立ち上がり時間は約 $2\,\mathrm{ms}$ と元の矩形波に近く、
+リンギング振幅は比較的大きい。
+
+% =====================
+\section{白色ガウス雑音のフィルタリング}
+
+\subsection{シミュレーション結果}
+\subsubsection{演習 3.3(1) の結果}
+サンプリング周波数 $10\,\mathrm{kHz}$、サンプル数 $10^5$ で、
+平均 $0$・分散 $1$ の白色ガウス雑音（AWGN）を生成した。
+図\ref{fig:noise-before-2panel}に、生成した雑音の時間波形とヒストグラムを示す。
+時間波形は $\pm 3$ 程度の範囲で不規則に変動し、
+ヒストグラムは理論ガウス分布 $N_0(0,1)$ とよく一致しており、
+正しく白色ガウス雑音が生成できていることが確認できる。
+雑音のパワーは約 $1.000$ であり、分散とほぼ等しいことが確認された。
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\linewidth]{images/3-3-2_フィルタ前2panel.png}
+  \caption{白色ガウス雑音の(a)時間波形と(b)ヒストグラムおよび理論分布}
+  \label{fig:noise-before-2panel}
+\end{figure}
+
+\subsubsection{演習 3.3(2) の結果}
+帯域 $W=5\,\mathrm{kHz}$ のローパスフィルタを通過させた前後の
+白色ガウス雑音の振幅絶対値スペクトルを図\ref{fig:noise-spec-before}と
+図\ref{fig:noise-spec-after}に示す。
+フィルタ前は全周波数帯域で一様な振幅をもつ（白色性）が、
+フィルタ後は $|f| > 2.5\,\mathrm{kHz}$ の成分が除去されている。
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\linewidth]{images/3-3-2_before_lpf.png}
+  \caption{ローパスフィルタ適用前の白色ガウス雑音スペクトル}
+  \label{fig:noise-spec-before}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\linewidth]{images/3-3-2_after_lpf.png}
+  \caption{ローパスフィルタ適用後の白色ガウス雑音スペクトル（$W=5\,\mathrm{kHz}$）}
+  \label{fig:noise-spec-after}
+\end{figure}
+
+図\ref{fig:noise-4panel}に、フィルタ適用前後の時間波形とヒストグラムの比較を示す。
+(a)はフィルタ前の時間波形、(b)はそのヒストグラムと理論ガウス分布 $N_0(0,1)$ の比較、
+(c)はフィルタ後（$W=5\,\mathrm{kHz}$）の時間波形、
+(d)はフィルタ後のヒストグラムと理論ガウス分布 $N_0(0,0.5)$ の比較である。
+フィルタ通過後は時間波形が平滑化され、隣接サンプル間の相関が増加していることが観察される。
+また、ヒストグラム(d)より、フィルタ後の分散は約 $0.5$ となり、
+入力の半分に減少したことが確認できる。
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.95\linewidth]{images/3-3-1_雑音4panel.png}
+  \caption{白色ガウス雑音のフィルタ前後の(a)(c)時間波形と(b)(d)ヒストグラム}
+  \label{fig:noise-4panel}
+\end{figure}
+
+さらに、図\ref{fig:noise-after-2panel}に、フィルタ通過後の雑音の時間波形とヒストグラムの詳細を示す。
+フィルタ通過により、時間波形は隣接サンプル間の相関が増加し、
+ヒストグラムの分散が理論値 $0.5$ に近い値となっていることが確認できる。
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\linewidth]{images/3-3-2_フィルタ後2panel.png}
+  \caption{フィルタ通過後の白色ガウス雑音の(a)時間波形と(b)ヒストグラム}
+  \label{fig:noise-after-2panel}
+\end{figure}
+
+\subsection{考察}
+\subsubsection{白色ガウス雑音のパワーと分散の解析解との比較}
+平均 $\mu$、分散 $\sigma^2$ のガウス雑音 $n(t)$ のパワー $P$ は
+\begin{align}
+  P = E[n(t)^2] = E[(n(t)-\mu)^2 + 2\mu n(t) - \mu^2]
+  = \sigma^2 + \mu^2
+\end{align}
+である。$\mu=0$ の場合、$P=\sigma^2$ となる。
+シミュレーションで生成した雑音は $\mu=0$、$\sigma^2=1$ であり、
+計算されたパワーは約 $1.000$ で理論値と一致する。
+
+\subsubsection{LPF 通過前後の分散変化の理論値との比較}
+サンプリング周波数 $f_s=10\,\mathrm{kHz}$ の白色ガウス雑音を、
+帯域 $W=5\,\mathrm{kHz}$ のローパスフィルタに通過させると、
+周波数成分 $|f| \le W/2 = 2.5\,\mathrm{kHz}$ のみが保持される。
+白色雑音のパワースペクトル密度は一様であるため、
+通過帯域が半分になれば、出力パワー（分散）も半分になる。
+すなわち、理論的には出力分散は $1 \times (5/10) = 0.5$ となる。
+図\ref{fig:noise-4panel}(d)より、シミュレーション結果も約 $0.5$ であり、
+理論値と一致する。
+
+% =====================
+\section{白色ガウス雑音を付加した矩形信号のフィルタリング}
+
+\subsection{シミュレーション結果}
+\subsubsection{演習 3.4 の結果}
+時間幅 $100\,\mathrm{ms}$ の矩形信号に分散 $1$ の白色ガウス雑音を付加し、
+帯域 $W=0.1\,\mathrm{kHz}$ のローパスフィルタに通過させた。
+図\ref{fig:rect-noise-time}に時間波形、図\ref{fig:rect-noise-spec}にスペクトルを示す。
+図では、元の矩形信号（緑破線）、雑音付加信号（青線）、フィルタ出力（橙線）を重ねて表示している。
+フィルタ出力では、雑音が大きく抑圧されている一方で、
+矩形信号の立ち上がり・立ち下がりが鈍化し、リンギングが観察される。
+これは、フィルタが雑音の高周波成分だけでなく、矩形信号の高周波成分も除去するためである。
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\linewidth]{images/3-4_時間波形.png}
+  \caption{雑音付加矩形信号のフィルタリング：時間波形}
+  \label{fig:rect-noise-time}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\linewidth]{images/3-4_スペクトル.png}
+  \caption{雑音付加矩形信号のフィルタリング：振幅絶対値スペクトル}
+  \label{fig:rect-noise-spec}
+\end{figure}
+
+さらに、帯域 $W$ を $0.05\,\mathrm{kHz}$、$0.1\,\mathrm{kHz}$、$0.5\,\mathrm{kHz}$ と変化させた場合の
+雑音抑圧効果と波形歪みのトレードオフを図\ref{fig:rect-noise-bandwidth-time}と
+図\ref{fig:rect-noise-bandwidth-spec}に示す。
+帯域が狭いほど雑音抑圧効果は大きいが、矩形信号の波形歪みも増大する。
+
+\newpage
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\linewidth]{images/3-4-2_帯域比較_時間波形.png}
+  \caption{異なる帯域幅での雑音抑圧と波形歪みのトレードオフ（時間波形）}
+  \label{fig:rect-noise-bandwidth-time}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\linewidth]{images/3-4-2_帯域比較_スペクトル.png}
+  \caption{異なる帯域幅での雑音抑圧と波形歪みのトレードオフ（スペクトル）}
+  \label{fig:rect-noise-bandwidth-spec}
+\end{figure}
+
+\subsection{考察}
+\subsubsection{LPF 帯域 $W$ と波形歪み・雑音抑圧の定量的トレードオフ}
+図\ref{fig:rect-noise-bandwidth-time}と図\ref{fig:rect-noise-bandwidth-spec}より、
+ローパスフィルタの帯域 $W$ と、信号の波形歪み・雑音抑圧の定量的関係を評価できる。
+
+\textbf{$W=0.05\,\mathrm{kHz}$ の場合：}
+カットオフ周波数 $25\,\mathrm{Hz}$ で、通過帯域は全帯域の $0.5\%$ である。
+雑音パワーは理論的に $1 \times 0.005 = 0.005$ に減少し、
+雑音抑圧効果は非常に高い（$99.5\%$ 除去）。
+しかし、矩形信号の主要周波数成分（$10\,\mathrm{Hz}$ 以降）の大部分が除去され、
+立ち上がり時間は約 $20\,\mathrm{ms}$ に増加する。
+図\ref{fig:rect-noise-bandwidth-time}より、フィルタ出力は非常に滑らかだが、
+元の矩形波からの波形歪みが極めて大きいことが確認できる。
+
+\textbf{$W=0.1\,\mathrm{kHz}$ の場合：}
+カットオフ周波数 $50\,\mathrm{Hz}$ で、通過帯域は全帯域の $1\%$ である。
+雑音パワーは理論的に $1 \times 0.01 = 0.01$ に減少し、
+雑音抑圧効果は高い（$99\%$ 除去）。
+矩形信号の第1～第5ゼロ点（$50\,\mathrm{Hz}$ まで）の成分が保持され、
+立ち上がり時間は約 $10\,\mathrm{ms}$ である。
+図\ref{fig:rect-noise-bandwidth-time}より、雑音はほぼ完全に除去されているが、
+リンギングと立ち上がり時間の増加が観察される。
+
+\textbf{$W=0.5\,\mathrm{kHz}$ の場合：}
+カットオフ周波数 $250\,\mathrm{Hz}$ で、通過帯域は全帯域の $5\%$ である。
+雑音パワーは理論的に $1 \times 0.05 = 0.05$ に減少し、
+雑音抑圧効果は中程度（$95\%$ 除去）。
+矩形信号の第1～第25ゼロ点（$250\,\mathrm{Hz}$ まで）の成分が保持され、
+立ち上がり時間は約 $2\,\mathrm{ms}$ と元の矩形波に近い。
+図\ref{fig:rect-noise-bandwidth-time}より、波形歪みは小さいが、
+雑音が視覚的に確認できる程度残存している。
+
+\textbf{最適帯域の選択：}
+SNR（信号対雑音比）と波形忠実度のバランスから最適帯域を決定する必要がある。
+本実験では、$W=0.1\,\mathrm{kHz}$ が雑音を $99\%$ 除去しつつ、
+矩形信号の基本的な形状を保持する良好なバランス点であることが確認された。
+実際の応用では、許容できる波形歪みと必要な雑音抑圧レベルに応じて
+帯域を調整する必要がある。
+
+% =====================
+\section*{文献}
+\begin{thebibliography}{1} 情報通信工学専門実験C: 信号処理の基礎演習 東広志 2025\end{thebibliography}
+
+
+\end{document}

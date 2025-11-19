@@ -1,0 +1,352 @@
+% 情報システム工学演習I レポート
+\documentclass[a4paper,11pt]{jsarticle}
+
+% パッケージ
+\usepackage{plautopatch}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[dvipdfmx]{color} % dvipdfmxドライバーを明示的に指定
+\usepackage{url}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{float}
+
+% ページ設定
+\usepackage{geometry}
+\geometry{truedimen,a4paper,margin=20mm}  % geometryパッケージを使用して余白を均等に設定
+
+\begin{document}
+
+\title{Booming 第3回勉強会向け課題}
+\author{提出者：辻 孝弥}
+\date{}
+\maketitle
+
+\section*{計算結果一覧表（5 社×指標）}
+
+計算結果一覧表は別紙を参照のこと。
+
+
+\section*{前提}
+
+\begin{table}[H]
+  \caption{各社のビジネスモデル比較}
+  \centering
+  \small
+  \begin{tabular}{llllll}
+    \hline
+    会社 & ターゲット & 商品性質 & 価格帯 & モデル & 方向性（ざっくり） \\
+    \hline
+    ユニクロ & 大衆 & ベーシック & 中〜安 & SPA & 世界で大量に売る \\
+    しまむら & 郊外・ファミリー & 雑多 & 安 & 仕入れ & コスト最優先 \\
+    アダストリア & 若者中心 & トレンド & 中 & SPA & 流行を幅広く展開 \\
+    ユナイテッドアローズ & 都市・高感度層 & 高付加価値 & 高 & 仕入れ＋自社 & 世界観と接客 \\
+    ワークマン & 職人・一般の実用派 & 機能性 & 安 & SPA(FC) & 性能特化・量販 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+
+\section*{指標別 Why so}
+
+\subsection*{ROE（自己資本利益率）}
+
+ファーストリテイリング（以降FRと呼ぶ）のROE 19.0\%は5社中最高である。FRのROEが高い主因は当期純利益率（12.7\%）が高いことにある。
+
+\[
+\mathrm{ROE} = \text{期純利益率} \times \text{総資産回転率} \times \text{財務レバレッジ}
+\]
+
+\begin{table}[H]
+  \caption{ROEの各項の数値}
+  \centering
+  \begin{tabular}{lcccc}
+    \hline
+    会社名 & ROE（自己資本利益率） & 当期利益率 & 総資産回転率 & 財務レバレッジ \\
+    \hline
+    ファーストリテイリング & 19.0\% & 12.7\% & 0.9 & 173\% \\
+    しまむら & 8.4\% & 6.3\% & 1.2 & 113\% \\
+    アダストリア & 12.5\% & 3.3\% & 2.2 & 172\% \\
+    ユナイテッドアローズ & 11.3\% & 2.8\% & 2.2 & 185\% \\
+    ワークマン & 12.5\% & 16.9\% & 0.6 & 120\% \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure1_roe_analysis.png}
+  \caption{ROE分析}
+\end{figure}
+
+\begin{table}[H]
+  \caption{損益計算書の主要項目（単位：百万円）}
+  \centering
+  \begin{tabular}{lrrrrr}
+    \hline
+    & 売上高 & 売上原価 & 営業利益 & 経常利益 & 当期純利益 \\
+    \hline
+    ファーストリテイリング & 3,103,836 & 1,430,764 & 500,904 & 557,201 & 393,605 \\
+    しまむら & 665,358 & 434,475 & 59,240 & 60,596 & 41,885 \\
+    アダストリア & 293,110 & 132,828 & 15,510 & 15,964 & 9,614 \\
+    ユナイテッドアローズ & 150,910 & 72,281 & 7,984 & 8,539 & 4,282 \\
+    ワークマン & 99,670 & 85,771 & 24,394 & 24,904 & 16,892 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+
+\subsection*{ROA（総資産利益率）}
+
+\begin{table}[H]
+  \caption{ROE、ROA、財務レバレッジの比較}
+  \centering
+  \begin{tabular}{lccc}
+    \hline
+    会社名 & ROE & ROA & 財務レバレッジ \\
+    \hline
+    ファーストリテイリング & 19.0\% & 11.0\% & 173\% \\
+    しまむら & 8.4\% & 7.4\% & 113\% \\
+    アダストリア & 12.5\% & 7.2\% & 172\% \\
+    ユナイテッドアローズ & 11.3\% & 6.1\% & 185\% \\
+    ワークマン & 12.5\% & 10.4\% & 120\% \\
+    \hline
+  \end{tabular}
+\end{table}
+
+しまむらとアダストリアのROAはほぼ同等であるが、財務レバレッジの違いによりROEに差が生じている。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure2_roa.png}
+  \caption{ROA（総資産利益率）}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/cost_structure/cost_structure_comparison.png}
+  \caption{各社の費用構成比較}
+\end{figure}
+
+
+\subsection*{売上総利益率}
+
+しまむらとワークマンが低い値を示している。粗利率の差はビジネスモデル（SPA・仕入れ）と価格帯に起因する。しまむらは仕入れモデルのため中間マージンが発生し粗利率が低い。ワークマンはSPAモデルであるが、高性能製品を安価格帯で販売するため粗利率が低い。一方、ユナイテッドアローズは仕入れと自社製品のハイブリッドモデルにより比較的高い粗利率を維持している。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure3_gross_margin.png}
+  \caption{売上総利益率}
+\end{figure}
+
+
+\subsection*{営業利益率}
+
+ワークマンは売上総利益率は低いが営業利益率は最高である。図1（各社の費用構成比較）より、ワークマンの人件費は売上高のわずか3\%であり、販管費も低い。これは、5社中唯一FCモデルを採用していることによる。FC比率が高く、本部側の販管費（特に人件費）が構造的に低いため、営業利益率が高くなっている。一方、ユニクロ（ファーストリテイリング）等は直営中心である。労働生産性も79.4と他社（10以下）を大きく上回っており、FC構造による効率性が数値に表れている。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure4_operating_margin.png}
+  \caption{営業利益率}
+\end{figure}
+
+
+\subsection*{経常利益率}
+
+ファーストリテイリングとワークマンは本業以外の金融収益があり、営業利益率よりも高くなっている。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure5_ordinary_margin.png}
+  \caption{経常利益率}
+\end{figure}
+
+
+\subsection*{当期利益率}
+
+ワークマンはFCモデルによる効率的な運営構造により高い利益率を維持している。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure6_net_margin.png}
+  \caption{当期利益率}
+\end{figure}
+
+
+\subsection*{流動比率}
+
+しまむらとワークマンが高い。両社とも現金・短期金融資産の割合が高く、流動資産が厚い。しまむらは現金等2,062億円、金銭信託1,090億円を保有し、流動資産の大半が手元資金で構成されている。ワークマンは現金・預金373億円（流動資産の約31\%）を保有している。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure7_current_ratio.png}
+  \caption{流動比率}
+\end{figure}
+
+
+\subsection*{当座比率}
+
+当座比率は、流動負債に対して現金化可能な資産（現金・預金・売掛金・有価証券）でどれだけ賄えるかを示す指標である。ファーストリテイリングとワークマンは高い値を示している。これは、両社とも流動資産に占める現金・短期金融資産の割合が高いためである。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure8_quick_ratio.png}
+  \caption{当座比率}
+\end{figure}
+
+
+\subsection*{自己資本比率}
+
+しまむら（88.3\%）とワークマン（83.4\%）は自己資本比率が高い。ファーストリテイリング（57.7\%）、アダストリア（58.0\%）、ユナイテッドアローズ（53.9\%）は財務レバレッジが高く、自己資本比率が低めである。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure9_equity_ratio.png}
+  \caption{自己資本比率}
+\end{figure}
+
+
+\subsection*{固定比率}
+
+アダストリア（85.4\%）とユナイテッドアローズ（67.0\%）は固定比率が高い。ファーストリテイリング（32.2\%）とワークマン（30.4\%）は固定資産に対する自己資本の割合が高く、低い値を示している。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure10_fixed_ratio.png}
+  \caption{固定比率}
+\end{figure}
+
+
+\subsection*{固定長期適合率}
+
+ワークマン（29.4\%）とファーストリテイリング（29.3\%）は長期資金で固定資産を賄えており健全である。アダストリア（76.6\%）はやや高い水準である。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure11_fixed_long_term_ratio.png}
+  \caption{固定長期適合率}
+\end{figure}
+
+
+\subsection*{総資産回転率}
+
+アダストリア（2.2）とユナイテッドアローズ（2.2）が最も高く、しまむら（1.2）も高い値を示している。ファーストリテイリング（0.9）とワークマン（0.6）は資産規模が大きく、総資産回転率が低めである。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure12_asset_turnover.png}
+  \caption{総資産回転率}
+\end{figure}
+
+
+\subsection*{売上債権回転率}
+
+ユナイテッドアローズが圧倒的に高い値を示している。その要因は、売上債権が極めて小さいことにある（表4参照）。ユナイテッドアローズはBtoB事業を行っていないため、売掛金がほぼ発生しない。一方、ファーストリテイリング、ワークマン、アダストリアには一定のBtoB・FC向け卸売があるため、売上債権が存在する。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure13_receivables_turnover.png}
+  \caption{売上債権回転率}
+\end{figure}
+
+\begin{table}[H]
+  \caption{売上債権（単位：百万円）}
+  \centering
+  \begin{tabular}{lr}
+    \hline
+    会社名 & 売上債権 \\
+    \hline
+    ファーストリテイリング & 83,929 \\
+    しまむら & 13,726 \\
+    アダストリア & 14,527 \\
+    ユナイテッドアローズ & 185 \\
+    ワークマン & 15,712 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+
+\subsection*{棚卸資産回転率}
+
+しまむらは売り切りを徹底し在庫回転が高いため、棚卸資産回転率が高い数値を出している。この数値は、しまむらのビジネスモデルを示す数値として有効である。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure14_inventory_turnover.png}
+  \caption{棚卸資産回転率}
+\end{figure}
+
+
+\subsection*{仕入債務回転率}
+
+この数値は、仕入先への支払いスピードを示す指標である。しまむらの数値が最も高い。しまむらは短期決済・現金仕入が多く、買掛金が積み上がらないため、仕入債務回転率が高くなっている。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure15_payables_turnover.png}
+  \caption{仕入債務回転率}
+\end{figure}
+
+
+\subsection*{労働生産性}
+
+ワークマンはFCモデルにより労働生産性が極めて高い。営業利益率の項で述べた通り、本部側の人件費比率が低い構造によるものである。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure16_labor_productivity.png}
+  \caption{労働生産性}
+\end{figure}
+
+
+\subsection*{労働分配率}
+
+ユナイテッドアローズとアダストリアは人件費比率が高く労働分配率が高い。ワークマンは本部主導型で低い。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./assets/figure17_labor_share.png}
+  \caption{労働分配率}
+\end{figure}
+
+
+\section*{高低差が象徴的な指標ベスト3}
+
+\begin{enumerate}
+  \item 売上債権回転率
+
+  ユナイテッドアローズ（815.73） vs ワークマン（6.34）
+
+  ユナイテッドアローズは純粋なBtoC（直営）型のため売掛金がほぼ発生しない。一方、ワークマンはFC向け卸売があるため売上債権が存在する。
+
+  \item 労働生産性
+
+  ワークマン（79.38） vs ユナイテッドアローズ（5.34）
+
+  ワークマンはFCモデルにより店舗人件費が発生せず、本部側の人件費比率が低い。直営中心のユナイテッドアローズとは構造的な運営モデル差がある。
+
+  \item 仕入債務回転率
+
+  しまむら（18.05） vs ファーストリテイリング（3.68）
+
+  しまむらは仕入れモデルで短期決済が多く、ファーストリテイリングはSPAモデルで買掛金が積み上がる構造の違いがある。
+\end{enumerate}
+
+
+\section*{疑問点（追加で深掘りしたい KPI や非財務情報）を列挙。}
+
+・
+
+
+\section*{参考文献}
+
+FY2024 FACT BOOK
+
+会社概要 | しまむらグループ
+
+(株)アダストリア 【「GLOBAL WORK」 「niko and ...」 「LOWRYS FARM」 「JEANASIS」「HARE」「studio CLIP」他】の会社概要 | マイナビ2027
+
+\end{document}
