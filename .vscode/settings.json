@@ -1,18 +1,18 @@
 {
     "latex-workshop.latex.recipes": [
         {
-            "name": "pLaTeX",
+            "name": "upLaTeX",
             "tools": [
-                "pplatex",
-                "pplatex",
+                "uplatex",
+                "uplatex",
                 "dvipdfmx"
             ]
         }
     ],
     "latex-workshop.latex.tools": [
         {
-            "name": "pplatex",
-            "command": "platex",
+            "name": "uplatex",
+            "command": "uplatex",
             "args": [
                 "-synctex=1",
                 "-interaction=nonstopmode",

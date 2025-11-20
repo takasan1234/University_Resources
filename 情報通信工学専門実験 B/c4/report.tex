@@ -2,6 +2,23 @@
 % \usepackage{xeCJK}
 \usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
 
+\usepackage{plautopatch}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[dvipdfmx]{color} % dvipdfmxドライバーを明示的に指定
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usepackage{url}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{float}
+\usepackage[justification=centering]{caption}
+
+% ページ設定
+\usepackage{geometry}
+
 \pagestyle{empty}
 
 
@@ -19,6 +36,7 @@
     \underline{\huge C4 信号変調の基礎実験} \\%実験題目を記入
     \vspace{0.7cm}
     \underline{情報システム工学コース　　　第　2　班} \\%コース名と班を記入
+    \vspace{0.7cm}
     \underline{\Large 阿部 寛希}\\%同じ班の氏名を記入
     \underline{\Large 尾本 涼太}\\%同じ班の氏名を記入
     \underline{\Large 菊池 圭祐}\\%同じ班の氏名を記入
@@ -29,7 +47,8 @@
 \begin{center}
     {\Large 報　告　者} \\
     \vspace{1cm}
-    \underline{\large 08D23091　番　辻孝弥　（情報システム工学コース）} \\%報告者の学籍番号、氏名、コース名を記入
+    \underline{\large 08D23091　番　辻　
+    孝弥　（情報システム工学コース）} \\%報告者の学籍番号、氏名、コース名を記入
     \vspace{1cm}
     \underline{\large 電子メールアドレス：\hspace{1cm}u316705e@ecs.osaka-u.ac.jp }\\%報告者のメールアドレスを記入
 \end{center}
@@ -138,28 +157,370 @@ RF スペクトラムアナライザ & Agilent Technology N9060A & 周波数領�
 
 \subsubsection{正弦波変調}
 
+正弦波（周期 $T_m=10\mu$s、ピーク電圧 $A_m=1$V）によって搬送波を振幅変調した際の時間波形と周波数スペクトルを観測した。
+
+\paragraph{時間波形の観測}
+まず、搬送波の高周波成分が見える時間幅で観測した結果を図\ref{fig:am_sin_hansou}に示す。搬送波の周期1$\mu$sが確認できる。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./後期実験C4_振幅変調/sin/sin_hansou/F0002TEK.png}
+\caption{正弦波振幅変調の時間波形(搬送波の周期がわかる時間幅) \\ 横軸: Time [500ns/div]、縦軸: Voltage [0.5V/div]}
+\label{fig:am_sin_hansou}
+\end{figure}
+
+次に、変調信号の周期がわかる時間幅で観測した結果を図\ref{fig:am_sin_hentyou}に示す。変調周期10$\mu$sが確認でき、ピーク電圧も1Vに達していることが観測された。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./後期実験C4_振幅変調/sin/sin_hentyou/F0003TEK.png}
+\caption{正弦波振幅変調の時間波形(変調正弦波の振動がわかる時間幅) \\ 横軸: Time [5$\mu$s/div]、縦軸: Voltage [0.5V/div]}
+\label{fig:am_sin_hentyou}
+\end{figure}
+
+\paragraph{周波数スペクトルの観測}
+正弦波振幅変調のスペクトル波形を図\ref{fig:am_sin_spectrum}に示す。周波数1MHzを中心に、0.9MHzと1.1MHzの位置にピーク成分（ピーク値286.3mV）が確認された。これは、AM信号のスペクトルがベースバンド信号のスペクトルを搬送波周波数の正負にそれぞれ移動させた形になることと一致する。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./後期実験C4_振幅変調/sin/sin.png}
+\caption{正弦波振幅変調のスペクトル波形 \\ 横軸: Frequency [100kHz/div]、縦軸: Voltage [60.0mV/div]}
+\label{fig:am_sin_spectrum}
+\end{figure}
+
+\paragraph{側波帯が現れる理由の理論的背景}
+周波数$1\text{MHz}$を中心とし、$0.9\text{MHz}$と$1.1\text{MHz}$の位置にピーク成分を有するスペクトル波形が存在することがわかる。正弦波振幅変調信号がこのスペクトル波形を持つ理由について、フーリエ変換を用いて確認する。なお、以下では$\omega_m = \frac{2\pi}{T_m}$, $\omega_c = \frac{2\pi}{T_c}$として計算する。
+
+\begin{align*}
+A_m \sin(\omega_m t) A_c \sin(\omega_c t) &= \frac{A_m A_c}{2} \{\cos((\omega_c -\omega_m) t) - \cos((\omega_c +\omega_m) t)\} \\
+&= \frac{A_m A_c}{4} \{e^{i(\omega_c+\omega_m)t} + e^{-i(\omega_c+\omega_m)t} - e^{i(\omega_c-\omega_m)t} - e^{-i(\omega_c-\omega_m)t}\}
+\end{align*}
+
+$\delta(t - t_0) \Longleftrightarrow e^{-i\omega_0 t}$およびフーリエ変換の対称性より、$e^{i\omega_0 t} \Longleftrightarrow 2\pi \delta(\omega - \omega_0)$であるため、
+
+\begin{align*}
+\mathcal{F}[A_m \sin(\omega_m t) A_c \sin(\omega_c t)] &= \frac{A_m A_c}{4} 2\pi\{\delta(\omega - \omega_c + \omega_m) + \delta(\omega + \omega_c - \omega_m) \nonumber \\
+&\quad - \delta(\omega - \omega_c - \omega_m) - \delta(\omega + \omega_c + \omega_m)\} \\
+&= \frac{\pi A_m A_c}{2} \{\delta(2\pi(f - f_c + f_m)) + \delta(2\pi(f + f_c - f_m)) \nonumber \\
+&\quad - \delta(2\pi(f - f_c - f_m)) - \delta(2\pi(f + f_c + f_m))\} \quad \cdots (1)
+\end{align*}
+
+本実験において、$f_c = 1\text{MHz}$、$f_m = 0.1\text{MHz}$である。$f_c > f_m$であることに注意すると、式 (1)より、$f \ge 0$において、周波数$f = f_c \pm f_m$の位置にピークが現れることが分かる。したがって、$1\text{MHz}$を中心とし、$0.9\text{MHz}$と$1.1\text{MHz}$の2箇所でピーク成分を有すると考えられる。
+
+\paragraph{変調信号のピーク電圧依存性}
+変調信号のピーク電圧 $A_m$ を 0.5V から 3.0V まで 0.5V 刻みで変化させたときの周波数スペクトルを図\ref{fig:am_sin_Am_dep_05}〜図\ref{fig:am_sin_Am_dep_30}に示す。$A_m$ が増加するにつれて、スペクトルのピーク値も増加することが観測された。具体的には、$A_m$ = 0.5V のときピーク値は 148.3mV、$A_m$ = 1.0V のとき 311.3mV、$A_m$ = 1.5V のとき 462.4mV、$A_m$ = 2.0V のとき 573.6mV、$A_m$ = 2.5V のとき 689.3mV、$A_m$ = 3.0V のとき 988.6mV となった。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./spector/0.5v_148.3mv.jpg}
+\caption{正弦波振幅変調のスペクトル波形($A_m$ = 0.5V) \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [60.0mV/div]}
+\label{fig:am_sin_Am_dep_05}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./spector/1v_311.3mv.jpg}
+\caption{正弦波振幅変調のスペクトル波形($A_m$ = 1.0V) \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [60.0mV/div]}
+\label{fig:am_sin_Am_dep_10}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./spector/1.5v_462.4mv.jpg}
+\caption{正弦波振幅変調のスペクトル波形($A_m$ = 1.5V) \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [60.0mV/div]}
+\label{fig:am_sin_Am_dep_15}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./spector/2v_573.6mv.jpg}
+\caption{正弦波振幅変調のスペクトル波形($A_m$ = 2.0V) \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [60.0mV/div]}
+\label{fig:am_sin_Am_dep_20}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./spector/2.5v_689.3mv.jpg}
+\caption{正弦波振幅変調のスペクトル波形($A_m$ = 2.5V) \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [60.0mV/div]}
+\label{fig:am_sin_Am_dep_25}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./spector/3v_988.6mv.jpg}
+\caption{正弦波振幅変調のスペクトル波形($A_m$ = 3.0V) \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [60.0mV/div]}
+\label{fig:am_sin_Am_dep_30}
+\end{figure}
+
+変調正弦波の振幅$A_m$を $0.5\text{V}～3\text{V}$ の範囲において $0.5\text{V}$ 刻みで変化させ、そのスペクトル波形での $1.1\text{MHz}$ におけるピーク値の$A_m$依存性をプロットした結果を、図\ref{fig:am_sin_Am_graph}に示す。この図から、$A_m$とピーク値には比例関係（一次関係）があることがわかる。一次近似直線は $y = 311.24x - 15.75$ となり、相関係数は0.9863と高い値を示した。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./am_peak_dependency.png}
+\caption{ピーク値の$A_m$依存性（1.1 MHzにおけるピーク値）と一次近似直線}
+\label{fig:am_sin_Am_graph}
+\end{figure}
+
 
 \subsubsection{矩形波変調}
 
+矩形波（矩形幅 $T_m=10\mu$s、繰り返し周期 $T_r=1$ms、ピーク電圧 $A_m=1$V）によって搬送波を振幅変調した際の時間波形と周波数スペクトルを観測した。
+
+\paragraph{時間波形の観測}
+まず、搬送波の高周波成分が見える時間幅で観測した結果を図\ref{fig:am_rect_1us}に示す。搬送波の周期1$\mu$sが確認できる。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./後期実験C4_振幅変調/rect/rect_1us/F0005TEK.png}
+\caption{矩形波振幅変調の時間波形(搬送波の周期がわかる時間幅) \\ 横軸: Time [1$\mu$s/div]、縦軸: Voltage [0.5V/div]}
+\label{fig:am_rect_1us}
+\end{figure}
+
+次に、矩形波の幅がわかる時間幅で観測した結果を図\ref{fig:am_rect_10us}に示す。矩形幅10$\mu$sが正しく反映されていることが確認できる。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./後期実験C4_振幅変調/rect/rect_10us/F0004TEK.png}
+\caption{矩形波振幅変調の時間波形(変調矩形波の周期がわかる時間幅) \\ 横軸: Time [5$\mu$s/div]、縦軸: Voltage [0.5V/div]}
+\label{fig:am_rect_10us}
+\end{figure}
+
+さらに、繰り返し周期がわかる時間幅で観測した結果を図\ref{fig:am_rect_1ms}に示す。設定した繰り返し周期1msが正確に観測できており、矩形幅10$\mu$sは非常に短いため細い線として表現されている。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./後期実験C4_振幅変調/rect/rect_1ms/F0006TEK.png}
+\caption{矩形波振幅変調の時間波形(繰り返しの周期がわかる時間幅) \\ 横軸: Time [1ms/div]、縦軸: Voltage [0.5V/div]}
+\label{fig:am_rect_1ms}
+\end{figure}
+
+\paragraph{周波数スペクトルの観測}
+矩形波振幅変調のスペクトル波形を図\ref{fig:am_rect_spectrum}に示す。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./後期実験C4_振幅変調/rect/spector/rect_spector.png}
+\caption{矩形波振幅変調のスペクトル波形 \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [593$\mu$V/div]}
+\label{fig:am_rect_spectrum}
+\end{figure}
+
+\paragraph{スペクトル特徴の理論的背景}
+矩形波振幅変調のスペクトル波形からは、$1\text{MHz}$を中心とし、$100\text{kHz}$ごとにパワーがゼロとなる点が現れ、中心から離れるほど減衰していく$\operatorname{sinc}$関数のような波形が確認できた。
+
+このような特徴が生じた理由を$A_m \operatorname{rect} [\frac{t}{T_m}] A_c \sin \omega_c t$のフーリエ変換を行うことで確認する。$f(t) = A_m \operatorname{rect} [\frac{t}{T_m}]$のフーリエ変換を$F(\omega)$、$g(t) = A_c \sin \omega_c t$のフーリエ変換を$G(\omega)$とし、畳み込みの定理$\mathcal{F}[f(t) \cdot g(t)] = \frac{1}{2\pi} \int_{-\infty}^{+\infty} F(\omega_1) G(\omega - \omega_1) d\omega_1$を用いる。計算の結果、以下の式(4)が得られる。
+
+\begin{align}
+\mathcal{F} \left[A_m \operatorname{rect} \left( \frac{t}{T_m} \right) A_c \sin \omega_c t\right] &= - \frac{j A_m A_c T_m}{2} \Bigg[\operatorname{sinc} \left(T_m \pi \left(f - \frac{1}{T_c}\right)\right) \nonumber \\
+&\quad - \operatorname{sinc} \left(T_m \pi \left(f + \frac{1}{T_c}\right)\right) \Bigg] \quad \cdots (4)
+\end{align}
+
+式(4)より、$\mathcal{F} [A_m \operatorname{rect} [\frac{t}{T_m}] A_c \sin \omega_c t]$は$f \ge 0$において、中心が $1\text{MHz}$、周期が $100\text{kHz}$の$\operatorname{sinc}$波となることがわかる。また、それぞれの$\operatorname{sinc}$関数は $100\text{kHz}$ 周期で値が $0$ になり、これは実験結果と一致する。
+
 
 \subsubsection{Sinc波変調}
+
+Sinc波（減衰時間 $T_m=10\mu$s、繰り返し周期 $T_r=1$ms、ピーク電圧 $A_m=1$V）によって搬送波を振幅変調した際の時間波形と周波数スペクトルを観測した。
+
+\paragraph{時間波形の観測}
+まず、搬送波の高周波成分が見える時間幅で観測した結果を図\ref{fig:am_sinc_1us}に示す。搬送波の周期1$\mu$sが確認できる。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./後期実験C4_振幅変調/sinc/sinc_1us/F0008TEK.png}
+\caption{sinc波振幅変調の時間波形(搬送波の周期がわかる時間幅) \\ 横軸: Time [1$\mu$s/div]、縦軸: Voltage [0.5V/div]}
+\label{fig:am_sinc_1us}
+\end{figure}
+
+次に、Sinc波の減衰がわかる時間幅で観測した結果を図\ref{fig:am_sinc_10us}に示す。減衰時間10$\mu$sが理論値通りに観測され、ピーク電圧も1Vに達していることが確認できる。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./後期実験C4_振幅変調/sinc/sinc_10us/F0007TEK.png}
+\caption{sinc波振幅変調の時間波形(変調sinc波の減衰がわかる時間幅) \\ 横軸: Time [10$\mu$s/div]、縦軸: Voltage [0.5V/div]}
+\label{fig:am_sinc_10us}
+\end{figure}
+
+さらに、繰り返し周期がわかる時間幅で観測した結果を図\ref{fig:am_sinc_1ms}に示す。設定した繰り返し周期1msが正確に観測できている。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./後期実験C4_振幅変調/sinc/sinc_1ms/F0009TEK.png}
+\caption{sinc波振幅変調の時間波形(繰り返し周期がわかる時間幅) \\ 横軸: Time [500$\mu$s/div]、縦軸: Voltage [0.5V/div]}
+\label{fig:am_sinc_1ms}
+\end{figure}
+
+\paragraph{周波数スペクトルの観測}
+Sinc波振幅変調のスペクトル波形を図\ref{fig:am_sinc_spectrum}に示す。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./後期実験C4_振幅変調/sinc/sinc_spectrum.png}
+\caption{sinc波振幅変調のスペクトル波形 \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [0.5V/div]}
+\label{fig:am_sinc_spectrum}
+\end{figure}
+
+\paragraph{スペクトル特徴の理論的背景}
+$\operatorname{sinc}$波振幅変調のスペクトル波形からは、$1\text{MHz}$を中心とした矩形幅$100\text{kHz}$の矩形波が得られたことがわかる。このような特徴が生じた理由を$A_m \operatorname{sinc}(\omega_m t) A_c \sin(\omega_c t)$のフーリエ変換を行うことで確認する。フーリエ変換の対称性を利用し、畳み込みの定理を用いると、以下の式(7)が得られる。
+
+\begin{align}
+\mathcal{F}[A_m \operatorname{sinc}(\omega_m t) A_c \sin(\omega_c t)] &= \frac{j A_m A_c}{2 f_m} \Bigg\{\operatorname{rect} \left[T_m \left(f + \frac{1}{T_c}\right)\right] \nonumber \\
+&\quad - \operatorname{rect} \left[T_m \left(f - \frac{1}{T_c}\right)\right]\Bigg\} \quad \cdots (7)
+\end{align}
+
+式(7)より、中心が$f = \pm \frac{1}{T_c}$、矩形幅が $\frac{1}{T_m}$ の矩形波となることがわかる。$T_m = 10 \mu s$および$T_c = 1\mu s$であるため、$f > 0$において、$1\text{MHz}$を中心とした、$100\text{kHz}$の幅を持つ矩形波となる。
 
 
 \subsection{位相変調の結果と考察}
 
 \subsubsection{正弦波変調}
 
+正弦波（周期 $T_m=10\mu$s）によって搬送波を位相変調した際の時間波形と周波数スペクトルを観測した。
+
+\paragraph{時間波形の観測}
+位相変調された正弦波の時間波形を図\ref{fig:pm_sin_wave}に示す。一見ただの正弦波に見えるが、よく観察すると疎密が確認できる。この疎から疎までの時間が変調周期に対応しており、10$\mu$sとなっている。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./C4_位相変調 2/せいげんは/PM_sinwave/F0000TEK.png}
+\caption{正弦波位相変調の時間波形 \\ 横軸: Time [5.0$\mu$s/div]、縦軸: Voltage [0.5V/div]}
+\label{fig:pm_sin_wave}
+\end{figure}
+
+\paragraph{周波数スペクトルの観測とピーク電圧依存性}
+変調信号のピーク電圧 $A_m$ を 0.5V から 3.0V まで 0.5V 刻みに変化させたときの周波数スペクトルを図\ref{fig:pm_sin_As_05}〜図\ref{fig:pm_sin_As_30}に示す。1MHzを中心に100kHz間隔で線スペクトルを持つくし形の周波数スペクトルが観測された。これは理論で予想されるベッセル関数展開の結果と一致している。$A_m$ が増加するにつれて、搬送波成分（1MHz）のピーク値は減少し、基本波成分（1.1MHz）および2次高調波成分（1.2MHz）のピーク値は増加する傾向が確認された。
+
+図\ref{fig:pm_sin_As_05}（$A_s$ = 0.5V）では、搬送波成分(1MHz)は 268.2mV、基本波成分(1.1MHz)は 59.11mV、2次高調波成分(1.2MHz)は 8.957mV であった。図\ref{fig:pm_sin_As_10}（$A_s$ = 1V）では、搬送波成分は 210.5mV、基本波成分は 112.8mV、2次高調波成分は 34.43mV となった。図\ref{fig:pm_sin_As_15}（$A_s$ = 1.5V）では、搬送波成分は 142.0mV、基本波成分は 148.3mV、2次高調波成分は 68.94mV と観測された。図\ref{fig:pm_sin_As_20}（$A_s$ = 2V）では、搬送波成分は 65.09mV、基本波成分は 148.2mV、2次高調波成分は 102.4mV であった。図\ref{fig:pm_sin_As_25}（$A_s$ = 2.5V）では、搬送波成分は 12.95mV、基本波成分は 146.4mV、2次高調波成分は 112.2mV となった。図\ref{fig:pm_sin_As_30}（$A_s$ = 3V）では、搬送波成分は 75.42mV、基本波成分は 92.92mV、2次高調波成分は 145.9mV と観測された。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./C4_位相変調 2/せいげんは/0.5v/Screen_0022.png}
+\caption{正弦波位相変調のスペクトル波形($A_s$ = 0.5V) \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [22.4mV/div]}
+\label{fig:pm_sin_As_05}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./C4_位相変調 2/せいげんは/1v/Screen_0018.png}
+\caption{正弦波位相変調のスペクトル波形($A_s$ = 1V) \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [22.4mV/div]}
+\label{fig:pm_sin_As_10}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./C4_位相変調 2/せいげんは/1.5v/Screen_0014.png}
+\caption{正弦波位相変調のスペクトル波形($A_s$ = 1.5V) \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [22.4mV/div]}
+\label{fig:pm_sin_As_15}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./C4_位相変調 2/せいげんは/2v/Screen_0010.png}
+\caption{正弦波位相変調のスペクトル波形($A_s$ = 2V) \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [22.4mV/div]}
+\label{fig:pm_sin_As_20}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./C4_位相変調 2/せいげんは/2.5v/Screen_0006.png}
+\caption{正弦波位相変調のスペクトル波形($A_s$ = 2.5V) \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [22.4mV/div]}
+\label{fig:pm_sin_As_25}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./C4_位相変調 2/せいげんは/３ｖ/Screen_0002.png}
+\caption{正弦波位相変調のスペクトル波形($A_s$ = 3V) \\ 横軸: Frequency [200kHz/div]、縦軸: Voltage [22.4mV/div]}
+\label{fig:pm_sin_As_30}
+\end{figure}
+
+\paragraph{ベッセル関数によるフィッティング}
+正弦波位相変調信号のスペクトル波形における搬送波成分（$1\text{MHz}$）、基本波成分（$1.1\text{MHz}$の成分）、そして2次高調波成分（$1.2\text{MHz}$の成分）のピーク値の変調正弦波振幅値$A_m$に対する依存性を図\ref{fig:pm_bessel_fitting}に示す。
+
+それぞれ、ベッセル関数$|J_0(x)|, |J_1(x)|, |J_2(x)|$で測定結果をフィッティングし、グラフに併記した。この図より、ピーク値はベッセル関数に従うことがわかる。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{./pm_bessel_fitting.png}
+\caption{正弦波位相変調における各成分のピーク値の$A_s$依存性とベッセル関数フィッティング}
+\label{fig:pm_bessel_fitting}
+\end{figure}
+
 
 \subsubsection{Sinc波変調}
+
+Sinc波（減衰時間 $T_m=10\mu$s、繰り返し周期 $T_r=1$ms）によって搬送波を位相変調した際の周波数スペクトルを観測した。ピーク電圧 $A_m$ を 1V から 6V まで 1V 刻みに変化させた結果を図\ref{fig:pm_sinc_As_1}〜図\ref{fig:pm_sinc_As_6}に示す。
+
+すべてのケースに共通して、1MHzの時にピーク値を取り、1MHzを中心として左右に対称な形になっていることが確認された。$A_s$ = 1V の時は矩形波のような波形となっており、$A_s$ = 2V の時は矩形波に三角形を乗せたような形になっている。$A_s$ が大きくなるにつれて、波形が中心から曲線を描くように急降下するような形になり、波形が広がっていくことが観測された。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./C4_位相変調 2/sinc/sinc1.png}
+\caption{sinc波位相変調のスペクトル波形($A_s$ = 1V) \\ 横軸: Frequency [200Hz/div]、縦軸: Voltage [2.91mV/div]}
+\label{fig:pm_sinc_As_1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./C4_位相変調 2/sinc/sinc2.png}
+\caption{sinc波位相変調のスペクトル波形($A_s$ = 2V) \\ 横軸: Frequency [200Hz/div]、縦軸: Voltage [2.91mV/div]}
+\label{fig:pm_sinc_As_2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./C4_位相変調 2/sinc/sinc3.png}
+\caption{sinc波位相変調のスペクトル波形($A_s$ = 3V) \\ 横軸: Frequency [200Hz/div]、縦軸: Voltage [2.91mV/div]}
+\label{fig:pm_sinc_As_3}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./C4_位相変調 2/sinc/sinc4.png}
+\caption{sinc波位相変調のスペクトル波形($A_s$ = 4V) \\ 横軸: Frequency [200Hz/div]、縦軸: Voltage [2.91mV/div]}
+\label{fig:pm_sinc_As_4}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4
+\textwidth]{./C4_位相変調 2/sinc/sinc5.png}
+\caption{sinc波位相変調のスペクトル波形($A_s$ = 5V) \\ 横軸: Frequency [200Hz/div]、縦軸: Voltage [2.91mV/div]}
+\label{fig:pm_sinc_As_5}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{./C4_位相変調 2/sinc/sinc6.png}
+\caption{sinc波位相変調のスペクトル波形($A_s$ = 6V) \\ 横軸: Frequency [200Hz/div]、縦軸: Voltage [2.91mV/div]}
+\label{fig:pm_sinc_As_6}
+\end{figure}
+
+\paragraph{複雑な形状となる理由の考察}
+sinc波PM信号の周波数スペクトルが複雑な形状となる理由を考察する。位相変調信号のフーリエ変換を行うため、$\exp [j A_m \operatorname{sinc} (\frac{\omega_m t}{2})]$をマクローリン展開する。マクローリン展開の式は以下である。
+
+\begin{align}
+\exp \left[j A_m \operatorname{sinc} \left( \frac{\omega_m t}{2} \right)\right] &= 1 + j A_m \operatorname{sinc} \left( \frac{\omega_m t}{2} \right) - \frac{1}{2!} \left(A_m \operatorname{sinc} \left( \frac{\omega_m t}{2} \right)\right)^2 \nonumber \\
+&\quad - \frac{j}{3!} \left(A_m \operatorname{sinc} \left( \frac{\omega_m t}{2} \right)\right)^3 + \cdots \quad \cdots (8)
+\end{align}
+
+このマクローリン展開された各項には$A_m$と$\operatorname{sinc}$関数の累乗がそれぞれ現れている。つまり、$A_m$が大きいほど高次の$\operatorname{sinc}$関数のスペクトル波形の影響が大きくなる。
+
+$\operatorname{sinc}$関数を$n$乗したものをフーリエ変換すると、周波数$f$の$n-1$次式が現れると予想できる。これらは、周波数の境界で最高次の符号が反転する特徴を持つ。
+
+$A_m$が小さい場合（例: $A_m = 1\text{V}$）、式(8)におけるマクローリン展開の 0次（デルタ関数）と 1次（矩形波）の成分が強く現れる。$A_m$が大きくなるにつれて、2次成分（三角波）などの高次成分が強く出てくるため、波形が中心から曲線を描くように急降下するような複雑な形状となり、ギザギザした形となったのは、$\operatorname{sinc}$関数の累乗スペクトルが持つ、周波数境界を跨ぐごとの符号反転の影響である。
 
 
 \section{結論／まとめ}
 
 
 \section{班内での役割と自己貢献}
+私の役割は、全体の進行をマネジメントすることでした。
+まず最初に、各個人の自己紹介をして、その後に実験の進行をマネジメントしました。
+
 
 
 \section{参考文献}
-
+オシロスコープの読み方を参考にした。具体的には、オシロスコープの縦軸スケールを示すのはどの部分かを調査した。
+https://download.tek.com/manual/TBS1000B-and-TBS1000B-EDU-Oscilloscope-User-Manual-JA-JA.pdf
 
 \end{document}
