@@ -189,23 +189,56 @@ RF スペクトラムアナライザ & Agilent Technology N9060A & 周波数領�
 \end{figure}
 
 \paragraph{側波帯が現れる理由の理論的背景}
-周波数$1\text{MHz}$を中心とし、$0.9\text{MHz}$と$1.1\text{MHz}$の位置にピーク成分を有するスペクトル波形が存在することがわかる。正弦波振幅変調信号がこのスペクトル波形を持つ理由について、フーリエ変換を用いて確認する。なお、以下では$\omega_m = \frac{2\pi}{T_m}$, $\omega_c = \frac{2\pi}{T_c}$として計算する。
+周波数 $1\,\mathrm{MHz}$ を中心とし，$0.9\,\mathrm{MHz}$ と $1.1\,\mathrm{MHz}$ の位置にピーク成分を有するスペクトル波形が存在することがわかる。
 
+実験テキストにおける振幅変調信号の定義は \cite{2}
+\[
+x_{\mathrm{AM}}(t) = m(t)\cos \omega_c t
+\]
+である。本実験では，変調信号 $m(t)$ として正弦波
+\[
+m(t) = A_m \sin(\omega_m t)
+\]
+を用いているため，この定義に従うと，本実験で解析すべき信号は
+\[
+x_{\mathrm{AM}}(t) = A_m \sin(\omega_m t)\cos \omega_c t
+\]
+となる。
+
+さらに，搬送波には振幅係数 $A_c$ が掛かっているので，実際に観測される信号は
+\[
+A_m \sin(\omega_m t)\,A_c \cos(\omega_c t)
+\]
+と表される。以下ではこの信号のフーリエ変換を求め，側波帯の周波数成分を確認する。
+
+まず，三角関数の積和公式
+\[
+\sin a \cos b = \frac{1}{2}\{\sin(a+b)+\sin(a-b)\}
+\]
+を用いると，
 \begin{align*}
-A_m \sin(\omega_m t) A_c \sin(\omega_c t) &= \frac{A_m A_c}{2} \{\cos((\omega_c -\omega_m) t) - \cos((\omega_c +\omega_m) t)\} \\
-&= \frac{A_m A_c}{4} \{e^{i(\omega_c+\omega_m)t} + e^{-i(\omega_c+\omega_m)t} - e^{i(\omega_c-\omega_m)t} - e^{-i(\omega_c-\omega_m)t}\}
+A_m \sin(\omega_m t)\,A_c \cos(\omega_c t)
+&= \frac{A_m A_c}{2} \left\{\sin\bigl((\omega_c+\omega_m)t\bigr)+\sin\bigl((\omega_c-\omega_m)t\bigr)\right\} \\
+&= \frac{A_m A_c}{4i} \Bigl\{e^{i(\omega_c+\omega_m)t} - e^{-i(\omega_c+\omega_m)t} \\
+&\hspace{6em} + e^{i(\omega_c-\omega_m)t} - e^{-i(\omega_c-\omega_m)t}\Bigr\}
 \end{align*}
 
-$\delta(t - t_0) \Longleftrightarrow e^{-i\omega_0 t}$およびフーリエ変換の対称性より、$e^{i\omega_0 t} \Longleftrightarrow 2\pi \delta(\omega - \omega_0)$であるため、
-
+$\delta(t-t_0)\Longleftrightarrow e^{-i\omega_0 t}$ およびフーリエ変換の対称性より，
+$e^{i\omega_0 t}\Longleftrightarrow 2\pi \delta(\omega-\omega_0)$ が成り立つので，
 \begin{align*}
-\mathcal{F}[A_m \sin(\omega_m t) A_c \sin(\omega_c t)] &= \frac{A_m A_c}{4} 2\pi\{\delta(\omega - \omega_c + \omega_m) + \delta(\omega + \omega_c - \omega_m) \nonumber \\
-&\quad - \delta(\omega - \omega_c - \omega_m) - \delta(\omega + \omega_c + \omega_m)\} \\
-&= \frac{\pi A_m A_c}{2} \{\delta(2\pi(f - f_c + f_m)) + \delta(2\pi(f + f_c - f_m)) \nonumber \\
-&\quad - \delta(2\pi(f - f_c - f_m)) - \delta(2\pi(f + f_c + f_m))\} \quad \cdots (1)
+\mathcal{F}\bigl[A_m \sin(\omega_m t)\,A_c \cos(\omega_c t)\bigr]
+&= \frac{\pi A_m A_c}{2i} \Bigl\{\delta\bigl(\omega-(\omega_c+\omega_m)\bigr)
++ \delta\bigl(\omega-(\omega_c-\omega_m)\bigr) \\
+&\hspace{7em} - \delta\bigl(\omega+(\omega_c+\omega_m)\bigr)
+- \delta\bigl(\omega+(\omega_c-\omega_m)\bigr)\Bigr\} \\
+&= \frac{\pi A_m A_c}{2i} \Bigl\{\delta\bigl(2\pi(f-f_c-f_m)\bigr)
++ \delta\bigl(2\pi(f-f_c+f_m)\bigr) \\
+&\hspace{7em} - \delta\bigl(2\pi(f+f_c+f_m)\bigr)
+- \delta\bigl(2\pi(f+f_c-f_m)\bigr)\Bigr\} \quad \cdots (1)
 \end{align*}
 
-本実験において、$f_c = 1\text{MHz}$、$f_m = 0.1\text{MHz}$である。$f_c > f_m$であることに注意すると、式 (1)より、$f \ge 0$において、周波数$f = f_c \pm f_m$の位置にピークが現れることが分かる。したがって、$1\text{MHz}$を中心とし、$0.9\text{MHz}$と$1.1\text{MHz}$の2箇所でピーク成分を有すると考えられる。
+ここで $\omega = 2\pi f,\ \omega_c = 2\pi f_c,\ \omega_m = 2\pi f_m$ とした。
+本実験において $f_c = 1\,\mathrm{MHz}$，$f_m = 0.1\,\mathrm{MHz}$ である。$f_c > f_m$ であることに注意すると，式 (1) より，$f \ge 0$ において周波数 $f = f_c \pm f_m$ の位置にピークが現れることが分かる。したがって，$1\,\mathrm{MHz}$ を中心とし，$0.9\,\mathrm{MHz}$ と $1.1\,\mathrm{MHz}$ の 2 箇所でピーク成分を有すると考えられる。
 
 \paragraph{変調信号のピーク電圧依存性}
 変調信号のピーク電圧 $A_m$ を 0.5V から 3.0V まで 0.5V 刻みで変化させたときの周波数スペクトルを図\ref{fig:am_sin_Am_dep_05}〜図\ref{fig:am_sin_Am_dep_30}に示す。$A_m$ が増加するにつれて、スペクトルのピーク値も増加することが観測された。具体的には、$A_m$ = 0.5V のときピーク値は 148.3mV、$A_m$ = 1.0V のとき 311.3mV、$A_m$ = 1.5V のとき 462.4mV、$A_m$ = 2.0V のとき 573.6mV、$A_m$ = 2.5V のとき 689.3mV、$A_m$ = 3.0V のとき 988.6mV となった。
@@ -305,16 +338,43 @@ $\delta(t - t_0) \Longleftrightarrow e^{-i\omega_0 t}$およびフーリエ変�
 \end{figure}
 
 \paragraph{スペクトル特徴の理論的背景}
-矩形波振幅変調のスペクトル波形からは、$1\text{MHz}$を中心とし、$100\text{kHz}$ごとにパワーがゼロとなる点が現れ、中心から離れるほど減衰していく$\operatorname{sinc}$関数のような波形が確認できた。
+矩形波振幅変調のスペクトル波形からは，$1\,\mathrm{MHz}$ を中心とし，$100\,\mathrm{kHz}$ ごとにパワーがゼロとなる点が現れ，中心から離れるほど減衰していく $\operatorname{sinc}$ 関数のような波形が確認できた。
 
-このような特徴が生じた理由を$A_m \operatorname{rect} [\frac{t}{T_m}] A_c \sin \omega_c t$のフーリエ変換を行うことで確認する。$f(t) = A_m \operatorname{rect} [\frac{t}{T_m}]$のフーリエ変換を$F(\omega)$、$g(t) = A_c \sin \omega_c t$のフーリエ変換を$G(\omega)$とし、畳み込みの定理$\mathcal{F}[f(t) \cdot g(t)] = \frac{1}{2\pi} \int_{-\infty}^{+\infty} F(\omega_1) G(\omega - \omega_1) d\omega_1$を用いる。計算の結果、以下の式(4)が得られる。
+このような特徴が生じた理由を，実験テキストの定義 \cite{2}
+\[
+x_{\mathrm{AM}}(t) = m(t)\cos \omega_c t
+\]
+に
+\[
+m(t) = A_m \operatorname{rect}\!\left(\frac{t}{T_m}\right)
+\]
+を代入した信号のフーリエ変換を調べることで確認する。
 
-\begin{align}
-\mathcal{F} \left[A_m \operatorname{rect} \left( \frac{t}{T_m} \right) A_c \sin \omega_c t\right] &= - \frac{j A_m A_c T_m}{2} \Bigg[\operatorname{sinc} \left(T_m \pi \left(f - \frac{1}{T_c}\right)\right) \nonumber \\
-&\quad - \operatorname{sinc} \left(T_m \pi \left(f + \frac{1}{T_c}\right)\right) \Bigg] \quad \cdots (4)
-\end{align}
+ここで，変調信号を
+\[
+f(t) = A_m \operatorname{rect}\!\left(\frac{t}{T_m}\right),
+\]
+搬送波を
+\[
+g(t) = A_c \cos \omega_c t
+\]
+とおくと，扱う信号は $f(t)g(t)$ であり，そのフーリエ変換は畳み込みの定理により
+\[
+\mathcal{F}[f(t)g(t)] = F(\omega) * G(\omega)
+\]
+と書ける。$f(t)$ のフーリエ変換 $F(\omega)$ は $T_m$ 幅の矩形波に対応する $\operatorname{sinc}$ 関数となり，$g(t)$ のフーリエ変換 $G(\omega)$ は $\omega = \pm \omega_c$ にデルタ関数を持つスペクトルとなる。両者の畳み込みを計算すると，次のような結果が得られる。
+\[
+\mathcal{F}\!\left[A_m \operatorname{rect}\!\left(\frac{t}{T_m}\right) A_c \cos \omega_c t\right]
+= \frac{A_m A_c T_m}{2}
+\left[
+\operatorname{sinc}\!\left(T_m \pi \left(f - \frac{1}{T_c}\right)\right)
++
+\operatorname{sinc}\!\left(T_m \pi \left(f + \frac{1}{T_c}\right)\right)
+\right]
+\quad \cdots (4)
+\]
 
-式(4)より、$\mathcal{F} [A_m \operatorname{rect} [\frac{t}{T_m}] A_c \sin \omega_c t]$は$f \ge 0$において、中心が $1\text{MHz}$、周期が $100\text{kHz}$の$\operatorname{sinc}$波となることがわかる。また、それぞれの$\operatorname{sinc}$関数は $100\text{kHz}$ 周期で値が $0$ になり、これは実験結果と一致する。
+式 (4) より，このスペクトルは $f \ge 0$ において，中心が $1\,\mathrm{MHz}$，周期が $100\,\mathrm{kHz}$ の $\operatorname{sinc}$ 波形となることがわかる。それぞれの $\operatorname{sinc}$ 関数は $100\,\mathrm{kHz}$ 周期で値が 0 になり，これは実験結果と一致する。
 
 
 \subsubsection{Sinc波変調}
@@ -510,17 +570,22 @@ $\operatorname{sinc}$関数を$n$乗したものをフーリエ変換すると�
 $A_m$が小さい場合（例: $A_m = 1\text{V}$）、式(8)におけるマクローリン展開の 0次（デルタ関数）と 1次（矩形波）の成分が強く現れる。$A_m$が大きくなるにつれて、2次成分（三角波）などの高次成分が強く出てくるため、波形が中心から曲線を描くように急降下するような複雑な形状となり、ギザギザした形となったのは、$\operatorname{sinc}$関数の累乗スペクトルが持つ、周波数境界を跨ぐごとの符号反転の影響である。
 
 
-\section{結論／まとめ}
-
 
 \section{班内での役割と自己貢献}
-私の役割は、全体の進行をマネジメントすることでした。
-まず最初に、各個人の自己紹介をして、その後に実験の進行をマネジメントしました。
+
+私の役割は、班全体の進行をマネジメントすることであった。実験開始時には各メンバーの自己紹介を行い、その後、作業手順の確認と役割分担を調整しながら、実験が円滑に進むよう統括した。
+
+特に力を入れた点は、役割の明確化とデータ整理の仕組みづくりである。これにより、実験中の作業効率が向上しただけでなく、後続のレポート作成がスムーズに行える体制を整えることができた。
+
+実務面では、Excel を用いて波形データの作成を担当し、班内で共有すべき基盤データを整備した。
 
 
 
-\section{参考文献}
-オシロスコープの読み方を参考にした。具体的には、オシロスコープの縦軸スケールを示すのはどの部分かを調査した。
-https://download.tek.com/manual/TBS1000B-and-TBS1000B-EDU-Oscilloscope-User-Manual-JA-JA.pdf
+\begin{thebibliography}{99}
+\bibitem{1} オシロスコープの読み方を参考にした。具体的には、オシロスコープの縦軸スケールを示すのはどの部分かを調査した。\\
+\texttt{https://download.tek.com/manual/TBS1000B-and-TBS1000B-EDU-Oscilloscope-User-Manual-JA-JA.pdf}
+
+\bibitem{2} C4 信号変調の基礎実験 実験テキスト
+\end{thebibliography}
 
 \end{document}

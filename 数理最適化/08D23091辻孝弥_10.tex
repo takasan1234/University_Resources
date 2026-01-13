@@ -1,0 +1,93 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{margin=25mm}
+
+\title{第10回課題}
+\author{08D23091 辻孝弥}
+
+\begin{document}
+
+
+\section{二次計画問題の求解}
+
+\subsection{問題の定式化と理論解}
+本課題では，ソルバー（Ipopt）を用いて以下の二次計画問題を求解した．
+\begin{align}
+\min_{x_1,x_2}\ & (x_1-1)^2 + (x_2-2)^2 \label{eq:obj}\\
+\text{s.t. }\ & x_1 + x_2 = 1 \label{eq:eq}\\
+& x_1 \ge 0,\ \ x_2 \ge 0 \label{eq:ineq}
+\end{align}
+理論的な最適解は
+\begin{align}
+x^* = (0,1)
+\end{align}
+である．この問題を幾何学的に解釈すると，点$(1,2)$から直線区間$x_1+x_2=1\ (x_1,x_2\ge 0)$への最短距離を求めることに相当する．
+
+\subsection{Ipoptによる数値計算}
+本節では収束判定許容誤差を$\mathrm{tol}=10^{-10}$と設定し，CasADiおよびIpoptを用いて最適化を実行した．得られた結果は以下の通りである．
+\begin{itemize}
+  \item 最適解：$x^* \approx (4.36\times 10^{-6},\ 1.000)$
+  \item 等式制約のラグランジュ乗数：$\mu \approx 2.000$
+  \item 不等式制約のラグランジュ乗数：$\lambda_1 \approx 1.74\times 10^{-5},\ \lambda_2 \approx 9.09\times 10^{-12}$
+\end{itemize}
+理論解$(0,1)$と比較すると，得られた数値解は数値誤差の範囲内で一致することが確認された．
+
+\section{KKT条件の検証}
+
+\subsection{相補性条件の成立確認}
+不等式制約を
+\begin{align}
+g_1(x)=-x_1\le 0,\qquad g_2(x)=-x_2\le 0
+\end{align}
+と定義する．KKT条件の一つである相補性条件
+\begin{align}
+\lambda_i g_i(x^*) = 0
+\end{align}
+が成立しているかを検証した．
+
+実行結果より，以下の値が計算された．
+\begin{align}
+\lambda_1 g_1(x^*) &\approx -7.60\times 10^{-11}\\
+\lambda_2 g_2(x^*) &\approx -9.09\times 10^{-12}
+\end{align}
+相補性条件はほぼ満たされていることが確認された．これは，いずれの値も$0$に極めて近いことから明らかである．
+
+\section{課題2：収束判定許容誤差の影響}
+
+\subsection{パラメータ設定と実験方法}
+以下の2通りの設定で，Ipoptのオプションパラメータである$\mathrm{tol}$（tolerance）を変更し，それぞれの設定で最適化を実行して結果を比較した．
+\begin{align}
+\text{(i) }\mathrm{tol}=10^{-6},\qquad \text{(ii) }\mathrm{tol}=10^{-10}
+\end{align}
+
+\subsection{計算結果の比較}
+表\ref{tab:tol}に，各設定における反復回数（Iterations），最適解$x_1$の値，および相補性条件の誤差（Complementarity）をまとめた．
+
+\begin{table}[h]
+\centering
+\caption{tolの違いによる計算結果の比較}
+\label{tab:tol}
+\begin{tabular}{lcc}
+\toprule
+項目 & (i) $\mathrm{tol}=10^{-6}$ & (ii) $\mathrm{tol}=10^{-10}$ \\
+\midrule
+反復回数 (iter) & 11 & 17 \\
+最適解 $x_1^*$ & $2.84\times 10^{-4}$ & $4.36\times 10^{-6}$ \\
+目的関数値 & 2.00000016 & 2.00000000 \\
+相補性条件 (Complementarity) & $3.22\times 10^{-7}$ & $7.62\times 10^{-11}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{結果の分析と考察}
+表\ref{tab:tol}を分析すると，$\mathrm{tol}$の値を小さく（厳しく）設定した(ii)の場合において，以下の変化が確認された．
+\begin{enumerate}
+  \item 解の精度の向上：理論的な最適値$x_1=0$に対し，(i)では$10^{-4}$のオーダーの誤差が残っていたが，(ii)では$10^{-6}$のオーダーまで精度が向上した．相補性条件の誤差や目的関数値の精度も，$\mathrm{tol}$を小さくすることで顕著に改善している．
+  \item 反復回数の増加：$\mathrm{tol}=10^{-6}$の場合は11回で収束したのに対し，$\mathrm{tol}=10^{-10}$では17回を要した．これは，より高い精度でKKT条件を満たす解を探索するために，ソルバーがより多くのステップを必要としたためである．
+\end{enumerate}
+$\mathrm{tol}$は計算コスト（反復回数）と解の精度（厳密性）のトレードオフを調整するパラメータであることが，以上の結果から確認できた．実用上は，求められる解の精度に応じて適切な値を設定する必要があると考えられる．
+
+\end{document}
