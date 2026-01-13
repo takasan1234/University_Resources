@@ -1,0 +1,579 @@
+\documentclass[a4paper,11pt]{jsarticle}
+
+\usepackage{plautopatch}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[dvipdfmx]{color} % dvipdfmxドライバーを明示的に指定
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usepackage{xurl}
+\usepackage{url}
+\urlstyle{tt}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{float}
+\usepackage[justification=centering]{caption}
+
+% ページ設定
+\usepackage{geometry}
+\geometry{margin=25mm} % Set margin to 25mm
+\setlength{\parindent}{0pt} % 段落のインデントを0に設定
+
+\begin{document}
+
+% タイトルページ
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+
+{\Large 電子情報工学科}
+
+\vspace{1cm}
+
+{\large 情報通信工学専門実験 報告}
+
+\vspace{0.5cm}
+
+{\large 第 1 号}
+
+\vspace{2cm}
+
+{\large 実 験 題 目}
+
+\vspace{0.5cm}
+
+{\large C2 電子回路の基礎実験}
+
+\vspace{1cm}
+
+情報システム工学コース 第2班
+
+\vspace{0.5cm}
+
+辻 孝弥
+
+\vspace{2cm}
+
+{\large 報 告 者}
+
+\vspace{0.5cm}
+
+08D23091番 辻 孝弥（情報システム工学コース）
+
+\vspace{0.3cm}
+
+電子メールアドレス：u316705e@ecs.osaka-u.ac.jp
+
+\vspace{2cm}
+
+令和8年 1月12日
+
+\vspace{1cm}
+
+大阪大学工学部電子情報工学科
+
+\end{titlepage}
+
+\newpage
+
+% 目的
+\section*{目的}
+
+トランジスタを用いた増幅回路の動作を理解し、バイポーラトランジスタのエミッタ接地回路の増幅特性を評価する。それに基づき、要求仕様を満たすエミッタ接地増幅回路を設計・試作し、その性能を評価する。
+
+% 1. 実験日時
+\section{実験日時}
+
+第一回：2025年12月18日
+
+第二回：2025年12月25日
+
+% 2. 理論
+\section{理論}
+
+バイポーラトランジスタを用いたエミッタ接地回路の増幅特性について、以下の図1を用いて確認を行う。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/図1.png}
+\caption{バイポーラトランジスタを用いたエミッタ接地回路の回路図}
+\end{figure}
+
+はじめに直流成分のみを考える。バイポーラトランジスタのベース端子に流れ込む電流を無視した場合、ベース端子における直流電圧 $V_B$ は以下で与えられる。
+
+\begin{equation}
+V_B = \frac{R_2}{R_1 + R_2} V_{CC} \tag{1}
+\end{equation}
+
+エミッタ端子の電圧 $V_E$ はベース電圧からある一定の電圧降下 $V_{BE}$ を受け、以下の式となる。
+
+\begin{equation}
+V_E = V_B - V_{BE} = \frac{R_2}{R_1 + R_2} V_{CC} - V_{BE} \tag{2}
+\end{equation}
+
+トランジスタがオン状態になるには $V_B > V_{BE}$ である必要がある。この条件を満足するように $R_1$ と $R_2$ を決定する。トランジスタがオンの状態においては、エミッタ端子に直流電圧がかかり、エミッタ抵抗 $R_E$ に直流電流 $I_E$ が流れる。今、ベースからトランジスタに電流が流れ込まないと考えると、$I_E$ はコレクタ抵抗 $R_C$ に流れる電流 $I_C$ にほぼ等しい。
+
+\begin{equation}
+I_E = \frac{V_E}{R_E} = \frac{V_B - V_{BE}}{R_E} \approx I_C \tag{3}
+\end{equation}
+
+したがって、コレクタ端子の直流電圧成分 $V_C$ は以下となる。
+
+\begin{equation}
+V_C = V_{CC} - R_C I_C \approx V_{CC} - \frac{R_C}{R_E} (V_B - V_{BE}) \tag{4}
+\end{equation}
+
+なお、トランジスタを正常に動作させるには $V_C >> V_E$ である必要がある。これを満足するように $V_E$ と $V_C$ を設定する必要がある。
+
+次に入力ポートから交流電圧 $v_i$ が入力されたときを考える。入力交流電圧はコンデンサ $C_1$ を通りベース端子の電圧を変化させる。この交流電圧による変化を $\Delta v_B$ とすると、交流成分も考えた場合のベース電圧 $v_B$ は以下となる。
+
+\begin{equation}
+v_B = V_B + \Delta v_B \tag{5}
+\end{equation}
+
+交流成分も考えたエミッタ電圧 $v_E$ は、$v_B$ から一定の直流電圧 $V_{BE}$ だけ降下するのみである。
+
+\begin{equation}
+v_E = v_B - V_{BE} = V_B + \Delta v_B - V_{BE} \tag{6}
+\end{equation}
+
+したがって、コレクタ電圧 $v_C$ は以下となる。
+
+\begin{equation}
+v_C = V_{CC} - \frac{R_C}{R_E} (V_B + \Delta v_B - V_{BE}) \tag{7}
+\end{equation}
+
+ここで、$v_C$ を直流成分 $V_C$ と交流成分 $\Delta v_C$ で表すと、$v_C = V_C + \Delta v_C$ であるから、$\Delta v_B$ と $\Delta v_C$ の関係は、
+
+\begin{equation}
+\Delta v_C = - \frac{R_C}{R_E} \Delta v_B \tag{8}
+\end{equation}
+
+となる。ここで、$C_1$ を適切に設定することで、入力端子から $C_1$ を介して入力交流電圧 $v_i$ がそのまま $\Delta v_B$ となる。したがって、$v_i = \Delta v_B$ である。同様に $C_2$ も適切に設定することによって、コレクタ電圧の交流成分 $\Delta v_c$ が $C_2$ を介してそのまま出力される。すなわち、$v_o = \Delta v_c$ である。したがって、入出力交流電圧の関係は、
+
+\begin{equation}
+v_o = - \frac{R_C}{R_E} v_i \tag{9}
+\end{equation}
+
+となる。この式から電圧増幅率は $\frac{R_C}{R_E}$ であり、出力電圧は入力電圧に対して逆相になることがわかる。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/図2.png}
+\caption{回路の(a) 入力側から見た場合の等価回路と(b) 出力側から見た場合の等価回路}
+\end{figure}
+
+次にエミッタ接地回路の入力インピーダンスおよび出力インピーダンスを考える。入力インピーダンスとは、図 2(a) に示すようにある回路における入力側内部インピーダンス $Z_{in}$ とみなせる。この $Z_{in}$ の絶対値が十分に大きく無限大であれば、電圧を入力しても回路に電流が流れ込むことがない。一方で、$Z_{in}$ の絶対値が小さいと、回路に電圧を入力する際に回路に大きな電流が流れ込んでしまい、外部入力回路の状況が変化してしまう。したがって、$Z_{in}$ の絶対値は大きいほど良い。
+
+図1の回路の入力インピーダンスを考える。ここでは簡単のために$C_1$を無視し、ベース端子に電流$\Delta i_B$を直接入力した場合を考える。バイポーラトランジスタのベース端子への電流の流れ込みは無視できるために、入力部の回路は図 3(a)と近似できる。この$\Delta i_B$の入力によってベース電圧は$V_B + \Delta v_B$と変化したと考える。$R_2$に流れる電流$i_2$は、
+
+\begin{equation}
+i_2 = \frac{V_B + \Delta v_B}{R_2} \tag{10}
+\end{equation}
+
+となる。一方、$R_1$に流れる電流$i_1$は
+
+\begin{equation}
+i_1 = \frac{V_B + \Delta v_B}{R_1} - \Delta i_B \tag{11}
+\end{equation}
+
+となる。$V_{CC} = R_1 i_1 + R_2 i_2$の関係から、以下の関係が導出される。
+
+\begin{equation}
+\frac{\Delta v_B}{\Delta i_B} = \frac{R_1 R_2}{R_1 + R_2} = R_{//} \tag{12}
+\end{equation}
+
+まさに、これが入力インピーダンスとなり、エミッタ接地回路の入力側の等価回路は図 3(b)のように表すことができる。入力インピーダンスがなるべく大きくなるように、$R_1$と$R_2$には大きな抵抗を用いる必要がある。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/図3.png}
+\caption{エミッタ接地回路の(a)入力回路と(b)入力側からみた等価回路}
+\end{figure}
+
+出力インピーダンスに関しては、図 2(b)に示すようにある回路における出力部に挿入されたインピーダンス$Z_{out}$とみなせる。回路から電圧を取り出す場合、出力側に負荷抵抗$R_L$を接続する。$R_L$が$Z_{out}$の絶対値に比べて十分に大きい場合は$Z_{out}$に電流が流れることによる電圧降下は無視できる。しかしながら、$R_L$が$Z_{out}$の絶対値と同程度であると、$Z_{out}$における電圧降下が無視できなくなる。回路から大きな電流を取り出す、すなわち小さな負荷抵抗をつなげるには、$Z_{out}$の絶対値が小さいほど好ましい。それでは、図1のエミッタ接地回路の$Z_{in}$と$Z_{out}$はどのようになるのかを考える。
+
+次に出力インピーダンス$Z_{out}$を考える。ここでは、図 4(a)に示すように外部に電流$\Delta i_{out}$を取り出すことを考える。このときコレクタ電圧は$V_C$から$\Delta v_{out}$だけ変化したと考える。ただし、エミッタ電流$I_E$は外部に取り出される電流$\Delta i_{out}$によらずに式(3)で与えられる点に注意したい。このとき、$R_C$に流れる電流$i_C$は、$I_C + \Delta i_{out}$であるため、$V_C + \Delta v_{out} = V_{CC} - R_C \cdot (I_C + \Delta i_{out})$が成立する。この式から以下の関係が導かれる。
+
+\begin{equation}
+\Delta v_{out} = -R_C \Delta i_{out} \tag{13}
+\end{equation}
+
+これは、外部に取り出す電流$\Delta i_{out}$によってコレクタ電圧が$R_C \cdot \Delta i_{out}$だけ電圧降下することを表している。したがって、図4(b)に示す等価回路で表され、出力インピーダンスは$R_C$であることがわかる。
+
+負荷抵抗が$R_C$に近づくと出力電圧が降下する。出力インピーダンスによる電圧降下を小さくするためには$R_C$を小さくする必要がある。ある程度の電圧増幅率を確保するためには、式(9)からわかるように$R_C$に比例して$R_E$も小さくする必要があり、大きなエミッタ電流が生じる。バイポーラトランジスタでは、大きなエミッタ電流を得ると大きなベース電流が生じ、ベース電圧の設計値を確保するためには$R_1$および$R_2$を小さくしてこれらを流れる電流を大きくする必要がある。これは入力インピーダンスを低下させることにつながる。以上から、$R_1$、$R_2$、$R_E$、$R_C$の設計には最適点があることがわかる。闇雲にある仕様値を得るために抵抗値を大きくする(または小さくする)と別の仕様値が劣化する。したがって、すべての仕様を満足するように全体をみて抵抗値を設定する必要があることに注意する。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/図4.png}
+\caption{エミッタ接地回路の(a)出力回路と(b)出力側からみた等価回路}
+\end{figure}
+
+最後に入力交流電圧に対する入力側コンデンサ$C_1$の影響を考える。この場合、入力側の交流電圧$Z_{in}$に対する等価回路は、図 5 に示すような$C_1$と式(12)の$Z_{in}$の直列接続回路となり、$Z_{in}$の両端電圧がベース電圧の交流成分$\Delta v_B$となる。これは$CR$直列回路、すなわち高域通過フィルタである。ここで複素表示を用いる。入力交流電圧$v_i$の角周波数を$\omega$とすると、コンデンサ$C_1$のインピーダンスは$\frac{1}{j\omega C_1}$であるから、$v_i$の複素表示$\dot{v}_i$と、$\Delta v_B$の複素表示$\dot{\Delta v_B}$の関係は
+
+\begin{equation}
+\dot{\Delta v_B} = \frac{R_{//}}{R_{//} + \frac{1}{j\omega C_1}} \dot{v}_i \tag{14}
+\end{equation}
+
+となる。したがって、
+
+\begin{equation}
+|\dot{\Delta v_B}| = \frac{1}{\sqrt{1 + \left(\frac{1}{\omega C_1 R_{//}}\right)^2}} |\dot{v}_i| \tag{15}
+\end{equation}
+
+となり、$\omega$が大きいほど$\Delta v_B$の振幅は$v_i$の振幅に近づく高域通過フィルタとなっていることがわかる。ベース電圧の交流成分$\Delta v_B$が入力交流電圧$v_i$の$\frac{1}{\sqrt{2}}$になる周波数は
+
+\begin{equation}
+f_L = \frac{1}{2\pi C_1 R_{//}} \tag{16}
+\end{equation}
+
+で与えられ、この$f_L$を低域カットオフ周波数と呼ぶ。入力交流電圧の周波数に適した$R_1$、$R_2$、$C_1$を設定する必要があることがわかる。尚、式(12)までの議論では、$C_1$の影響を無視していること($v_i = \Delta v_B$としている)に注意が必要である。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/図5.png}
+\caption{エミッタ接地回路の入力コンデンサ$C_1$を考えたときの入力側等価回路}
+\end{figure}
+
+% 3. 実験結果
+\section{実験結果}
+
+本実験は2週に分かれて実施した。1週目の実験内容と結果を\ref{subsec:amplification}に、2 週目の実験内容と結果を\ref{subsec:design-task}に記す。
+
+\subsection{バイポーラトランジスタを用いたエミッタ接地回路の増幅特性評価}
+\label{subsec:amplification}
+
+トランジスタ（NPN 型バイポーラトランジスタ 2SC1815）のエミッタ接地増幅回路の回路図と写真を以下の図6に示す。実際には(11)(12)に述べる可変抵抗が挿入されている。この回路に対して以下の(1)〜(12)の測定を行った。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/図6.png}
+\caption{バイポーラトランジスタを用いたエミッタ接地増幅回路の(a)回路図(b)ブレッドボード上の写真}
+\end{figure}
+
+(1) 電源電圧の設定
+
+直流安定化電源の出力端子を回路の電源端子に接続した。ここでは電源電圧$V_{CC}$を 15V とした（ディジタルマルチメータの測定値が15Vになるように直流安定化電源を調整）。
+
+(2) トランジスタのベース直流電圧$V_B$の測定
+
+ディジタルマルチメータを用いてトランジスタのベース直流電圧$V_B$を測定値は 2.462V であった。$V_B$は、回路の電源電圧$V_{CC}$と抵抗値$R_1, R_2$を用いて、式(1)で与えられ、理論値は2.50Vである。
+
+(3) トランジスタのエミッタ直流電圧$V_E$の測定
+
+トランジスタのエミッタ直流電圧$V_E$を測定値は 1.842V であった。電圧の低下分 $V_{BE}$は、2.462-1.842=0.620Vでありベース電圧に比べて 0.6〜0.7V 程度下がっていることが確認できた。
+
+(4) トランジスタのコレクタ直流電圧$V_C$の測定
+
+トランジスタのコレクタ直流電圧$V_C$を測定値は$V_C=5.80V$であった。この$V_C$は、式(4)より、$R_C, R_E, V_B, V_{BE}, V_{CC}$を用いて表すことができる。$V_B$と$V_{BE}$は$R_1,R_2$よって決定されるため、$V_C$は$R_C, R_E, R_1, R_2$によって決定され、理論値は 5.75V となった。($V_{BE}=0.65V$として計算)
+
+(5) 入力電圧波形の設定
+
+ファンクションジェネレータの出力端子を回路の交流入力端子に接続し、周波数 1kHz、振幅 0.5V の正弦波を入力した。このとき、回路の入力電圧波形$v_i$をオシロスコープのCH1に表示させて振幅を測定し、測定値が振幅 0.5 V になるようにファンクションジェネレータの出力電圧を設定した。その設定値は480mVppであった。
+
+(6) ベース電圧波形$v_B$の測定
+
+オシロスコープを用いてトランジスタのベース電圧波形$v_B$の時間変化を測定した。ベース電圧を CH2 に表示させ、CH1 に表示した$v_i$と比較すると、$v_i$に(2)で測定された直流電圧が加えられていることがわかった。CH1 と CH2 を表示させた状態を図 7 に示す。なお、$v_B$の極大値は 3.04V で、極小値は 2.00V であった。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth,natwidth=650,natheight=394]{images/図7.jpg}
+\caption{入力AC電圧(黄線)とベース電圧(青線)のオシロスコープ波形}
+\end{figure}
+
+(7) エミッタ電圧波形$v_E$の測定
+
+トランジスタのエミッタ電圧波形$v_E$の時間変化を測定し、CH1に表示させた結果を図8に示す。交流波形は変化せず、ベース電圧から(3)で測定された$V_{BE}$が引かれていることがわかった。$v_E$の極大値は 2.36V で、極小値は 1.40Vであった。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth,natwidth=644,natheight=385]{images/図8.jpg}
+\caption{ベース電圧(青線)エミッタ電圧(黄色)のオシロスコープ波形}
+\end{figure}
+
+(8) コレクタ電圧波形$v_C$の測定
+
+トランジスタのコレクタ電圧波形$v_C$を測定し、CH2 に表示させる。CH1 には$v_i$を表示させ、その結果を図 9 に示す。$v_C$の極大値は 8.32V で、極小値は 3.52V であった。また、$v_C$は$v_i$と比べて反転していることがわかる。反転した理由として、$\Delta v_C$は式(8)のように表せるということ、そして$\Delta v_C$と$v_o$が一致することが挙げられる。$\Delta v_C$は$\Delta v_B (=v_i)$を$-\frac{R_C}{R_E}$倍したものであるため、位相が反転していると考えられる。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth,natwidth=586,natheight=354]{images/図9.jpg}
+\caption{入力 AC 電圧(黄線)とコレクタ電圧(青線)のオシロスコープ波形}
+\end{figure}
+
+(9) 出力電圧波形$v_o$の測定
+
+出力電圧波形$v_o$測定し、CH2に表示させた結果を図 10 に示す。(8)で測定した$v_C$の波形から直流成分がなくなった波形が得られていることがこの図から確認できた。$v_i$と比較して、$v_o$は振幅が約 5 倍に増幅されていた。式(9)より、電圧増幅率は$\frac{R_C}{R_E}$と表せる。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth,natwidth=629,natheight=381]{images/図10.jpg}
+\caption{入力AC電圧(黄線),出力AC電圧(青色)のオシロスコープ波形}
+\end{figure}
+
+(10) 周波数特性の測定
+
+オシロスコープで、CH1 に$v_i$を、CH2 に$v_o$を表示させた。$v_i$の振幅の測定値は常に 0.25V を保つようファンクションジェネレータの設定値を調整しながら 30Hz から 3MHz まで周波数を変化させ、周波数に対する$v_o$の振幅のグラフを作成したところ、図 11 のようになった。なお、横軸は周波数の対数目盛である。縦軸は1kHzでの$v_o$の振幅を0dBとしたときのそれぞれの周波数における$v_o$の振幅の dB 表示とする。周波数領域の低域側において$v_o$の振幅が−3dB になる周波数を低域カットオフ周波数と呼ぶ。グラフから低域カットオフ周波数を求めたところ、約 91Hz であった。この低域カットオフ周波数は、以下の式(12)と式(16)より、$R_1$、$R_2$、$C_1$によって決定されることがわかる。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/図11.png}
+\caption{周波数[Hz](横軸)と出力電圧[dB]（縦軸）の関係}
+\end{figure}
+
+(11) 入力インピーダンス$Z_{in}$の測定
+
+図 12(a)に示すように、ファンクションジェネレータ(図中の FG)の正側端子と回路の入力の正側端子の間には可変抵抗が挿入されている。つまみを反時計回りに回すと抵抗値が小さくなるので、(9)までの測定では反時計回りに回し切って 0Ωとしていた。オシロスコープを用いて図 12(a)に示す2 箇所の電圧波形を測定する。可変抵抗が 0Ωであれば 2 箇所の電圧波形は同じである。図 12(a)の CH1 とCH2の両方に(9)までの測定における$v_i$(周波数1kHz、振幅 0.5V)が表示されるよう、ファンクションジェネレータを設定する。なお、これは図10のCH1と同じ波形である。次に、可変抵抗を時計回りに回して抵抗値を増大させ、図 12(a)の CH2 の振幅が CH1 の振幅の半分となるように調整する。その後、可変抵抗を回路から抜き取り、ディジタルマルチメータを用いてその抵抗値を測定したところ、16.82$k\Omega$であった。この測定値がトランジスタのエミッタ接地回路の入力インピーダンス$Z_{in}$となる。図 12(a)より、CH2 の振幅がCH1 の振幅の半分であるときに、$Z_{in}$と可変抵抗の抵抗値がどちらも同じ抵抗値になることがわかる。そのため、この方法で回路の$Z_{in}$が測定できたと考えることができる。また、3.1(10)で述べた式(12)から$Z_{in}$は$R_1$と$R_2$によって決まることがわかる。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/図12.png}
+\caption{エミッタ接地回路の(a)入力インピーダンス測定系と(b)出力インピーダンス測定系}
+\end{figure}
+
+(12) 出力インピーダンス$Z_{out}$の測定
+
+(11)で抜き取った入力側の可変抵抗を元の位置に戻し 0Ωとする。オシロスコープを用いて図 12(b)に示す 2 箇所の電圧波形を測定する。図 12(b)の CH2 には(9)までの測定における$v_o$(周波数 1kHz、振幅は(9)と同じ値)が表示され、図10が再現される。(9)までの測定では、図 12(b)の出力側の可変抵抗はブレッドボード上にはあるが、そのGND側から出ているリード線(黄色)はGNDに接続されておらず、回路の出力端は開放端となっていた。可変抵抗を回しても$v_o$の振幅は変化しない。この$v_o$の振幅、すなわち出力端開放時の出力電圧振幅((9)と同じ値)を覚えておく。ここで、図 12(b)のように可変抵抗のGND 側のリード線(黄色)をブレッドボードのGND に接続すると、可変抵抗が回路の負荷となる。図 12(b)の CH2 に表示される$v_o$の振幅は減少し、可変抵抗を時計回りに回し切って抵抗値を最大にしてもその振幅は覚えておいた$v_o$の値を超えることはない。可変抵抗の抵抗値を変化させて、図 12(b)の CH2 の振幅の測定値が覚えておいた$v_o$の振幅の 1/2 になるように調整する。その後、可変抵抗を回路から抜き取りその抵抗値を測定したところ、9.94$k\Omega$となった。これがトランジスタのエミッタ接地回路の出力インピーダンス$Z_{out}$となる。図 12(b)より、CH2 が(9)の振幅の半分となるときに$Z_{out}$と可変抵抗の抵抗値が同じになるため、この方法で回路の$Z_{out}$が測定できると考えられる。また 式(13)より、エミッタ接地回路の$Z_{out}$は$R_C$によって決まることがわかる。
+
+\subsection{バイポーラトランジスタを用いたエミッタ接地増幅回路の設計に関する課題}
+\label{subsec:design-task}
+
+\subsubsection{エミッタ接地増幅回路の設計}
+\label{subsec:design}
+
+以下の仕様を満足するエミッタ接地増幅回路を設計した。なお、交流結合用コンデンサ$C_1, C_2$は0.1$\mu F$としている。
+
+・ 電源電圧:5V
+
+・ 周波数 1kHz および振幅 0.5V の正弦波入力に対する電圧増幅率:2.5倍以上
+
+・ 入力インピーダンス:10$k\Omega$以上
+
+・ 出力インピーダンス:5$k\Omega$以下
+
+・ 低域カットオフ周波数: 500Hz以下
+
+$R_1＝61k\Omega, R_2＝20k\Omega, R_C＝3k\Omega, R_E＝1k\Omega$として設計を行なった。
+
+\subsubsection{設計回路の作製}
+
+ブレッドボードを用いて\ref{subsec:design}で設計した回路を作製した。
+
+\subsubsection{3.1(1)〜(4)と同様の手順で$V_B$、$V_E$、$V_C$を測定した結果は以下の表１のようになった。}
+
+測定値と理論値を比較すると、おおよそ一致していることが確認できた。なお、理論値を計算する際には$V_{BE}=0.65V$とした。
+
+\begin{table}[h]
+\centering
+\caption{ベース電圧、エミッタ電圧、コレクタ電圧の測定結果}
+\begin{tabular}{lcc}
+\hline
+ & 理論値[V] & 測定値[V] \\
+\hline
+$V_B$ & 1.130 & 1.112 \\
+$V_E$ & 0.510 & 0.527 \\
+$V_C$ & 3.278 & 3.230 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{作製した回路の周波数 1kHz 振幅 0.5V の正弦波入力に対する電圧増幅率と出力波形を測定した結果を以下の図 13 に示す。}
+
+増幅率は約 2.69 倍であり、\ref{subsec:design}の条件を満たしていることが確認できた。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth,natwidth=800,natheight=480]{images/図13.jpg}
+\caption{入力AC電圧(黄線),出力AC電圧(青色)のオシロスコープ波形}
+\end{figure}
+
+\subsubsection{コレクタ交流電圧の極小値およびエミッタ交流電圧の極大値の測定値は、コレクタ交流電圧の極小値は 1.84V,エミッタ交流電圧の極大値は1.12Vとなった。}
+
+この差は0.72Vであり、今回の実験で使用したトランジスタの「コレクタ・エミッタ間飽和電圧」（0.2V 程度）以上であると確認できた。
+
+\subsubsection{3.1(10)〜(12)と同様に低域カットオフ周波数、入力インピーダンス、出力インピーダンスを測定した。}
+
+低域カットオフ周波数は約90.2Hz であり、条件を満たしていることが確認できた。$Z_{in}=17.14k\Omega$、$Z_{out}=3.00k\Omega$だった。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/図14.png}
+\caption{周波数[Hz](横軸)と出力電圧[dB]（縦軸）の関係}
+\end{figure}
+
+% 4. 考察
+\section{実験に対する考察}
+
+\subsection{実験項目内の質問}
+
+質問について3.1に示しているが、ここでもう一度簡潔に述べる。
+
+・3.1.(2)について
+
+式(1)より、電圧$V_B$は回路の抵抗$R_1, R_2$よって決まる。
+
+・3.1.(4)について
+
+式(4)より、$V_C$は$R_C, R_E, R_1, R_2$によって決まる。
+
+・3.1.(8)について
+
+式(8)より$\Delta v_C$は$\Delta v_B (=v_i)$を$-\frac{R_C}{R_E}$倍したものであるから位相が反転している。
+
+・3.1.(9)について
+
+式(9)より、電圧増幅率は$\frac{R_C}{R_E}$であり、3.1.(10) 式(12)と式(16)より、低域カットオフ周波数は$R_1$、$R_2$、$C_1$によって決まる。
+
+・3.1.(11)について
+
+CH2の振幅がCH1の振幅の半分であるときに、$Z_{in}$と可変抵抗の抵抗値がどちらも同じ抵抗値になるため、この方法で回路の$Z_{in}$が測定できたと考えられる。また、式(12)から$Z_{in}$は$R_1$と$R_2$によって決まる。
+
+・3.1.(12)について
+
+CH2 の振幅が(9)の振幅の半分となるときに、$Z_{out}$と可変抵抗の抵抗値が同じになるため、この方法で回路の$Z_{out}$が測定できたと考えられる。また、式(13)からエミッタ接地回路の$Z_{out}$は$R_C$によって決まる。
+
+\subsection{$V_{BE}$が約0.7Vである理由}
+
+トランジスタはベースエミッタ間電圧が一定値以上になると ON 状態となるが、その値はトランジスタの素材に依存する。今回の実験で用いた NPN 型バイポーラトランジスタ 2SC1815 は、シリコン製である。シリコンを素材としたトランジスタでは、$V_{BE}$の値は 0.6〜0.8V になることが知られているため、3.1(3)で 0.616V という値が得られたのだと考えられる。
+
+\subsection{電圧増幅率の式の導出}
+
+今回は$I_E \approx I_C$と近似して計算していた（実際のトランジスタではベース電流が存在し、コレクタ電流の1/$h_{FE}$のベース電流が $V_{CC}$から$R_1$を経由してベースに流れ込む。従って、設定したエミッタ電流からベース電流を差し引いたものがコレクタ電流となる。）が、正しくは以下のように表せる。（$h_{FE}$：直流電流増幅率）
+
+\begin{equation*}
+I_C = I_E - I_B = I_E - \frac{I_E}{h_{FE}}
+\end{equation*}
+
+これを整理すると式(17)のようになる。
+
+\begin{equation}
+I_C = \frac{h_{FE}}{h_{FE} + 1} I_E \tag{17}
+\end{equation}
+
+ここで、2 で述べた式(3)より、$I_E$は次のように表すこともできる。
+
+\begin{equation}
+I_E = \frac{V_B - V_{BE}}{R_E} \tag{3}
+\end{equation}
+
+式(3)と式(17)から、$I_C$は以下のように表すことができる。
+
+\begin{equation*}
+I_C = \frac{h_{FE} (V_B - V_{BE})}{(h_{FE} + 1) R_E}
+\end{equation*}
+
+これと式(4)より
+
+\begin{equation}
+V_C = V_{CC} - R_C I_C = V_{CC} - \frac{R_C h_{FE}}{R_E (1 + h_{FE})} (V_B - V_{BE}) \tag{18}
+\end{equation}
+
+となる。交流成分も考慮して計算すると、以下のように書き換えることができる。
+
+\begin{equation}
+V_C + \Delta v_C = V_{CC} - \frac{R_C \cdot h_{FE}}{R_E (1 + h_{FE})} (V_B + \Delta v_B - V_{BE}) \tag{19}
+\end{equation}
+
+式(19)-式(18)より、$\Delta v_C$は
+
+\begin{equation}
+\Delta v_C = -\frac{R_C}{R_E} \cdot \frac{h_{FE}}{1 + h_{FE}} \Delta v_B \tag{20}
+\end{equation}
+
+式(20)より、$h_{FE}$を含む電圧増幅率の式は
+
+\begin{equation*}
+\frac{R_C}{R_E} \cdot \frac{h_{FE}}{1 + h_{FE}}
+\end{equation*}
+
+であることがわかる。従って、交流電圧増幅率は$\frac{R_C}{R_E}$よりも小さくなるはずである。実際に、3.1(9)の結果は 4.8 倍であり、理論値である$\frac{R_C}{R_E} = 5$よりも小さくなっている。これは$h_{FE}$が原因で生じたものであると考えることができる。
+
+\subsection{低域カットオフ周波数}
+
+\subsubsection{方法 1}
+
+式(15)において$v_i$の係数が$1/\sqrt{2}$となるのは、低域カット周波数が 式(16)で表すことができるときである。
+
+\begin{equation}
+f _ {L} = \frac {1}{2 \pi C _ {1} R _ {/ /}} \tag{16}
+\end{equation}
+
+$C_1 = 0.1[\mu F], R_{/ /} = \frac{100 \cdot 20}{100 + 20} = 16.67[k\Omega]$ を代入して
+
+\begin{equation*}
+f _ {L} = \frac {1}{2 \pi C _ {1} R _ {/ /}} \approx 95.5[Hz]
+\end{equation*}
+
+\subsubsection{方法 2}
+
+周波数を $1\mathrm{kHz}$ として式(15)の$v_i$の係数の値を求め、その値に$1/\sqrt{2}$をかけ合わせた値が$v_i$の係数になるような周波数を逆算することで$f_L$を求める。周波数が $1\mathrm{kHz}$ のとき、角周波数$\omega$は $2000\pi$である。$C_1 = 0.1[\mu F], R_{/ /} = \frac{100 \cdot 20}{100 + 20} = 16.67[k\Omega]$ので、それぞれ代入して計算する。
+
+\begin{equation*}
+\frac {1}{\sqrt {1 + \left\{\frac {1}{(2000\pi \cdot (0.1 \times 10^{-6}) \cdot (16.67 \times 10^{3})}\right\}^2}} \approx 0.995
+\end{equation*}
+
+これを$1/\sqrt{2}$倍すると約 0.704 になるため、以下の式を満たす$f_L$を考える。
+
+\begin{equation*}
+\frac {1}{\sqrt {1 + \left(\frac {1}{2\pi C _ {1} R _ {/ /} f _ {L}}\right) ^ {2}}} = 0.704
+\end{equation*}
+
+これを計算すると、およそ 94.6 となる。
+
+これら 2 つの$f_L$の計算値は、3.1(10)で得られた低域カットオフ周波数の測定値とおおよそ一致している。(差は 0.9 Hz)
+
+\subsection{高域カットオフ周波数}
+
+高域カットオフ周波数は、回路が高周波数帯域において利得を十分に確保できなくなる境界周波数である。高域カットオフ周波数では $R_{//}$ だけでなく、ベースとエミッタ間の容量 $C_{be}$ とベースとコレクタ間の容量 $C_{bc}$、増幅率 $A$ によって定まる。特に、ベース-コレクタ間容量は、「ミラー効果」という回路内の容量が本来よりも大きく見える現象が生じることにより、ベースとコレクタ間の容量が $(1 + A)$ 倍に増幅される。また、今回はエミッタ抵抗があるため、増幅率 $A$ は以下のように近似できる。
+
+\begin{equation*}
+A = \frac {R _ {c}}{R _ {E}}
+\end{equation*}
+
+増幅回路の高域カットオフ周波数は、「抵抗成分と容量成分による 1 次ローパス特性」の-3dB として求めることができる。
+
+実効容量
+
+\begin{equation*}
+C _ {in} = C _ {BE} + \left(1 + \frac {R _ {c}}{R _ {E}}\right) C _ {BC}
+\end{equation*}
+
+と入力側において有効な並列抵抗値 $R_{||}$ によって構成される高周波数ローパスフィルタと見なすことができる。
+
+以上より、高域カットオフ周波数は次のように定義できる。
+
+\begin{equation*}
+f _ {H} = \frac {1}{2 \pi R _ {//} (C _ {be} + (1 + \frac {R _ {c}}{R _ {E}}) C _ {bc})}
+\end{equation*}
+
+% 5. 参考文献
+\section{参考文献}
+
+[1] 電子回路の基礎実験（c2）実験テキスト
+
+[2] dB値の計算方法
+\url{https://detail-infomation.com/voltage-power-decibel-db/}
+
+[3] NPN型バイポーラトランジスタ2SC1815について
+\url{http://www.op316.com/tubes/tips/image/2sc1815.pdf}
+
+[4] バイポーラトランジスタの入力特性
+\url{https://detail-infomation.com/bipolar-transistor-ib-vbe-characteristics/}
+
+[5] カットオフ周波数とは
+\url{https://detail-infomation.com/filter-cutoff-cutoff-frequency/}
+
+[6] ミラー効果と増幅回路の周波数特性
+\url{https://www-nh.scphys.kyoto-u.ac.jp/~enyo/kougi/elec/node40.html}
+
+[7] 計測のためのフィルタ回路設計 遠坂俊昭
+
+[8] High Pass Filter – Passive RC Filter Tutorial
+\url{https://www.electronics-tutorials.ws/filter/filter_3.html}
+
+[8] How Cutoff Frequency Impacts High Pass Filter Performance
+\url{https://qmicrowave.com/blog/how-cutoff-frequency-impacts-high-pass-filter-performance}
+
+\end{document}
