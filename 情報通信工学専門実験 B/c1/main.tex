@@ -15,6 +15,8 @@
 \usepackage{color}
 \usepackage{float}
 \usepackage[justification=centering]{caption}
+\usepackage{fancyvrb}
+\usepackage{fvextra}
 
 % ページ設定
 \usepackage{geometry}
@@ -70,12 +72,12 @@
 
 \subsection{実験課題1}
 　この課題ではクライアントでターミナルを起動し、以下のコマンドを実行した。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 $ curl http://www2b.comm.eng.osaka-u.ac.jp/~yoshiaki/C1/page1.html
-\end{verbatim}
+\end{Verbatim}
 
 　実行結果は以下のようになった。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 ubuntu@raspberrypi3:~ $ curl http://www2b.comm.eng.osaka-u.ac.jp/~yoshiaki/C1/page1.html
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
@@ -87,7 +89,7 @@ ubuntu@raspberrypi3:~ $ curl http://www2b.comm.eng.osaka-u.ac.jp/~yoshiaki/C1/pa
 Hello, World!
 </body>
 </html>
-\end{verbatim}
+\end{Verbatim}
 ターミナルにWebページのソースコードが表示されていることがわかる。
 
 \subsection{実験課題2}
@@ -98,7 +100,7 @@ Hello, World!
 3. Webページのソースコードが標準出力に表示されたら、パケットキャプチャを停止。
 
 　実行結果は以下のようになった。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 No.  　Time    　Source          Destination           Protocol Length Info
    8347 72.274886   192.168.12.66         10.144.0.1            DNS      88     Standard query 0x2cc8 A www2b.comm.eng.osaka-u.ac.jp
    8348 72.275140   192.168.12.66         10.144.0.1            DNS      88     Standard query 0x39c8 AAAA www2b.comm.eng.osaka-u.ac.jp
@@ -114,19 +116,19 @@ No.  　Time    　Source          Destination           Protocol Length Info
    8358 72.280046   192.168.12.66         192.168.13.80         TCP      66     35016 → 80 [FIN, ACK] Seq=1007184532 Ack=2277431961 Win=64128 Len=0 TSval=3536644629 TSecr=1932884925
    8359 72.280709   192.168.13.80         192.168.12.66         TCP      66     80 → 35016 [FIN, ACK] Seq=2277431961 Ack=1007184533 Win=65152 Len=0 TSval=1932884926 TSecr=3536644629
    8360 72.280870   192.168.12.66         192.168.13.80         TCP      66     35016 → 80 [ACK] Seq=1007184533 Ack=2277431962 Win=64128 Len=0 TSval=3536644630 TSecr=1932884926
-\end{verbatim}
+\end{Verbatim}
 
 \subsubsection{ドメイン名をIPアドレスに変換}
 ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
  8347 72.274886   192.168.12.66         10.144.0.1            DNS      88     Standard query 0x2cc8 A www2b.comm.eng.osaka-u.ac.jp
   8349 72.276049   10.144.0.1            192.168.12.66         DNS      104    Standard query response 0x2cc8 A www2b.comm.eng.osaka-u.ac.jp A 192.168.13.80
-\end{verbatim}
+\end{Verbatim}
 　このログから、送信元IPアドレス、受信元IPアドレスを読み取ることができる。
 
 　次に、パケットキャプチャログの詳細を抜粋して示す。
 ・8347
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 User Datagram Protocol, Src Port: 57683, Dst Port: 53
     Source Port: 57683
     Destination Port: 53
@@ -139,10 +141,10 @@ User Datagram Protocol, Src Port: 57683, Dst Port: 53
             [Label Count: 6]
             Type: A (Host Address) (1)
             Class: IN (0x0001)
-\end{verbatim}
+\end{Verbatim}
 
 ・8349
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 User Datagram Protocol, Src Port: 53, Dst Port: 57683
     Source Port: 53
     Destination Port: 57683
@@ -163,7 +165,7 @@ User Datagram Protocol, Src Port: 53, Dst Port: 57683
             Time to live: 1 (1 second)
             Data length: 4
             Address: 192.168.13.80
-\end{verbatim}
+\end{Verbatim}
 
 分析結果を表1にまとめた。
 
@@ -187,18 +189,18 @@ No. & 送信元IPアドレス & 受信先IPアドレス & 送信元ポート番�
 
 \subsubsection{TCPコネクションの確立}
 　ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 8351 72.277170   192.168.12.66         192.168.13.80         TCP      74     35016 → 80 [SYN] Seq=1007184416 Win=64240 Len=0 MSS=1460 \texttt{SACK\_PERM}=1 TSval=3536644626 TSecr=0 WS=128
 8352 72.277751   192.168.13.80         192.168.12.66         TCP      74     80 → 35016 [SYN, ACK] Seq=2277431442 Ack=1007184417 Win=65160 Len=0 MSS=1460 \texttt{SACK\_PERM}=1 TSval=1932884923 TSecr=3536644626 WS=128
 8353 72.277875   192.168.12.66         192.168.13.80         TCP      66     35016 → 80 [ACK] Seq=1007184417 Ack=2277431443 Win=64256 Len=0 TSval=3536644627 TSecr=1932884923
-\end{verbatim}
+\end{Verbatim}
 
 次に、No.8351のパケットキャプチャログの詳細を抜粋して示す。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 35016, Dst Port: 80, Seq: 1007184416, Len: 0
 (中略)
     Acknowledgment number: 0
-\end{verbatim}
+\end{Verbatim}
 
 ログから読み取ることができる情報を表2、表3にまとめる。
 \begin{table}[h]
@@ -233,7 +235,7 @@ No. & ONになっているTCPフラグ & シーケンス番号 & ACK番号 \\
 
 \subsubsection{HTTPメッセージの送受信}
 　ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 8354 72.278158   192.168.12.66         192.168.13.80         HTTP     181    GET /~yoshiaki/C1/page1.html HTTP/1.1 
 
 8355 72.278572   192.168.13.80         192.168.12.66         TCP      66     80 → 35016 [ACK] Seq=2277431443 Ack=1007184532 Win=65152 Len=0 TSval=1932884924 TSecr=3536644627
@@ -241,11 +243,11 @@ No. & ONになっているTCPフラグ & シーケンス番号 & ACK番号 \\
 8356 72.279152   192.168.13.80         192.168.12.66         HTTP     584    HTTP/1.1 200 OK  (text/html)
 
 8357 72.279238   192.168.12.66         192.168.13.80         TCP      66     35016 → 80 [ACK] Seq=1007184532 Ack=2277431961 Win=64000 Len=0 TSval=3536644628 TSecr=1932884925
-\end{verbatim}
+\end{Verbatim}
 
 次に、それぞれのパケットキャプチャログの詳細を抜粋して示す。
 ・8354
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 35016, Dst Port: 80, Seq: 1007184417, Ack: 2277431443, Len: 115
 (中略)
     Flags: 0x018 (PSH, ACK)
@@ -266,11 +268,11 @@ Hypertext Transfer Protocol
     [Full request URI: http://www2b.comm.eng.osaka-u.ac.jp/~yoshiaki/C1/page1.html]
     [HTTP request 1/1]
     [Response in frame: 8356]
-\end{verbatim}
+\end{Verbatim}
 
 
 ・8356
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 80, Dst Port: 35016, Seq: 2277431443, Ack: 1007184532, Len: 518
 (中略)
     Flags: 0x018 (PSH, ACK)
@@ -300,7 +302,7 @@ Hypertext Transfer Protocol
     [Request in frame: 8354]
     [Request URI: http://www2b.comm.eng.osaka-u.ac.jp/~yoshiaki/C1/page1.html]
     File Data: 266 bytes
-\end{verbatim}
+\end{Verbatim}
 
 　このログから、それぞれのパケットにおける送信元ポート番号、受信先ポート番号、TCPセグメント長、シーケンス番号、ACK番号、ONになっているTCPフラグを読み取ることができる。各パケットの情報を表4と表5にまとめる。
 \begin{table}[h]
@@ -344,11 +346,11 @@ No. & ONになっているTCPフラグ & シーケンス番号 & ACK番号 \\
 
 \subsubsection{TCPコネクションの終了}
 　ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
  8358 72.280046   192.168.12.66         192.168.13.80         TCP      66     35016 → 80 [FIN, ACK] Seq=1007184532 Ack=2277431961 Win=64128 Len=0 TSval=3536644629 TSecr=1932884925
  8359 72.280709   192.168.13.80         192.168.12.66         TCP      66     80 → 35016 [FIN, ACK] Seq=2277431961 Ack=1007184533 Win=65152 Len=0 TSval=1932884926 TSecr=3536644629
  8360 72.280870   192.168.12.66         192.168.13.80         TCP      66     35016 → 80 [ACK] Seq=1007184533 Ack=2277431962 Win=64128 Len=0 TSval=3536644630 TSecr=1932884926
-\end{verbatim}
+\end{Verbatim}
 
 　このログから読み取ることができる各パケットの情報を表6と表7にまとめる。
 \begin{table}[h]
@@ -386,7 +388,7 @@ No. & ONになっているTCPフラグ & シーケンス番号 & ACK番号 \\
 \url{http://www2b.comm.eng.osaka-u.ac.jp/~yoshiaki/C1/page1.html} 
 
 取得したのは以下のログである。このログを分析し、結果をまとめる。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 No.     Time        Source                Destination           Protocol Length Info
     688 17.977035   192.168.12.66         10.144.0.1            DNS      84     Standard query 0x140f A detectportal.firefox.com
     689 17.979484   10.144.0.1            192.168.12.66         DNS      489    Standard query response 0x140f A detectportal.firefox.com CNAME detectportal.prod.mozaws.net CNAME prod.detectportal.prod.cloudops.mozgcp.net A 34.107.221.82 NS ns-cloud-e4.googledomains.com NS ns-cloud-e1.googledomains.com NS ns-cloud-e3.googledomains.com NS ns-cloud-e2.googledomains.com A 216.239.32.110 A 216.239.34.110 A 216.239.36.110 A 216.239.38.110 AAAA 2001:4860:4802:32::6e AAAA 2001:4860:4802:34::6e AAAA 2001:4860:4802:36::6e AAAA 2001:4860:4802:38::6e
@@ -426,17 +428,17 @@ No.     Time        Source                Destination           Protocol Length 
    3222 40.534947   192.168.13.80         192.168.12.66         TCP      66     80 → 35516 [FIN, ACK] Seq=35309319 Ack=3906406641 Win=64640 Len=0 TSval=1939602374 TSecr=3543357075
    3223 40.535294   192.168.12.66         192.168.13.80         TCP      66     35516 → 80 [FIN, ACK] Seq=3906406641 Ack=35309320 Win=64128 Len=0 TSval=3543362075 TSecr=1939602374
    3224 40.535752   192.168.13.80         192.168.12.66         TCP      66     80 → 35516 [ACK] Seq=35309320 Ack=3906406642 Win=64640 Len=0 TSval=1939602374 TSecr=3543362075
-\end{verbatim}
+\end{Verbatim}
 
 \subsubsection{ドメイン名をIPアドレスに変換}
 ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
   2622 34.946600   192.168.12.66         10.144.0.1            DNS      88     Standard query 0x2089 A www2b.comm.eng.osaka-u.ac.jp
   2623 34.947637   10.144.0.1            192.168.12.66         DNS      104    Standard query response 0x2089 A www2b.comm.eng.osaka-u.ac.jp A 192.168.13.80
-\end{verbatim}
+\end{Verbatim}
 　このログから、送信元IPアドレス、受信元IPアドレスを読み取ることができる。
 　次に、No.2622のパケットキャプチャログの詳細を抜粋して示す。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 User Datagram Protocol, Src Port: 49142, Dst Port: 53
     Source Port: 49142
     Destination Port: 53
@@ -449,11 +451,11 @@ User Datagram Protocol, Src Port: 49142, Dst Port: 53
             [Label Count: 6]
             Type: A (Host Address) (1)
             Class: IN (0x0001)
-\end{verbatim}
+\end{Verbatim}
 　このログから送信元ポート番号、受信先ポート番号、UDPセグメント長を読み取ることができる。
 
 　同様に、No.2623のパケットキャプチャログの詳細を抜粋して示す。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 User Datagram Protocol, Src Port: 53, Dst Port: 49142
     Source Port: 53
     Destination Port: 49142
@@ -474,7 +476,7 @@ User Datagram Protocol, Src Port: 53, Dst Port: 49142
             Time to live: 1 (1 second)
             Data length: 4
             Address: 192.168.13.80
-\end{verbatim}
+\end{Verbatim}
 
 No.2623のパケットについてもログから送信元ポート番号、受信先ポート番号、UDPセグメント長を読み取ることができる。
 　分析結果を表8にまとめる。
@@ -497,18 +499,18 @@ No. & 送信元IPアドレス & 受信先IPアドレス & 送信元ポート番�
 
 \subsubsection{TCPコネクションの確立}
 　ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
   2639 35.055745   192.168.12.66         192.168.13.80         TCP      74     35516 → 80 [SYN] Seq=3906406002 Win=64240 Len=0 MSS=1460 \texttt{SACK\_PERM}=1 TSval=3543356595 TSecr=0 WS=128
   2640 35.056306   192.168.13.80         192.168.12.66         TCP      74     80 → 35516 [SYN, ACK] Seq=35308251 Ack=3906406003 Win=65160 Len=0 MSS=1460 \texttt{SACK\_PERM}=1 TSval=1939596895 TSecr=3543356595 WS=128
   2641 35.056438   192.168.12.66         192.168.13.80         TCP      66     35516 → 80 [ACK] Seq=3906406003 Ack=35308252 Win=64256 Len=0 TSval=3543356596 TSecr=1939596895
-\end{verbatim}
+\end{Verbatim}
 
 次に、No.2639のパケットキャプチャログの詳細を抜粋して示す。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 35516, Dst Port: 80, Seq: 3906406002, Len: 0
 (中略)
 Acknowledgment number: 0
-\end{verbatim}
+\end{Verbatim}
 
 ログから読み取ることができる情報を表9、表10にまとめる。
 \begin{table}[h]
@@ -543,7 +545,7 @@ No. & ONになっているTCPフラグ & シーケンス番号 & ACK番号 \\
 
 \subsubsection{HTTPメッセージの送受信}
 　ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
  2642 35.056808   192.168.12.66         192.168.13.80         HTTP     436    GET /~yoshiaki/C1/page1.html HTTP/1.1 
   2643 35.057355   192.168.13.80         192.168.12.66         TCP      66     80 → 35516 [ACK] Seq=35308252 Ack=3906406373 Win=64896 Len=0 TSval=1939596896 TSecr=3543356597
   2644 35.058177   192.168.13.80         192.168.12.66         HTTP     627    HTTP/1.1 200 OK  (text/html)
@@ -552,11 +554,11 @@ No. & ONになっているTCPフラグ & シーケンス番号 & ACK番号 \\
   2708 35.534299   192.168.13.80         192.168.12.66         TCP      66     80 → 35516 [ACK] Seq=35308813 Ack=3906406641 Win=64640 Len=0 TSval=1939597373 TSecr=3543357073
   2709 35.534821   192.168.13.80         192.168.12.66         HTTP     572    HTTP/1.1 404 Not Found  (text/html)
   2710 35.534867   192.168.12.66         192.168.13.80         TCP      66     35516 → 80 [ACK] Seq=3906406641 Ack=35309319 Win=64000 Len=0 TSval=3543357075 TSecr=1939597373
-\end{verbatim}
+\end{Verbatim}
 
 　次に、それぞれのパケットキャプチャログの詳細を抜粋して示す。
 ・2642
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 35516, Dst Port: 80, Seq: 3906406003, Ack: 35308252, Len: 370
 (中略)
     Flags: 0x018 (PSH, ACK)
@@ -620,10 +622,10 @@ Hypertext Transfer Protocol
     [Request URI: http://www2b.comm.eng.osaka-u.ac.jp/~yoshiaki/C1/page1.html]
     Content-encoded entity body (gzip): 224 bytes -> 266 bytes
     File Data: 266 bytes
-\end{verbatim}
+\end{Verbatim}
 
 ・2707
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 35516, Dst Port: 80, Seq: 3906406373, Ack: 35308813, Len: 268
 (中略)
     Flags: 0x018 (PSH, ACK)
@@ -651,7 +653,7 @@ Hypertext Transfer Protocol
     [Response in frame: 2709]
 
 ・2709
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 80, Dst Port: 35516, Seq: 35308813, Ack: 3906406641, Len: 506
 (中略)
     Flags: 0x018 (PSH, ACK)
@@ -691,7 +693,7 @@ Line-based text data: text/html (9 lines)
     <hr>\n
     <address>Apache/2.4.41 (Ubuntu) Server at www2b.comm.eng.osaka-u.ac.jp Port 80</address>\n
     </body></html>\n
-\end{verbatim}
+\end{Verbatim}
 
 　このログから読み取ることができる各パケットの情報を表11と表12にまとめる。
 \begin{table}[h]
@@ -748,11 +750,11 @@ favicon.icoの要求はFirefoxによる自動送信であり、2.4.3では見ら
 
 \subsubsection{TCPコネクションの終了}
 　ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
   3222 40.534947   192.168.13.80         192.168.12.66         TCP      66     80 → 35516 [FIN, ACK] Seq=35309319 Ack=3906406641 Win=64640 Len=0 TSval=1939602374 TSecr=3543357075
   3223 40.535294   192.168.12.66         192.168.13.80         TCP      66     35516 → 80 [FIN, ACK] Seq=3906406641 Ack=35309320 Win=64128 Len=0 TSval=3543362075 TSecr=1939602374
   3224 40.535752   192.168.13.80         192.168.12.66         TCP      66     80 → 35516 [ACK] Seq=35309320 Ack=3906406642 Win=64640 Len=0 TSval=1939602374 TSecr=3543362075
-\end{verbatim}
+\end{Verbatim}
 
 　このログから読み取ることができる各パケットの情報を表13と表14にまとめる。
 \begin{table}[h]
@@ -790,7 +792,7 @@ No. & ONになっているTCPフラグ & シーケンス番号 & ACK番号 \\
 \url{http://www2b.comm.eng.osaka-u.ac.jp/~yoshiaki/C1/page2.html}  
 
 取得したのは以下のログである。このログを分析し、結果をまとめる。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 No.     Time        Source                Destination           Protocol Length Info
    1019 18.650095   192.168.12.66         10.144.0.1            DNS      88     Standard query 0xfa8f A www2b.comm.eng.osaka-u.ac.jp
    1020 18.651080   10.144.0.1            192.168.12.66         DNS      104    Standard query response 0xfa8f A www2b.comm.eng.osaka-u.ac.jp A 192.168.13.80
@@ -814,18 +816,18 @@ No.     Time        Source                Destination           Protocol Length 
    1643 24.300291   192.168.13.80         192.168.12.66         TCP      66     80 → 35530 [FIN, ACK] Seq=4149203402 Ack=268386696 Win=64384 Len=0 TSval=1939842695 TSecr=3543597396
    1644 24.300712   192.168.12.66         192.168.13.80         TCP      66     35530 → 80 [FIN, ACK] Seq=268386696 Ack=4149203403 Win=64128 Len=0 TSval=3543602397 TSecr=1939842695
    1645 24.301194   192.168.13.80         192.168.12.66         TCP      66     80 → 35530 [ACK] Seq=4149203403 Ack=268386697 Win=64384 Len=0 TSval=1939842696 TSecr=3543602397
-\end{verbatim}
+\end{Verbatim}
 
 \subsubsection{ドメイン名をIPアドレスに変換}
 ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
   1019 18.650095   192.168.12.66         10.144.0.1            DNS      88     Standard query 0xfa8f A www2b.comm.eng.osaka-u.ac.jp
   1020 18.651080   10.144.0.1            192.168.12.66         DNS      104    Standard query response 0xfa8f A www2b.comm.eng.osaka-u.ac.jp A 192.168.13.80
-\end{verbatim}
+\end{Verbatim}
 
 　次に、パケットキャプチャログの詳細を抜粋して示す。
 ・1019
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 User Datagram Protocol, Src Port: 35759, Dst Port: 53
     Source Port: 35759
     Destination Port: 53
@@ -845,10 +847,10 @@ Domain Name System (query)
             Type: A (Host Address) (1)
             Class: IN (0x0001)
     [Response In: 1020]
-\end{verbatim}
+\end{Verbatim}
 
 ・1020
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 User Datagram Protocol, Src Port: 53, Dst Port: 35759
     Source Port: 53
     Destination Port: 35759
@@ -877,7 +879,7 @@ Domain Name System (response)
             Address: 192.168.13.80
     [Request In: 1019]
     [Time: 0.000984841 seconds]
-\end{verbatim}
+\end{Verbatim}
 
 　分析結果を表15にまとめる。
 \begin{table}[h]
@@ -899,18 +901,18 @@ No. & 送信元IPアドレス & 受信先IPアドレス & 送信元ポート番�
 
 \subsubsection{TCPコネクションの確立}
 　ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
   1032 18.760729   192.168.12.66         192.168.13.80         TCP      74     35530 → 80 [SYN] Seq=268385703 Win=64240 Len=0 MSS=1460 \texttt{SACK\_PERM}=1 TSval=3543596857 TSecr=0 WS=128
   1033 18.761271   192.168.13.80         192.168.12.66         TCP      74     80 → 35530 [SYN, ACK] Seq=4149200285 Ack=268385704 Win=65160 Len=0 MSS=1460 \texttt{SACK\_PERM}=1 TSval=1939837156 TSecr=3543596857 WS=128
   1034 18.761396   192.168.12.66         192.168.13.80         TCP      66     35530 → 80 [ACK] Seq=268385704 Ack=4149200286 Win=64256 Len=0 TSval=3543596857 TSecr=1939837156
-\end{verbatim}
+\end{Verbatim}
 
 次に、No.1032のパケットキャプチャログの詳細を抜粋して示す。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268385703, Len: 0
 (中略)
     Acknowledgment number: 0
-\end{verbatim}
+\end{Verbatim}
 
 ログから読み取ることができる情報を表16、表17にまとめる。
 \begin{table}[h]
@@ -945,7 +947,7 @@ No. & ONになっているTCPフラグ & シーケンス番号 & ACK番号 \\
 
 \subsubsection{HTTPメッセージの送受信}
 　ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
   1035 18.761708   192.168.12.66         192.168.13.80         HTTP     436    GET /~yoshiaki/C1/page2.html HTTP/1.1 
    1036 18.762236   192.168.13.80         192.168.12.66         TCP      66     80 → 35530 [ACK] Seq=4149200286 Ack=268386074 Win=64896 Len=0 TSval=1939837157 TSecr=3543596858
    1037 18.763016   192.168.13.80         192.168.12.66         HTTP     635    HTTP/1.1 200 OK  (text/html)
@@ -960,11 +962,11 @@ No. & ONになっているTCPフラグ & シーケンス番号 & ACK番号 \\
    1117 19.299679   192.168.13.80         192.168.12.66         TCP      66     80 → 35530 [ACK] Seq=4149202896 Ack=268386696 Win=64384 Len=0 TSval=1939837694 TSecr=3543597395
    1118 19.300124   192.168.13.80         192.168.12.66         HTTP     572    HTTP/1.1 404 Not Found  (text/html)
    1119 19.300232   192.168.12.66         192.168.13.80         TCP      66     35530 → 80 [ACK] Seq=268386696 Ack=4149203402 Win=64000 Len=0 TSval=3543597396 TSecr=1939837695
-\end{verbatim}
+\end{Verbatim}
 
 　次に、それぞれのパケットキャプチャログの詳細を抜粋して示す。
 ・1035
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268385704, Ack: 4149200286, Len: 370
 (中略)
     Flags: 0x018 (PSH, ACK)
@@ -985,10 +987,10 @@ Hypertext Transfer Protocol
     [HTTP request 1/3]
     [Response in frame: 1037]
     [Next request in frame: 1084]
-\end{verbatim}
+\end{Verbatim}
 
 ・1037
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 80, Dst Port: 35530, Seq: 4149200286, Ack: 268386074, Len: 569
 (中略)
     Flags: 0x018 (PSH, ACK)
@@ -1009,10 +1011,10 @@ Hypertext Transfer Protocol
     Connection: Keep-Alive\textbackslash r\textbackslash n
     Content-Type: text/html\textbackslash r\textbackslash n
     \textbackslash r\textbackslash n
-\end{verbatim}
+\end{Verbatim}
 
 ・1084
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268386074, Ack: 4149200855, Len: 354 
 (中略)
     Flags: 0x018 (PSH, ACK) 
@@ -1034,10 +1036,10 @@ Hypertext Transfer Protocol
     [Prev request in frame: 1035]
     [Response in frame: 1088]
     [Next request in frame: 1116]
-\end{verbatim}
+\end{Verbatim}
 
 ・1088
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 80, Dst Port: 35530, Seq: 4149202303, Ack: 268386428, Len: 593 
 (中略)
     Flags: 0x018 (PSH, ACK)
@@ -1056,10 +1058,10 @@ Hypertext Transfer Protocol
     Connection: Keep-Alive\textbackslash r\textbackslash n
     Content-Type: image/png\textbackslash r\textbackslash n
     \textbackslash r\textbackslash n
-\end{verbatim}
+\end{Verbatim}
 
 ・1116
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268386428, Ack: 4149202896, Len: 268 
 (中略)
     Flags: 0x018 (PSH, ACK)
@@ -1079,10 +1081,10 @@ Hypertext Transfer Protocol
     [HTTP request 3/3]
     [Prev request in frame: 1084]
     [Response in frame: 1118]
-\end{verbatim}
+\end{Verbatim}
 
 ・1118
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 80, Dst Port: 35530, Seq: 4149202896, Ack: 268386696, Len: 506 
 (中略)
     Flags: 0x018 (PSH, ACK)
@@ -1104,7 +1106,7 @@ Hypertext Transfer Protocol
     Keep-Alive: timeout=5, max=98\textbackslash r\textbackslash n
     Connection: Keep-Alive\textbackslash r\textbackslash n
     Content-Type: text/html; charset=iso-8859-1\textbackslash r\textbackslash n
-\end{verbatim}
+\end{Verbatim}
 
 このログから読み取ることができる各パケットの情報を表18と表19にまとめる。
 
@@ -1180,11 +1182,11 @@ No.1035~No.1038は実験課題2・３と同様の通信である。No.1084〜No.
 
 \subsubsection{TCPコネクションの終了}
 　ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
   1643 24.300291   192.168.13.80         192.168.12.66         TCP      66     80 → 35530 [FIN, ACK] Seq=4149203402 Ack=268386696 Win=64384 Len=0 TSval=1939842695 TSecr=3543597396
   1644 24.300712   192.168.12.66         192.168.13.80         TCP      66     35530 → 80 [FIN, ACK] Seq=268386696 Ack=4149203403 Win=64128 Len=0 TSval=3543602397 TSecr=1939842695
   1645 24.301194   192.168.13.80         192.168.12.66         TCP      66     80 → 35530 [ACK] Seq=4149203403 Ack=268386697 Win=64384 Len=0 TSval=1939842696 TSecr=3543602397
-\end{verbatim}
+\end{Verbatim}
 
 　このログから読み取ることができる各パケットの情報を表20と表21にまとめる。
 
@@ -1454,15 +1456,15 @@ $A(T) \leq N-2$のとき、次の不等式が成り立つ。
 
 \subsection{実験課題5}
 　この課題では、クライアントでターミナルを開き、ホームディレクトリ直下のclientディレクトリに移動する。その後、以下のコマンドを実行した。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 $ python3 client.py
-\end{verbatim}
+\end{Verbatim}
 　実行結果は以下のようになった。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 ubuntu@raspberrypi3:~/client $ python3 client.py 
 converted_500/test_324.png
 [{'class': 'German shepherd, German shepherd dog, German police dog, alsatian', 'prob': 21.546550750732422}, {'class': 'kelpie', 'prob': 17.637371063232422}, {'class': 'toy terrier', 'prob': 14.025994300842285}, {'class': 'malinois', 'prob': 11.318921089172363}]
-\end{verbatim}
+\end{Verbatim}
 　実際に送信されたサーバへ送信された画像は\texttt{test\_324.png}である。この画像を図4に示す。
 
 \begin{figure}[H]
@@ -1480,7 +1482,7 @@ converted_500/test_324.png
 3. Webページのソースコードが標準出力に表示されたら、パケットキャプチャを停止。
 
 実行結果は以下のようになった。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 No.     Time        Source                Destination           Protocol Length Info
    2140 18.969328   192.168.12.66         10.144.0.1            DNS      92     Standard query 0x3ba2 A exp1.rnea.comm.eng.osaka-u.ac.jp
    2141 18.969419   192.168.12.66         10.144.0.1            DNS      92     Standard query 0x43a2 AAAA exp1.rnea.comm.eng.osaka-u.ac.jp
@@ -1511,7 +1513,7 @@ No.     Time        Source                Destination           Protocol Length 
    2169 19.161369   192.168.12.23         192.168.12.66         IPA      434    unknown 0x6e 
    2171 19.163987   192.168.12.66         192.168.12.23         TCP      66     42522 → 5000 [FIN, ACK] Seq=4044292201 Ack=1438445681 Win=64128 Len=0 TSval=3712487796 TSecr=2689563131
    2172 19.165384   192.168.12.23         192.168.12.66         TCP      66     5000 → 42522 [ACK] Seq=1438445681 Ack=4044292202 Win=64128 Len=0 TSval=2689563135 TSecr=3712487796
-\end{verbatim}
+\end{Verbatim}
 
 \subsubsection{ドメイン名をIPアドレスに変換}
 ログでこの手続きを行っているのは、以下の部分である。
@@ -1613,7 +1615,7 @@ No. & ONになっているTCPフラグ & シーケンス番号 & ACK番号 \\
 
 \subsubsection{HTTPメッセージの送受信}
 　ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
  2147 18.974476   192.168.12.66         192.168.12.23         IPA      227    unknown 0x53 
  2148 18.974618   192.168.12.66         192.168.12.23         IPA      1514   unknown 0x4e 
  2149 18.974640   192.168.12.66         192.168.12.23         IPA      1514   unknown 0x6e 
@@ -1633,10 +1635,10 @@ No. & ONになっているTCPフラグ & シーケンス番号 & ACK番号 \\
  2163 18.975929   192.168.12.23         192.168.12.66         TCP      66     5000 → 42522 [ACK] Seq=1438445295 Ack=4044292201 Win=57088 Len=0 TSval=2689562946 TSecr=3712487606
  2167 19.161365   192.168.12.23         192.168.12.66         IPA      83     unknown 0x54 
  2168 19.161501   192.168.12.66         192.168.12.23         TCP      66     42522 → 5000 [ACK] Seq=4044292201 Ack=1438445312 Win=64256 Len=0 TSval=3712487793 TSecr=2689563131
-\end{verbatim}
+\end{Verbatim}
 
 次に、それぞれのパケットキャプチャログの詳細を抜粋して示す。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 ・2147
 Transmission Control Protocol, Src Port: 42522, Dst Port: 5000, Seq: 4044280002, Ack: 1438445295, Len: 161 
 (中略)
@@ -1735,7 +1737,7 @@ Transmission Control Protocol, Src Port: 5000, Dst Port: 42522, Seq: 1438445295,
 IPA protocol ip.access, type: unknown 0x54
     DataLen: 18516
     Protocol: Unknown (0x54)
-\end{verbatim}
+\end{Verbatim}
 
 　このログから読み取ることができる各パケットの情報を表25と表26にまとめる。
 \begin{table}[h]
@@ -1802,18 +1804,18 @@ No. & ONになっているTCPフラグ & シーケンス番号 & ACK番号 \\
 
 \subsubsection{TCPコネクションの終了}
 　ログでこの手続きを行っているのは、以下の部分である。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
  2169 19.161369   192.168.12.23         192.168.12.66         IPA      434    unknown 0x6e 
  2171 19.163987   192.168.12.66         192.168.12.23         TCP      66     42522 → 5000 [FIN, ACK] Seq=4044292201 Ack=1438445681 Win=64128 Len=0 TSval=3712487796 TSecr=2689563131
  2172 19.165384   192.168.12.23         192.168.12.66         TCP      66     5000 → 42522 [ACK] Seq=1438445681 Ack=4044292202 Win=64128 Len=0 TSval=2689563135 TSecr=3712487796
-\end{verbatim}
+\end{Verbatim}
 
 　次に、No.2169のパケットキャプチャログの詳細を抜粋して示す。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 Transmission Control Protocol, Src Port: 5000, Dst Port: 42522, Seq: 1438445312, Ack: 4044292201, Len: 368 
 (中略)
     Flags: 0x019 (FIN, PSH, ACK)
-\end{verbatim}
+\end{Verbatim}
 
 　このログから読み取ることができる各パケットの情報を表27と表28にまとめる。
 \begin{table}[h]
@@ -1848,9 +1850,9 @@ No. & ONになっているTCPフラグ & シーケンス番号 & ACK番号 \\
 
 \subsection{実験課題7}
 　送出間隔$T$を変化させながら、以下のコマンドを実行した。
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 $ python3 client.py –num_images 100 –interval T –show_statistics
-\end{verbatim}
+\end{Verbatim}
 
 (a)送出間隔を変化させた時の画像のインデックスと遅延時間の関係グラフ
 　送出間隔$T= 0.05, 0.1, 0.2 ,0.5 ,1.0$[s]のときのグラフを重ねてプロットしたら、図5のようになった。
