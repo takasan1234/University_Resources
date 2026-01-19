@@ -1,0 +1,2335 @@
+No.     Time        Source                Destination           Protocol Length Info
+   1019 18.650095   192.168.12.66         10.144.0.1            DNS      88     Standard query 0xfa8f A www2b.comm.eng.osaka-u.ac.jp
+
+Frame 1019: 88 bytes on wire (704 bits), 88 bytes captured (704 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:53.776072133 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712793.776072133 seconds
+    [Time delta from previous captured frame: 0.017258136 seconds]
+    [Time delta from previous displayed frame: 0.000000000 seconds]
+    [Time since reference or first frame: 18.650095366 seconds]
+    Frame Number: 1019
+    Frame Length: 88 bytes (704 bits)
+    Capture Length: 88 bytes (704 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:udp:dns]
+    [Coloring Rule Name: UDP]
+    [Coloring Rule String: udp]
+Ethernet II, Src: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3), Dst: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+    Destination: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.12.66, Dst: 10.144.0.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 74
+    Identification: 0x9e7d (40573)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: UDP (17)
+    Header checksum: 0xc4aa [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.12.66
+    Destination: 10.144.0.1
+User Datagram Protocol, Src Port: 35759, Dst Port: 53
+    Source Port: 35759
+    Destination Port: 53
+    Length: 54
+    Checksum: 0xd7c2 [unverified]
+    [Checksum Status: Unverified]
+    [Stream index: 15]
+Domain Name System (query)
+    Transaction ID: 0xfa8f
+    Flags: 0x0100 Standard query
+        0... .... .... .... = Response: Message is a query
+        .000 0... .... .... = Opcode: Standard query (0)
+        .... ..0. .... .... = Truncated: Message is not truncated
+        .... ...1 .... .... = Recursion desired: Do query recursively
+        .... .... .0.. .... = Z: reserved (0)
+        .... .... ...0 .... = Non-authenticated data: Unacceptable
+    Questions: 1
+    Answer RRs: 0
+    Authority RRs: 0
+    Additional RRs: 0
+    Queries
+        www2b.comm.eng.osaka-u.ac.jp: type A, class IN
+            Name: www2b.comm.eng.osaka-u.ac.jp
+            [Name Length: 28]
+            [Label Count: 6]
+            Type: A (Host Address) (1)
+            Class: IN (0x0001)
+    [Response In: 1020]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1020 18.651080   10.144.0.1            192.168.12.66         DNS      104    Standard query response 0xfa8f A www2b.comm.eng.osaka-u.ac.jp A 192.168.13.80
+
+Frame 1020: 104 bytes on wire (832 bits), 104 bytes captured (832 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:53.777056974 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712793.777056974 seconds
+    [Time delta from previous captured frame: 0.000984841 seconds]
+    [Time delta from previous displayed frame: 0.000984841 seconds]
+    [Time since reference or first frame: 18.651080207 seconds]
+    Frame Number: 1020
+    Frame Length: 104 bytes (832 bits)
+    Capture Length: 104 bytes (832 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:udp:dns]
+    [Coloring Rule Name: UDP]
+    [Coloring Rule String: udp]
+Ethernet II, Src: AlaxalaN_00:00:0c (00:12:e2:00:00:0c), Dst: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+    Destination: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 10.144.0.1, Dst: 192.168.12.66
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 90
+    Identification: 0x6326 (25382)
+    Flags: 0x0000
+        0... .... .... .... = Reserved bit: Not set
+        .0.. .... .... .... = Don't fragment: Not set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 254
+    Protocol: UDP (17)
+    Header checksum: 0x81f1 [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 10.144.0.1
+    Destination: 192.168.12.66
+User Datagram Protocol, Src Port: 53, Dst Port: 35759
+    Source Port: 53
+    Destination Port: 35759
+    Length: 70
+    Checksum: 0xb66a [unverified]
+    [Checksum Status: Unverified]
+    [Stream index: 15]
+Domain Name System (response)
+    Transaction ID: 0xfa8f
+    Flags: 0x8580 Standard query response, No error
+        1... .... .... .... = Response: Message is a response
+        .000 0... .... .... = Opcode: Standard query (0)
+        .... .1.. .... .... = Authoritative: Server is an authority for domain
+        .... ..0. .... .... = Truncated: Message is not truncated
+        .... ...1 .... .... = Recursion desired: Do query recursively
+        .... .... 1... .... = Recursion available: Server can do recursive queries
+        .... .... .0.. .... = Z: reserved (0)
+        .... .... ..0. .... = Answer authenticated: Answer/authority portion was not authenticated by the server
+        .... .... ...0 .... = Non-authenticated data: Unacceptable
+        .... .... .... 0000 = Reply code: No error (0)
+    Questions: 1
+    Answer RRs: 1
+    Authority RRs: 0
+    Additional RRs: 0
+    Queries
+        www2b.comm.eng.osaka-u.ac.jp: type A, class IN
+            Name: www2b.comm.eng.osaka-u.ac.jp
+            [Name Length: 28]
+            [Label Count: 6]
+            Type: A (Host Address) (1)
+            Class: IN (0x0001)
+    Answers
+        www2b.comm.eng.osaka-u.ac.jp: type A, class IN, addr 192.168.13.80
+            Name: www2b.comm.eng.osaka-u.ac.jp
+            Type: A (Host Address) (1)
+            Class: IN (0x0001)
+            Time to live: 1 (1 second)
+            Data length: 4
+            Address: 192.168.13.80
+    [Request In: 1019]
+    [Time: 0.000984841 seconds]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1032 18.760729   192.168.12.66         192.168.13.80         TCP      74     35530 → 80 [SYN] Seq=268385703 Win=64240 Len=0 MSS=1460 SACK_PERM=1 TSval=3543596857 TSecr=0 WS=128
+
+Frame 1032: 74 bytes on wire (592 bits), 74 bytes captured (592 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:53.886706762 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712793.886706762 seconds
+    [Time delta from previous captured frame: 0.033665179 seconds]
+    [Time delta from previous displayed frame: 0.109649788 seconds]
+    [Time since reference or first frame: 18.760729995 seconds]
+    Frame Number: 1032
+    Frame Length: 74 bytes (592 bits)
+    Capture Length: 74 bytes (592 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3), Dst: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+    Destination: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.12.66, Dst: 192.168.13.80
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 60
+    Identification: 0xa86e (43118)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (6)
+    Header checksum: 0xf76a [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.12.66
+    Destination: 192.168.13.80
+Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268385703, Len: 0
+    Source Port: 35530
+    Destination Port: 80
+    [Stream index: 5]
+    [TCP Segment Len: 0]
+    Sequence number: 268385703
+    [Next sequence number: 268385703]
+    Acknowledgment number: 0
+    1010 .... = Header Length: 40 bytes (10)
+    Flags: 0x002 (SYN)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...0 .... = Acknowledgment: Not set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..1. = Syn: Set
+            [Expert Info (Chat/Sequence): Connection establish request (SYN): server port 80]
+                [Connection establish request (SYN): server port 80]
+                [Severity level: Chat]
+                [Group: Sequence]
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ··········S·]
+    Window size value: 64240
+    [Calculated window size: 64240]
+    Checksum: 0x9b11 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (20 bytes), Maximum segment size, SACK permitted, Timestamps, No-Operation (NOP), Window scale
+        TCP Option - Maximum segment size: 1460 bytes
+            Kind: Maximum Segment Size (2)
+            Length: 4
+            MSS Value: 1460
+        TCP Option - SACK permitted
+            Kind: SACK Permitted (4)
+            Length: 2
+        TCP Option - Timestamps: TSval 3543596857, TSecr 0
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 3543596857
+            Timestamp echo reply: 0
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Window scale: 7 (multiply by 128)
+            Kind: Window Scale (3)
+            Length: 3
+            Shift count: 7
+            [Multiplier: 128]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.000000000 seconds]
+        [Time since previous frame in this TCP stream: 0.000000000 seconds]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1033 18.761271   192.168.13.80         192.168.12.66         TCP      74     80 → 35530 [SYN, ACK] Seq=4149200285 Ack=268385704 Win=65160 Len=0 MSS=1460 SACK_PERM=1 TSval=1939837156 TSecr=3543596857 WS=128
+
+Frame 1033: 74 bytes on wire (592 bits), 74 bytes captured (592 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:53.887247959 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712793.887247959 seconds
+    [Time delta from previous captured frame: 0.000541197 seconds]
+    [Time delta from previous displayed frame: 0.000541197 seconds]
+    [Time since reference or first frame: 18.761271192 seconds]
+    Frame Number: 1033
+    Frame Length: 74 bytes (592 bits)
+    Capture Length: 74 bytes (592 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: AlaxalaN_00:00:0c (00:12:e2:00:00:0c), Dst: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+    Destination: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.13.80, Dst: 192.168.12.66
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 60
+    Identification: 0x0000 (0)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 62
+    Protocol: TCP (6)
+    Header checksum: 0xa1d9 [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.13.80
+    Destination: 192.168.12.66
+Transmission Control Protocol, Src Port: 80, Dst Port: 35530, Seq: 4149200285, Ack: 268385704, Len: 0
+    Source Port: 80
+    Destination Port: 35530
+    [Stream index: 5]
+    [TCP Segment Len: 0]
+    Sequence number: 4149200285
+    [Next sequence number: 4149200285]
+    Acknowledgment number: 268385704
+    1010 .... = Header Length: 40 bytes (10)
+    Flags: 0x012 (SYN, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..1. = Syn: Set
+            [Expert Info (Chat/Sequence): Connection establish acknowledge (SYN+ACK): server port 80]
+                [Connection establish acknowledge (SYN+ACK): server port 80]
+                [Severity level: Chat]
+                [Group: Sequence]
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······A··S·]
+    Window size value: 65160
+    [Calculated window size: 65160]
+    Checksum: 0x41e0 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (20 bytes), Maximum segment size, SACK permitted, Timestamps, No-Operation (NOP), Window scale
+        TCP Option - Maximum segment size: 1460 bytes
+            Kind: Maximum Segment Size (2)
+            Length: 4
+            MSS Value: 1460
+        TCP Option - SACK permitted
+            Kind: SACK Permitted (4)
+            Length: 2
+        TCP Option - Timestamps: TSval 1939837156, TSecr 3543596857
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 1939837156
+            Timestamp echo reply: 3543596857
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Window scale: 7 (multiply by 128)
+            Kind: Window Scale (3)
+            Length: 3
+            Shift count: 7
+            [Multiplier: 128]
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 1032]
+        [The RTT to ACK the segment was: 0.000541197 seconds]
+        [iRTT: 0.000666665 seconds]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.000541197 seconds]
+        [Time since previous frame in this TCP stream: 0.000541197 seconds]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1034 18.761396   192.168.12.66         192.168.13.80         TCP      66     35530 → 80 [ACK] Seq=268385704 Ack=4149200286 Win=64256 Len=0 TSval=3543596857 TSecr=1939837156
+
+Frame 1034: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:53.887373427 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712793.887373427 seconds
+    [Time delta from previous captured frame: 0.000125468 seconds]
+    [Time delta from previous displayed frame: 0.000125468 seconds]
+    [Time since reference or first frame: 18.761396660 seconds]
+    Frame Number: 1034
+    Frame Length: 66 bytes (528 bits)
+    Capture Length: 66 bytes (528 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3), Dst: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+    Destination: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.12.66, Dst: 192.168.13.80
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 52
+    Identification: 0xa86f (43119)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (6)
+    Header checksum: 0xf771 [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.12.66
+    Destination: 192.168.13.80
+Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268385704, Ack: 4149200286, Len: 0
+    Source Port: 35530
+    Destination Port: 80
+    [Stream index: 5]
+    [TCP Segment Len: 0]
+    Sequence number: 268385704
+    [Next sequence number: 268385704]
+    Acknowledgment number: 4149200286
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x010 (ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······A····]
+    Window size value: 502
+    [Calculated window size: 64256]
+    [Window size scaling factor: 128]
+    Checksum: 0x9b09 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 3543596857, TSecr 1939837156
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 3543596857
+            Timestamp echo reply: 1939837156
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 1033]
+        [The RTT to ACK the segment was: 0.000125468 seconds]
+        [iRTT: 0.000666665 seconds]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.000666665 seconds]
+        [Time since previous frame in this TCP stream: 0.000125468 seconds]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1035 18.761708   192.168.12.66         192.168.13.80         HTTP     436    GET /~yoshiaki/C1/page2.html HTTP/1.1 
+
+Frame 1035: 436 bytes on wire (3488 bits), 436 bytes captured (3488 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:53.887685249 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712793.887685249 seconds
+    [Time delta from previous captured frame: 0.000311822 seconds]
+    [Time delta from previous displayed frame: 0.000311822 seconds]
+    [Time since reference or first frame: 18.761708482 seconds]
+    Frame Number: 1035
+    Frame Length: 436 bytes (3488 bits)
+    Capture Length: 436 bytes (3488 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp:http]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3), Dst: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+    Destination: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.12.66, Dst: 192.168.13.80
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 422
+    Identification: 0xa870 (43120)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (6)
+    Header checksum: 0xf5fe [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.12.66
+    Destination: 192.168.13.80
+Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268385704, Ack: 4149200286, Len: 370
+    Source Port: 35530
+    Destination Port: 80
+    [Stream index: 5]
+    [TCP Segment Len: 370]
+    Sequence number: 268385704
+    [Next sequence number: 268386074]
+    Acknowledgment number: 4149200286
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window size value: 502
+    [Calculated window size: 64256]
+    [Window size scaling factor: 128]
+    Checksum: 0x9c7b [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 3543596858, TSecr 1939837156
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 3543596858
+            Timestamp echo reply: 1939837156
+    [SEQ/ACK analysis]
+        [iRTT: 0.000666665 seconds]
+        [Bytes in flight: 370]
+        [Bytes sent since last PSH flag: 370]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.000978487 seconds]
+        [Time since previous frame in this TCP stream: 0.000311822 seconds]
+    TCP payload (370 bytes)
+Hypertext Transfer Protocol
+    GET /~yoshiaki/C1/page2.html HTTP/1.1\r\n
+        [Expert Info (Chat/Sequence): GET /~yoshiaki/C1/page2.html HTTP/1.1\r\n]
+            [GET /~yoshiaki/C1/page2.html HTTP/1.1\r\n]
+            [Severity level: Chat]
+            [Group: Sequence]
+        Request Method: GET
+        Request URI: /~yoshiaki/C1/page2.html
+        Request Version: HTTP/1.1
+    Host: www2b.comm.eng.osaka-u.ac.jp\r\n
+    User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101 Firefox/78.0\r\n
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n
+    Accept-Language: en-US,en;q=0.5\r\n
+    Accept-Encoding: gzip, deflate\r\n
+    DNT: 1\r\n
+    Connection: keep-alive\r\n
+    Upgrade-Insecure-Requests: 1\r\n
+    \r\n
+    [Full request URI: http://www2b.comm.eng.osaka-u.ac.jp/~yoshiaki/C1/page2.html]
+    [HTTP request 1/3]
+    [Response in frame: 1037]
+    [Next request in frame: 1084]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1036 18.762236   192.168.13.80         192.168.12.66         TCP      66     80 → 35530 [ACK] Seq=4149200286 Ack=268386074 Win=64896 Len=0 TSval=1939837157 TSecr=3543596858
+
+Frame 1036: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:53.888212904 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712793.888212904 seconds
+    [Time delta from previous captured frame: 0.000527655 seconds]
+    [Time delta from previous displayed frame: 0.000527655 seconds]
+    [Time since reference or first frame: 18.762236137 seconds]
+    Frame Number: 1036
+    Frame Length: 66 bytes (528 bits)
+    Capture Length: 66 bytes (528 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: AlaxalaN_00:00:0c (00:12:e2:00:00:0c), Dst: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+    Destination: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.13.80, Dst: 192.168.12.66
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 52
+    Identification: 0xe598 (58776)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 62
+    Protocol: TCP (6)
+    Header checksum: 0xbc48 [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.13.80
+    Destination: 192.168.12.66
+Transmission Control Protocol, Src Port: 80, Dst Port: 35530, Seq: 4149200286, Ack: 268386074, Len: 0
+    Source Port: 80
+    Destination Port: 35530
+    [Stream index: 5]
+    [TCP Segment Len: 0]
+    Sequence number: 4149200286
+    [Next sequence number: 4149200286]
+    Acknowledgment number: 268386074
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x010 (ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······A····]
+    Window size value: 507
+    [Calculated window size: 64896]
+    [Window size scaling factor: 128]
+    Checksum: 0x6bc6 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 1939837157, TSecr 3543596858
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 1939837157
+            Timestamp echo reply: 3543596858
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 1035]
+        [The RTT to ACK the segment was: 0.000527655 seconds]
+        [iRTT: 0.000666665 seconds]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.001506142 seconds]
+        [Time since previous frame in this TCP stream: 0.000527655 seconds]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1037 18.763016   192.168.13.80         192.168.12.66         HTTP     635    HTTP/1.1 200 OK  (text/html)
+
+Frame 1037: 635 bytes on wire (5080 bits), 635 bytes captured (5080 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:53.888993319 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712793.888993319 seconds
+    [Time delta from previous captured frame: 0.000780415 seconds]
+    [Time delta from previous displayed frame: 0.000780415 seconds]
+    [Time since reference or first frame: 18.763016552 seconds]
+    Frame Number: 1037
+    Frame Length: 635 bytes (5080 bits)
+    Capture Length: 635 bytes (5080 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp:http:data-text-lines]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: AlaxalaN_00:00:0c (00:12:e2:00:00:0c), Dst: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+    Destination: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.13.80, Dst: 192.168.12.66
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 621
+    Identification: 0xe599 (58777)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 62
+    Protocol: TCP (6)
+    Header checksum: 0xba0e [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.13.80
+    Destination: 192.168.12.66
+Transmission Control Protocol, Src Port: 80, Dst Port: 35530, Seq: 4149200286, Ack: 268386074, Len: 569
+    Source Port: 80
+    Destination Port: 35530
+    [Stream index: 5]
+    [TCP Segment Len: 569]
+    Sequence number: 4149200286
+    [Next sequence number: 4149200855]
+    Acknowledgment number: 268386074
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window size value: 507
+    [Calculated window size: 64896]
+    [Window size scaling factor: 128]
+    Checksum: 0x152d [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 1939837158, TSecr 3543596858
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 1939837158
+            Timestamp echo reply: 3543596858
+    [SEQ/ACK analysis]
+        [iRTT: 0.000666665 seconds]
+        [Bytes in flight: 569]
+        [Bytes sent since last PSH flag: 569]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.002286557 seconds]
+        [Time since previous frame in this TCP stream: 0.000780415 seconds]
+    TCP payload (569 bytes)
+Hypertext Transfer Protocol
+    HTTP/1.1 200 OK\r\n
+        [Expert Info (Chat/Sequence): HTTP/1.1 200 OK\r\n]
+            [HTTP/1.1 200 OK\r\n]
+            [Severity level: Chat]
+            [Group: Sequence]
+        Response Version: HTTP/1.1
+        Status Code: 200
+        [Status Code Description: OK]
+        Response Phrase: OK
+    Date: Tue, 11 May 2021 05:59:53 GMT\r\n
+    Server: Apache/2.4.41 (Ubuntu)\r\n
+    Last-Modified: Thu, 17 Sep 2020 03:12:39 GMT\r\n
+    ETag: "119-5af79c1bbefeb-gzip"\r\n
+    Accept-Ranges: bytes\r\n
+    Vary: Accept-Encoding\r\n
+    Content-Encoding: gzip\r\n
+    Content-Length: 232\r\n
+        [Content length: 232]
+    Keep-Alive: timeout=5, max=100\r\n
+    Connection: Keep-Alive\r\n
+    Content-Type: text/html\r\n
+    \r\n
+    [HTTP response 1/3]
+    [Time since request: 0.001308070 seconds]
+    [Request in frame: 1035]
+    [Next request in frame: 1084]
+    [Next response in frame: 1088]
+    [Request URI: http://www2b.comm.eng.osaka-u.ac.jp/~yoshiaki/C1/page2.html]
+    Content-encoded entity body (gzip): 232 bytes -> 281 bytes
+    File Data: 281 bytes
+Line-based text data: text/html (10 lines)
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">\n
+    <html lang="en">\n
+    <head>\n
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />\n
+    <title>Page 1</title>\n
+    </head>\n
+    <body>\n
+    <img src="./helloworld.png">\n
+    </body>\n
+    </html>\n
+
+No.     Time        Source                Destination           Protocol Length Info
+   1038 18.763111   192.168.12.66         192.168.13.80         TCP      66     35530 → 80 [ACK] Seq=268386074 Ack=4149200855 Win=64000 Len=0 TSval=3543596859 TSecr=1939837158
+
+Frame 1038: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:53.889088423 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712793.889088423 seconds
+    [Time delta from previous captured frame: 0.000095104 seconds]
+    [Time delta from previous displayed frame: 0.000095104 seconds]
+    [Time since reference or first frame: 18.763111656 seconds]
+    Frame Number: 1038
+    Frame Length: 66 bytes (528 bits)
+    Capture Length: 66 bytes (528 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3), Dst: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+    Destination: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.12.66, Dst: 192.168.13.80
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 52
+    Identification: 0xa871 (43121)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (6)
+    Header checksum: 0xf76f [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.12.66
+    Destination: 192.168.13.80
+Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268386074, Ack: 4149200855, Len: 0
+    Source Port: 35530
+    Destination Port: 80
+    [Stream index: 5]
+    [TCP Segment Len: 0]
+    Sequence number: 268386074
+    [Next sequence number: 268386074]
+    Acknowledgment number: 4149200855
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x010 (ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······A····]
+    Window size value: 500
+    [Calculated window size: 64000]
+    [Window size scaling factor: 128]
+    Checksum: 0x9b09 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 3543596859, TSecr 1939837158
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 3543596859
+            Timestamp echo reply: 1939837158
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 1037]
+        [The RTT to ACK the segment was: 0.000095104 seconds]
+        [iRTT: 0.000666665 seconds]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.002381661 seconds]
+        [Time since previous frame in this TCP stream: 0.000095104 seconds]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1084 19.170575   192.168.12.66         192.168.13.80         HTTP     420    GET /~yoshiaki/C1/helloworld.png HTTP/1.1 
+
+Frame 1084: 420 bytes on wire (3360 bits), 420 bytes captured (3360 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:54.296552387 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712794.296552387 seconds
+    [Time delta from previous captured frame: 0.060449333 seconds]
+    [Time delta from previous displayed frame: 0.407463964 seconds]
+    [Time since reference or first frame: 19.170575620 seconds]
+    Frame Number: 1084
+    Frame Length: 420 bytes (3360 bits)
+    Capture Length: 420 bytes (3360 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp:http]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3), Dst: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+    Destination: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.12.66, Dst: 192.168.13.80
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 406
+    Identification: 0xa872 (43122)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (6)
+    Header checksum: 0xf60c [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.12.66
+    Destination: 192.168.13.80
+Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268386074, Ack: 4149200855, Len: 354
+    Source Port: 35530
+    Destination Port: 80
+    [Stream index: 5]
+    [TCP Segment Len: 354]
+    Sequence number: 268386074
+    [Next sequence number: 268386428]
+    Acknowledgment number: 4149200855
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window size value: 501
+    [Calculated window size: 64128]
+    [Window size scaling factor: 128]
+    Checksum: 0x9c6b [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 3543597267, TSecr 1939837158
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 3543597267
+            Timestamp echo reply: 1939837158
+    [SEQ/ACK analysis]
+        [iRTT: 0.000666665 seconds]
+        [Bytes in flight: 354]
+        [Bytes sent since last PSH flag: 354]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.409845625 seconds]
+        [Time since previous frame in this TCP stream: 0.407463964 seconds]
+    TCP payload (354 bytes)
+Hypertext Transfer Protocol
+    GET /~yoshiaki/C1/helloworld.png HTTP/1.1\r\n
+        [Expert Info (Chat/Sequence): GET /~yoshiaki/C1/helloworld.png HTTP/1.1\r\n]
+            [GET /~yoshiaki/C1/helloworld.png HTTP/1.1\r\n]
+            [Severity level: Chat]
+            [Group: Sequence]
+        Request Method: GET
+        Request URI: /~yoshiaki/C1/helloworld.png
+        Request Version: HTTP/1.1
+    Host: www2b.comm.eng.osaka-u.ac.jp\r\n
+    User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101 Firefox/78.0\r\n
+    Accept: image/webp,*/*\r\n
+    Accept-Language: en-US,en;q=0.5\r\n
+    Accept-Encoding: gzip, deflate\r\n
+    DNT: 1\r\n
+    Connection: keep-alive\r\n
+    Referer: http://www2b.comm.eng.osaka-u.ac.jp/~yoshiaki/C1/page2.html\r\n
+    \r\n
+    [Full request URI: http://www2b.comm.eng.osaka-u.ac.jp/~yoshiaki/C1/helloworld.png]
+    [HTTP request 2/3]
+    [Prev request in frame: 1035]
+    [Response in frame: 1088]
+    [Next request in frame: 1116]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1085 19.171240   192.168.13.80         192.168.12.66         TCP      66     80 → 35530 [ACK] Seq=4149200855 Ack=268386428 Win=64640 Len=0 TSval=1939837566 TSecr=3543597267
+
+Frame 1085: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:54.297216864 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712794.297216864 seconds
+    [Time delta from previous captured frame: 0.000664477 seconds]
+    [Time delta from previous displayed frame: 0.000664477 seconds]
+    [Time since reference or first frame: 19.171240097 seconds]
+    Frame Number: 1085
+    Frame Length: 66 bytes (528 bits)
+    Capture Length: 66 bytes (528 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: AlaxalaN_00:00:0c (00:12:e2:00:00:0c), Dst: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+    Destination: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.13.80, Dst: 192.168.12.66
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 52
+    Identification: 0xe59a (58778)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 62
+    Protocol: TCP (6)
+    Header checksum: 0xbc46 [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.13.80
+    Destination: 192.168.12.66
+Transmission Control Protocol, Src Port: 80, Dst Port: 35530, Seq: 4149200855, Ack: 268386428, Len: 0
+    Source Port: 80
+    Destination Port: 35530
+    [Stream index: 5]
+    [TCP Segment Len: 0]
+    Sequence number: 4149200855
+    [Next sequence number: 4149200855]
+    Acknowledgment number: 268386428
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x010 (ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······A····]
+    Window size value: 505
+    [Calculated window size: 64640]
+    [Window size scaling factor: 128]
+    Checksum: 0x64fb [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 1939837566, TSecr 3543597267
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 1939837566
+            Timestamp echo reply: 3543597267
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 1084]
+        [The RTT to ACK the segment was: 0.000664477 seconds]
+        [iRTT: 0.000666665 seconds]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.410510102 seconds]
+        [Time since previous frame in this TCP stream: 0.000664477 seconds]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1086 19.171658   192.168.13.80         192.168.12.66         TCP      1514   80 → 35530 [ACK] Seq=4149200855 Ack=268386428 Win=64640 Len=1448 TSval=1939837566 TSecr=3543597267 [TCP segment of a reassembled PDU]
+
+Frame 1086: 1514 bytes on wire (12112 bits), 1514 bytes captured (12112 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:54.297635457 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712794.297635457 seconds
+    [Time delta from previous captured frame: 0.000418593 seconds]
+    [Time delta from previous displayed frame: 0.000418593 seconds]
+    [Time since reference or first frame: 19.171658690 seconds]
+    Frame Number: 1086
+    Frame Length: 1514 bytes (12112 bits)
+    Capture Length: 1514 bytes (12112 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: AlaxalaN_00:00:0c (00:12:e2:00:00:0c), Dst: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+    Destination: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.13.80, Dst: 192.168.12.66
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 1500
+    Identification: 0xe59b (58779)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 62
+    Protocol: TCP (6)
+    Header checksum: 0xb69d [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.13.80
+    Destination: 192.168.12.66
+Transmission Control Protocol, Src Port: 80, Dst Port: 35530, Seq: 4149200855, Ack: 268386428, Len: 1448
+    Source Port: 80
+    Destination Port: 35530
+    [Stream index: 5]
+    [TCP Segment Len: 1448]
+    Sequence number: 4149200855
+    [Next sequence number: 4149202303]
+    Acknowledgment number: 268386428
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x010 (ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······A····]
+    Window size value: 505
+    [Calculated window size: 64640]
+    [Window size scaling factor: 128]
+    Checksum: 0x23e7 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 1939837566, TSecr 3543597267
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 1939837566
+            Timestamp echo reply: 3543597267
+    [SEQ/ACK analysis]
+        [iRTT: 0.000666665 seconds]
+        [Bytes in flight: 1448]
+        [Bytes sent since last PSH flag: 1448]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.410928695 seconds]
+        [Time since previous frame in this TCP stream: 0.000418593 seconds]
+    TCP payload (1448 bytes)
+    [Reassembled PDU in frame: 1088]
+    TCP segment data (1448 bytes)
+
+No.     Time        Source                Destination           Protocol Length Info
+   1087 19.171759   192.168.12.66         192.168.13.80         TCP      66     35530 → 80 [ACK] Seq=268386428 Ack=4149202303 Win=64000 Len=0 TSval=3543597268 TSecr=1939837566
+
+Frame 1087: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:54.297736394 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712794.297736394 seconds
+    [Time delta from previous captured frame: 0.000100937 seconds]
+    [Time delta from previous displayed frame: 0.000100937 seconds]
+    [Time since reference or first frame: 19.171759627 seconds]
+    Frame Number: 1087
+    Frame Length: 66 bytes (528 bits)
+    Capture Length: 66 bytes (528 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3), Dst: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+    Destination: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.12.66, Dst: 192.168.13.80
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 52
+    Identification: 0xa873 (43123)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (6)
+    Header checksum: 0xf76d [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.12.66
+    Destination: 192.168.13.80
+Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268386428, Ack: 4149202303, Len: 0
+    Source Port: 35530
+    Destination Port: 80
+    [Stream index: 5]
+    [TCP Segment Len: 0]
+    Sequence number: 268386428
+    [Next sequence number: 268386428]
+    Acknowledgment number: 4149202303
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x010 (ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······A····]
+    Window size value: 500
+    [Calculated window size: 64000]
+    [Window size scaling factor: 128]
+    Checksum: 0x9b09 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 3543597268, TSecr 1939837566
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 3543597268
+            Timestamp echo reply: 1939837566
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 1086]
+        [The RTT to ACK the segment was: 0.000100937 seconds]
+        [iRTT: 0.000666665 seconds]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.411029632 seconds]
+        [Time since previous frame in this TCP stream: 0.000100937 seconds]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1088 19.171891   192.168.13.80         192.168.12.66         HTTP     659    HTTP/1.1 200 OK  (PNG)
+
+Frame 1088: 659 bytes on wire (5272 bits), 659 bytes captured (5272 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:54.297868373 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712794.297868373 seconds
+    [Time delta from previous captured frame: 0.000131979 seconds]
+    [Time delta from previous displayed frame: 0.000131979 seconds]
+    [Time since reference or first frame: 19.171891606 seconds]
+    Frame Number: 1088
+    Frame Length: 659 bytes (5272 bits)
+    Capture Length: 659 bytes (5272 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp:http:png]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: AlaxalaN_00:00:0c (00:12:e2:00:00:0c), Dst: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+    Destination: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.13.80, Dst: 192.168.12.66
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 645
+    Identification: 0xe59c (58780)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 62
+    Protocol: TCP (6)
+    Header checksum: 0xb9f3 [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.13.80
+    Destination: 192.168.12.66
+Transmission Control Protocol, Src Port: 80, Dst Port: 35530, Seq: 4149202303, Ack: 268386428, Len: 593
+    Source Port: 80
+    Destination Port: 35530
+    [Stream index: 5]
+    [TCP Segment Len: 593]
+    Sequence number: 4149202303
+    [Next sequence number: 4149202896]
+    Acknowledgment number: 268386428
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window size value: 505
+    [Calculated window size: 64640]
+    [Window size scaling factor: 128]
+    Checksum: 0x30aa [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 1939837566, TSecr 3543597267
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 1939837566
+            Timestamp echo reply: 3543597267
+    [SEQ/ACK analysis]
+        [iRTT: 0.000666665 seconds]
+        [Bytes in flight: 593]
+        [Bytes sent since last PSH flag: 2041]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.411161611 seconds]
+        [Time since previous frame in this TCP stream: 0.000131979 seconds]
+    TCP payload (593 bytes)
+    TCP segment data (593 bytes)
+[2 Reassembled TCP Segments (2041 bytes): #1086(1448), #1088(593)]
+    [Frame: 1086, payload: 0-1447 (1448 bytes)]
+    [Frame: 1088, payload: 1448-2040 (593 bytes)]
+    [Segment count: 2]
+    [Reassembled TCP length: 2041]
+    [Reassembled TCP Data: 485454502f312e3120323030204f4b0d0a446174653a2054...]
+Hypertext Transfer Protocol
+    HTTP/1.1 200 OK\r\n
+        [Expert Info (Chat/Sequence): HTTP/1.1 200 OK\r\n]
+            [HTTP/1.1 200 OK\r\n]
+            [Severity level: Chat]
+            [Group: Sequence]
+        Response Version: HTTP/1.1
+        Status Code: 200
+        [Status Code Description: OK]
+        Response Phrase: OK
+    Date: Tue, 11 May 2021 05:59:54 GMT\r\n
+    Server: Apache/2.4.41 (Ubuntu)\r\n
+    Last-Modified: Thu, 17 Sep 2020 03:12:39 GMT\r\n
+    ETag: "6dc-5af79c1ba3a6b"\r\n
+    Accept-Ranges: bytes\r\n
+    Content-Length: 1756\r\n
+        [Content length: 1756]
+    Keep-Alive: timeout=5, max=99\r\n
+    Connection: Keep-Alive\r\n
+    Content-Type: image/png\r\n
+    \r\n
+    [HTTP response 2/3]
+    [Time since request: 0.001315986 seconds]
+    [Prev request in frame: 1035]
+    [Prev response in frame: 1037]
+    [Request in frame: 1084]
+    [Next request in frame: 1116]
+    [Next response in frame: 1118]
+    [Request URI: http://www2b.comm.eng.osaka-u.ac.jp/~yoshiaki/C1/helloworld.png]
+    File Data: 1756 bytes
+Portable Network Graphics
+    PNG Signature: 89504e470d0a1a0a
+    Image Header (IHDR)
+        Len: 13
+        Chunk: IHDR
+        ..0. .... .... .... .... .... .... .... = Ancillary: This is a CRITICAL chunk
+        .... .... ..0. .... .... .... .... .... = Private: This is a PUBLIC chunk
+        .... .... .... .... .... .... ..0. .... = Safe To Copy: This chunk is NOT safe to copy
+        Width: 157
+        Height: 41
+        Bit Depth: 8
+        Colour Type: Truecolour (2)
+        Compression Method: Deflate (0)
+        Filter Method: Adaptive (0)
+        Interlace Method: No interlace (0)
+        CRC: 0xa01fbce2
+    Physical pixel dimensions (pHYs)
+        Len: 9
+        Chunk: pHYs
+        ..1. .... .... .... .... .... .... .... = Ancillary: This is an ANCILLARY chunk
+        .... .... ..0. .... .... .... .... .... = Private: This is a PUBLIC chunk
+        .... .... .... .... .... .... ..1. .... = Safe To Copy: This chunk is SAFE TO COPY
+        Horizontal pixels per unit: 2835
+        Vertical pixels per unit: 2835
+        Unit: Unit is METRE (1)
+        CRC: 0x009a9c18
+    Textual data (tEXt)
+        Len: 25
+        Chunk: tEXt
+        ..1. .... .... .... .... .... .... .... = Ancillary: This is an ANCILLARY chunk
+        .... .... ..0. .... .... .... .... .... = Private: This is a PUBLIC chunk
+        .... .... .... .... .... .... ..1. .... = Safe To Copy: This chunk is SAFE TO COPY
+        Keyword: Software
+        String: Adobe ImageReady
+        CRC: 0x71c9653c
+    Image data chunk (IDAT)
+        Len: 1641
+        Chunk: IDAT
+        ..0. .... .... .... .... .... .... .... = Ancillary: This is a CRITICAL chunk
+        .... .... ..0. .... .... .... .... .... = Private: This is a PUBLIC chunk
+        .... .... .... .... .... .... ..0. .... = Safe To Copy: This chunk is NOT safe to copy
+        Data
+        CRC: 0x2bb46f37
+    Image Trailer (IEND)
+        Len: 0
+        Chunk: IEND
+        ..0. .... .... .... .... .... .... .... = Ancillary: This is a CRITICAL chunk
+        .... .... ..0. .... .... .... .... .... = Private: This is a PUBLIC chunk
+        .... .... .... .... .... .... ..0. .... = Safe To Copy: This chunk is NOT safe to copy
+        CRC: 0xae426082
+
+No.     Time        Source                Destination           Protocol Length Info
+   1089 19.171954   192.168.12.66         192.168.13.80         TCP      66     35530 → 80 [ACK] Seq=268386428 Ack=4149202896 Win=64000 Len=0 TSval=3543597268 TSecr=1939837566
+
+Frame 1089: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:54.297931081 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712794.297931081 seconds
+    [Time delta from previous captured frame: 0.000062708 seconds]
+    [Time delta from previous displayed frame: 0.000062708 seconds]
+    [Time since reference or first frame: 19.171954314 seconds]
+    Frame Number: 1089
+    Frame Length: 66 bytes (528 bits)
+    Capture Length: 66 bytes (528 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3), Dst: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+    Destination: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.12.66, Dst: 192.168.13.80
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 52
+    Identification: 0xa874 (43124)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (6)
+    Header checksum: 0xf76c [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.12.66
+    Destination: 192.168.13.80
+Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268386428, Ack: 4149202896, Len: 0
+    Source Port: 35530
+    Destination Port: 80
+    [Stream index: 5]
+    [TCP Segment Len: 0]
+    Sequence number: 268386428
+    [Next sequence number: 268386428]
+    Acknowledgment number: 4149202896
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x010 (ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······A····]
+    Window size value: 500
+    [Calculated window size: 64000]
+    [Window size scaling factor: 128]
+    Checksum: 0x9b09 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 3543597268, TSecr 1939837566
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 3543597268
+            Timestamp echo reply: 1939837566
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 1088]
+        [The RTT to ACK the segment was: 0.000062708 seconds]
+        [iRTT: 0.000666665 seconds]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.411224319 seconds]
+        [Time since previous frame in this TCP stream: 0.000062708 seconds]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1116 19.299075   192.168.12.66         192.168.13.80         HTTP     334    GET /favicon.ico HTTP/1.1 
+
+Frame 1116: 334 bytes on wire (2672 bits), 334 bytes captured (2672 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:54.425052232 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712794.425052232 seconds
+    [Time delta from previous captured frame: 0.006620505 seconds]
+    [Time delta from previous displayed frame: 0.127121151 seconds]
+    [Time since reference or first frame: 19.299075465 seconds]
+    Frame Number: 1116
+    Frame Length: 334 bytes (2672 bits)
+    Capture Length: 334 bytes (2672 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp:http]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3), Dst: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+    Destination: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.12.66, Dst: 192.168.13.80
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 320
+    Identification: 0xa875 (43125)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (6)
+    Header checksum: 0xf65f [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.12.66
+    Destination: 192.168.13.80
+Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268386428, Ack: 4149202896, Len: 268
+    Source Port: 35530
+    Destination Port: 80
+    [Stream index: 5]
+    [TCP Segment Len: 268]
+    Sequence number: 268386428
+    [Next sequence number: 268386696]
+    Acknowledgment number: 4149202896
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window size value: 501
+    [Calculated window size: 64128]
+    [Window size scaling factor: 128]
+    Checksum: 0x9c15 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 3543597395, TSecr 1939837566
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 3543597395
+            Timestamp echo reply: 1939837566
+    [SEQ/ACK analysis]
+        [iRTT: 0.000666665 seconds]
+        [Bytes in flight: 268]
+        [Bytes sent since last PSH flag: 268]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.538345470 seconds]
+        [Time since previous frame in this TCP stream: 0.127121151 seconds]
+    TCP payload (268 bytes)
+Hypertext Transfer Protocol
+    GET /favicon.ico HTTP/1.1\r\n
+        [Expert Info (Chat/Sequence): GET /favicon.ico HTTP/1.1\r\n]
+            [GET /favicon.ico HTTP/1.1\r\n]
+            [Severity level: Chat]
+            [Group: Sequence]
+        Request Method: GET
+        Request URI: /favicon.ico
+        Request Version: HTTP/1.1
+    Host: www2b.comm.eng.osaka-u.ac.jp\r\n
+    User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101 Firefox/78.0\r\n
+    Accept: image/webp,*/*\r\n
+    Accept-Language: en-US,en;q=0.5\r\n
+    Accept-Encoding: gzip, deflate\r\n
+    DNT: 1\r\n
+    Connection: keep-alive\r\n
+    \r\n
+    [Full request URI: http://www2b.comm.eng.osaka-u.ac.jp/favicon.ico]
+    [HTTP request 3/3]
+    [Prev request in frame: 1084]
+    [Response in frame: 1118]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1117 19.299679   192.168.13.80         192.168.12.66         TCP      66     80 → 35530 [ACK] Seq=4149202896 Ack=268386696 Win=64384 Len=0 TSval=1939837694 TSecr=3543597395
+
+Frame 1117: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:54.425656450 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712794.425656450 seconds
+    [Time delta from previous captured frame: 0.000604218 seconds]
+    [Time delta from previous displayed frame: 0.000604218 seconds]
+    [Time since reference or first frame: 19.299679683 seconds]
+    Frame Number: 1117
+    Frame Length: 66 bytes (528 bits)
+    Capture Length: 66 bytes (528 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: AlaxalaN_00:00:0c (00:12:e2:00:00:0c), Dst: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+    Destination: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.13.80, Dst: 192.168.12.66
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 52
+    Identification: 0xe59d (58781)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 62
+    Protocol: TCP (6)
+    Header checksum: 0xbc43 [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.13.80
+    Destination: 192.168.12.66
+Transmission Control Protocol, Src Port: 80, Dst Port: 35530, Seq: 4149202896, Ack: 268386696, Len: 0
+    Source Port: 80
+    Destination Port: 35530
+    [Stream index: 5]
+    [TCP Segment Len: 0]
+    Sequence number: 4149202896
+    [Next sequence number: 4149202896]
+    Acknowledgment number: 268386696
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x010 (ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······A····]
+    Window size value: 503
+    [Calculated window size: 64384]
+    [Window size scaling factor: 128]
+    Checksum: 0x5af8 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 1939837694, TSecr 3543597395
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 1939837694
+            Timestamp echo reply: 3543597395
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 1116]
+        [The RTT to ACK the segment was: 0.000604218 seconds]
+        [iRTT: 0.000666665 seconds]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.538949688 seconds]
+        [Time since previous frame in this TCP stream: 0.000604218 seconds]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1118 19.300124   192.168.13.80         192.168.12.66         HTTP     572    HTTP/1.1 404 Not Found  (text/html)
+
+Frame 1118: 572 bytes on wire (4576 bits), 572 bytes captured (4576 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:54.426101396 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712794.426101396 seconds
+    [Time delta from previous captured frame: 0.000444946 seconds]
+    [Time delta from previous displayed frame: 0.000444946 seconds]
+    [Time since reference or first frame: 19.300124629 seconds]
+    Frame Number: 1118
+    Frame Length: 572 bytes (4576 bits)
+    Capture Length: 572 bytes (4576 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp:http:data-text-lines]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: AlaxalaN_00:00:0c (00:12:e2:00:00:0c), Dst: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+    Destination: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.13.80, Dst: 192.168.12.66
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 558
+    Identification: 0xe59e (58782)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 62
+    Protocol: TCP (6)
+    Header checksum: 0xba48 [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.13.80
+    Destination: 192.168.12.66
+Transmission Control Protocol, Src Port: 80, Dst Port: 35530, Seq: 4149202896, Ack: 268386696, Len: 506
+    Source Port: 80
+    Destination Port: 35530
+    [Stream index: 5]
+    [TCP Segment Len: 506]
+    Sequence number: 4149202896
+    [Next sequence number: 4149203402]
+    Acknowledgment number: 268386696
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window size value: 503
+    [Calculated window size: 64384]
+    [Window size scaling factor: 128]
+    Checksum: 0x21db [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 1939837695, TSecr 3543597395
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 1939837695
+            Timestamp echo reply: 3543597395
+    [SEQ/ACK analysis]
+        [iRTT: 0.000666665 seconds]
+        [Bytes in flight: 506]
+        [Bytes sent since last PSH flag: 506]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.539394634 seconds]
+        [Time since previous frame in this TCP stream: 0.000444946 seconds]
+    TCP payload (506 bytes)
+Hypertext Transfer Protocol
+    HTTP/1.1 404 Not Found\r\n
+        [Expert Info (Chat/Sequence): HTTP/1.1 404 Not Found\r\n]
+            [HTTP/1.1 404 Not Found\r\n]
+            [Severity level: Chat]
+            [Group: Sequence]
+        Response Version: HTTP/1.1
+        Status Code: 404
+        [Status Code Description: Not Found]
+        Response Phrase: Not Found
+    Date: Tue, 11 May 2021 05:59:54 GMT\r\n
+    Server: Apache/2.4.41 (Ubuntu)\r\n
+    Content-Length: 290\r\n
+        [Content length: 290]
+    Keep-Alive: timeout=5, max=98\r\n
+    Connection: Keep-Alive\r\n
+    Content-Type: text/html; charset=iso-8859-1\r\n
+    \r\n
+    [HTTP response 3/3]
+    [Time since request: 0.001049164 seconds]
+    [Prev request in frame: 1084]
+    [Prev response in frame: 1088]
+    [Request in frame: 1116]
+    [Request URI: http://www2b.comm.eng.osaka-u.ac.jp/favicon.ico]
+    File Data: 290 bytes
+Line-based text data: text/html (9 lines)
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">\n
+    <html><head>\n
+    <title>404 Not Found</title>\n
+    </head><body>\n
+    <h1>Not Found</h1>\n
+    <p>The requested URL was not found on this server.</p>\n
+    <hr>\n
+    <address>Apache/2.4.41 (Ubuntu) Server at www2b.comm.eng.osaka-u.ac.jp Port 80</address>\n
+    </body></html>\n
+
+No.     Time        Source                Destination           Protocol Length Info
+   1119 19.300232   192.168.12.66         192.168.13.80         TCP      66     35530 → 80 [ACK] Seq=268386696 Ack=4149203402 Win=64000 Len=0 TSval=3543597396 TSecr=1939837695
+
+Frame 1119: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:54.426209469 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712794.426209469 seconds
+    [Time delta from previous captured frame: 0.000108073 seconds]
+    [Time delta from previous displayed frame: 0.000108073 seconds]
+    [Time since reference or first frame: 19.300232702 seconds]
+    Frame Number: 1119
+    Frame Length: 66 bytes (528 bits)
+    Capture Length: 66 bytes (528 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3), Dst: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+    Destination: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.12.66, Dst: 192.168.13.80
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 52
+    Identification: 0xa876 (43126)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (6)
+    Header checksum: 0xf76a [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.12.66
+    Destination: 192.168.13.80
+Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268386696, Ack: 4149203402, Len: 0
+    Source Port: 35530
+    Destination Port: 80
+    [Stream index: 5]
+    [TCP Segment Len: 0]
+    Sequence number: 268386696
+    [Next sequence number: 268386696]
+    Acknowledgment number: 4149203402
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x010 (ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······A····]
+    Window size value: 500
+    [Calculated window size: 64000]
+    [Window size scaling factor: 128]
+    Checksum: 0x9b09 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 3543597396, TSecr 1939837695
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 3543597396
+            Timestamp echo reply: 1939837695
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 1118]
+        [The RTT to ACK the segment was: 0.000108073 seconds]
+        [iRTT: 0.000666665 seconds]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 0.539502707 seconds]
+        [Time since previous frame in this TCP stream: 0.000108073 seconds]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1643 24.300291   192.168.13.80         192.168.12.66         TCP      66     80 → 35530 [FIN, ACK] Seq=4149203402 Ack=268386696 Win=64384 Len=0 TSval=1939842695 TSecr=3543597396
+
+Frame 1643: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:59.426268455 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712799.426268455 seconds
+    [Time delta from previous captured frame: 0.004604572 seconds]
+    [Time delta from previous displayed frame: 5.000058986 seconds]
+    [Time since reference or first frame: 24.300291688 seconds]
+    Frame Number: 1643
+    Frame Length: 66 bytes (528 bits)
+    Capture Length: 66 bytes (528 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: AlaxalaN_00:00:0c (00:12:e2:00:00:0c), Dst: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+    Destination: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.13.80, Dst: 192.168.12.66
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 52
+    Identification: 0xe59f (58783)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 62
+    Protocol: TCP (6)
+    Header checksum: 0xbc41 [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.13.80
+    Destination: 192.168.12.66
+Transmission Control Protocol, Src Port: 80, Dst Port: 35530, Seq: 4149203402, Ack: 268386696, Len: 0
+    Source Port: 80
+    Destination Port: 35530
+    [Stream index: 5]
+    [TCP Segment Len: 0]
+    Sequence number: 4149203402
+    [Next sequence number: 4149203402]
+    Acknowledgment number: 268386696
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x011 (FIN, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...1 = Fin: Set
+            [Expert Info (Chat/Sequence): Connection finish (FIN)]
+                [Connection finish (FIN)]
+                [Severity level: Chat]
+                [Group: Sequence]
+        [TCP Flags: ·······A···F]
+    Window size value: 503
+    [Calculated window size: 64384]
+    [Window size scaling factor: 128]
+    Checksum: 0x4573 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 1939842695, TSecr 3543597396
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 1939842695
+            Timestamp echo reply: 3543597396
+    [Timestamps]
+        [Time since first frame in this TCP stream: 5.539561693 seconds]
+        [Time since previous frame in this TCP stream: 5.000058986 seconds]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1644 24.300712   192.168.12.66         192.168.13.80         TCP      66     35530 → 80 [FIN, ACK] Seq=268386696 Ack=4149203403 Win=64128 Len=0 TSval=3543602397 TSecr=1939842695
+
+Frame 1644: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:59.426689235 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712799.426689235 seconds
+    [Time delta from previous captured frame: 0.000420780 seconds]
+    [Time delta from previous displayed frame: 0.000420780 seconds]
+    [Time since reference or first frame: 24.300712468 seconds]
+    Frame Number: 1644
+    Frame Length: 66 bytes (528 bits)
+    Capture Length: 66 bytes (528 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3), Dst: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+    Destination: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.12.66, Dst: 192.168.13.80
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 52
+    Identification: 0xa877 (43127)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 64
+    Protocol: TCP (6)
+    Header checksum: 0xf769 [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.12.66
+    Destination: 192.168.13.80
+Transmission Control Protocol, Src Port: 35530, Dst Port: 80, Seq: 268386696, Ack: 4149203403, Len: 0
+    Source Port: 35530
+    Destination Port: 80
+    [Stream index: 5]
+    [TCP Segment Len: 0]
+    Sequence number: 268386696
+    [Next sequence number: 268386696]
+    Acknowledgment number: 4149203403
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x011 (FIN, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...1 = Fin: Set
+            [Expert Info (Chat/Sequence): Connection finish (FIN)]
+                [Connection finish (FIN)]
+                [Severity level: Chat]
+                [Group: Sequence]
+        [TCP Flags: ·······A···F]
+    Window size value: 501
+    [Calculated window size: 64128]
+    [Window size scaling factor: 128]
+    Checksum: 0x9b09 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 3543602397, TSecr 1939842695
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 3543602397
+            Timestamp echo reply: 1939842695
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 1643]
+        [The RTT to ACK the segment was: 0.000420780 seconds]
+        [iRTT: 0.000666665 seconds]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 5.539982473 seconds]
+        [Time since previous frame in this TCP stream: 0.000420780 seconds]
+
+No.     Time        Source                Destination           Protocol Length Info
+   1645 24.301194   192.168.13.80         192.168.12.66         TCP      66     80 → 35530 [ACK] Seq=4149203403 Ack=268386697 Win=64384 Len=0 TSval=1939842696 TSecr=3543602397
+
+Frame 1645: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+    Interface id: 0 (eth0)
+        Interface name: eth0
+    Encapsulation type: Ethernet (1)
+    Arrival Time: May 11, 2021 14:59:59.427171473 JST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1620712799.427171473 seconds
+    [Time delta from previous captured frame: 0.000482238 seconds]
+    [Time delta from previous displayed frame: 0.000482238 seconds]
+    [Time since reference or first frame: 24.301194706 seconds]
+    Frame Number: 1645
+    Frame Length: 66 bytes (528 bits)
+    Capture Length: 66 bytes (528 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80 || http2]
+Ethernet II, Src: AlaxalaN_00:00:0c (00:12:e2:00:00:0c), Dst: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+    Destination: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        Address: Raspberr_9e:bc:b3 (b8:27:eb:9e:bc:b3)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        Address: AlaxalaN_00:00:0c (00:12:e2:00:00:0c)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 192.168.13.80, Dst: 192.168.12.66
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 52
+    Identification: 0xe5a0 (58784)
+    Flags: 0x4000, Don't fragment
+        0... .... .... .... = Reserved bit: Not set
+        .1.. .... .... .... = Don't fragment: Set
+        ..0. .... .... .... = More fragments: Not set
+    Fragment offset: 0
+    Time to live: 62
+    Protocol: TCP (6)
+    Header checksum: 0xbc40 [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 192.168.13.80
+    Destination: 192.168.12.66
+Transmission Control Protocol, Src Port: 80, Dst Port: 35530, Seq: 4149203403, Ack: 268386697, Len: 0
+    Source Port: 80
+    Destination Port: 35530
+    [Stream index: 5]
+    [TCP Segment Len: 0]
+    Sequence number: 4149203403
+    [Next sequence number: 4149203403]
+    Acknowledgment number: 268386697
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x010 (ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Nonce: Not set
+        .... 0... .... = Congestion Window Reduced (CWR): Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 0... = Push: Not set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······A····]
+    Window size value: 503
+    [Calculated window size: 64384]
+    [Window size scaling factor: 128]
+    Checksum: 0x31e8 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 1939842696, TSecr 3543602397
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 1939842696
+            Timestamp echo reply: 3543602397
+    [SEQ/ACK analysis]
+        [This is an ACK to the segment in frame: 1644]
+        [The RTT to ACK the segment was: 0.000482238 seconds]
+        [iRTT: 0.000666665 seconds]
+    [Timestamps]
+        [Time since first frame in this TCP stream: 5.540464711 seconds]
+        [Time since previous frame in this TCP stream: 0.000482238 seconds]

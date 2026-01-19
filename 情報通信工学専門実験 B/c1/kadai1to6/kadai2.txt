@@ -1,0 +1,15 @@
+No.     Time        Source                Destination           Protocol Length Info
+   8347 72.274886   192.168.12.66         10.144.0.1            DNS      88     Standard query 0x2cc8 A www2b.comm.eng.osaka-u.ac.jp
+   8348 72.275140   192.168.12.66         10.144.0.1            DNS      88     Standard query 0x39c8 AAAA www2b.comm.eng.osaka-u.ac.jp
+   8349 72.276049   10.144.0.1            192.168.12.66         DNS      104    Standard query response 0x2cc8 A www2b.comm.eng.osaka-u.ac.jp A 192.168.13.80
+   8350 72.276242   10.144.0.1            192.168.12.66         DNS      160    Standard query response 0x39c8 AAAA www2b.comm.eng.osaka-u.ac.jp CNAME genji.comm.eng.osaka-u.ac.jp SOA gene.comm.eng.osaka-u.ac.jp
+   8351 72.277170   192.168.12.66         192.168.13.80         TCP      74     35016 → 80 [SYN] Seq=1007184416 Win=64240 Len=0 MSS=1460 SACK_PERM=1 TSval=3536644626 TSecr=0 WS=128
+   8352 72.277751   192.168.13.80         192.168.12.66         TCP      74     80 → 35016 [SYN, ACK] Seq=2277431442 Ack=1007184417 Win=65160 Len=0 MSS=1460 SACK_PERM=1 TSval=1932884923 TSecr=3536644626 WS=128
+   8353 72.277875   192.168.12.66         192.168.13.80         TCP      66     35016 → 80 [ACK] Seq=1007184417 Ack=2277431443 Win=64256 Len=0 TSval=3536644627 TSecr=1932884923
+   8354 72.278158   192.168.12.66         192.168.13.80         HTTP     181    GET /~yoshiaki/C1/page1.html HTTP/1.1 
+   8355 72.278572   192.168.13.80         192.168.12.66         TCP      66     80 → 35016 [ACK] Seq=2277431443 Ack=1007184532 Win=65152 Len=0 TSval=1932884924 TSecr=3536644627
+   8356 72.279152   192.168.13.80         192.168.12.66         HTTP     584    HTTP/1.1 200 OK  (text/html)
+   8357 72.279238   192.168.12.66         192.168.13.80         TCP      66     35016 → 80 [ACK] Seq=1007184532 Ack=2277431961 Win=64000 Len=0 TSval=3536644628 TSecr=1932884925
+   8358 72.280046   192.168.12.66         192.168.13.80         TCP      66     35016 → 80 [FIN, ACK] Seq=1007184532 Ack=2277431961 Win=64128 Len=0 TSval=3536644629 TSecr=1932884925
+   8359 72.280709   192.168.13.80         192.168.12.66         TCP      66     80 → 35016 [FIN, ACK] Seq=2277431961 Ack=1007184533 Win=65152 Len=0 TSval=1932884926 TSecr=3536644629
+   8360 72.280870   192.168.12.66         192.168.13.80         TCP      66     35016 → 80 [ACK] Seq=1007184533 Ack=2277431962 Win=64128 Len=0 TSval=3536644630 TSecr=1932884926

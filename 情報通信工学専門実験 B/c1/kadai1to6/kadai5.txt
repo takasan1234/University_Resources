@@ -1,0 +1,4 @@
+ubuntu@raspberrypi3:~/client $ python3 client.py 
+converted_500/test_324.png
+[{'class': 'German shepherd, German shepherd dog, German police dog, alsatian', 'prob': 21.546550750732422}, {'class': 'kelpie', 'prob': 17.637371063232422}, {'class': 'toy terrier', 'prob': 14.025994300842285}, {'class': 'malinois', 'prob': 11.318921089172363}]
+
